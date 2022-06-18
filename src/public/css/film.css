@@ -1,0 +1,178 @@
+.film-detail{
+    font-size: 16px;
+    margin-bottom: 50px;
+}
+
+.film-detail-wrap{
+    max-width: 98rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.content-headding--detail{
+    font-size: 3rem;
+    font-weight: 400;
+    padding-bottom: 10px;
+}
+
+.film-detail-content__img{
+    background: url('/img/films/film1.jpg') no-repeat;
+    height: 290px;
+    width: 180px;
+    background-size: contain;
+}
+
+
+.film-detail-content-desc__headding{
+    font-weight: 500;
+    font-size: 2rem;
+    border-bottom: 0.5px solid #ccc;
+    padding: 0 0 15px 0;
+}
+
+.film-detail-content-desc__sub{
+    margin-top: 10px;
+}
+
+.film-detail-content-desc__option{
+    display: flex;
+    margin-top: 10px;
+}
+
+.film-detail-content-desc__option a{
+    height: 45px;
+    width: 68px;
+    display: block;
+    margin-right: 3px;
+}
+
+.film-detail-content__option--c13{
+    background: url('/img/brands/option.png') no-repeat;
+    background-position: -785px 0px;
+}
+
+.film-detail-content__option--3d{
+    background: url('/img/brands/option.png') no-repeat;
+    background-position: -223px 0;
+}
+
+.film-detail-content__option--4dx{
+    background: url('/img/brands/option.png') no-repeat;
+    background-position: -361px 0;
+}
+
+.film-detail-content__option--imax{
+    background: url('/img/brands/option.png') no-repeat;
+    background-position: -499px 0;
+}
+
+.film-detail-content__control{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.film-detail-content__control button + button{
+    margin-left: 10px;
+}
+
+.film-detail-bottom{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.film-detail-bottom__sumary{
+    margin-top: 20px;
+    line-height: 1.6rem;
+}
+
+/* model  */
+.booking-ticket-model{
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.8);
+    animation: show ease 0.2s;
+}
+
+
+.booking-ticket-content{
+    background-color: white;
+    width: 875px;
+    color: black;
+    margin: auto auto;
+    font-size: 1.6rem;
+    background-color: #fdfcf0;;
+    padding: 5px 20px;
+}
+
+.booking-ticket-day{
+    border-top: 3px solid black;
+    padding-top: 10px;
+}
+
+.booking-ticket-day-label{
+    width: 77px;
+    height: 48px;
+}
+
+.booking-ticket-day input{
+    display: none;
+}
+
+.booking-ticket-day-label--active{
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.booking-ticket-site{
+    border-top: 2px solid black;
+    padding-top: 20px;
+    font-size: 1.2rem;
+}
+
+.booking-ticket-site input{
+    display: none;
+}
+
+.booking-ticket-site-label--active{
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.booking-ticket-option{
+    margin-top: 20px;
+    border-top: 2px solid black;
+    padding-top: 20px;
+    font-size: 1.2rem;
+}
+
+.booking-ticket-option input{
+    display: none;
+}
+
+.booking-ticket-option-label--active{
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.booking-ticket-time{
+    margin-top: 20px;
+    border-top: 2px solid black;
+    padding-top: 20px;
+    font-size: 1.2rem;
+}
+
+.booking-ticket-time input{
+    display: none;
+}
+
+.booking-ticket-time-label--active{
+    border: 2px solid black;
+    border-radius: 3px;
+}

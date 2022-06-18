@@ -1,0 +1,49 @@
+
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+      <th scope="col">Image</th>
+      <th scope="col">Genre</th>
+      <th scope="col">Country</th>
+      <th scope="col">Minute</th>
+      <th scope="col">Year</th>
+      <th scope="col">Actor</th>
+      <th scope="col">Director</th>
+      <th scope="col">Language</th>
+      <th scope="col">Rated</th>
+      <th scope="col">Description</th>
+      <th scope="col">Quality</th>
+      <th scope="col">Link trailer</th>
+      <th scope="col">Sub Category</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each films}}
+    <tr>
+      <td>{{_id}}</td>
+      <td>{{name}}</td>
+      <td>{{status}}</td>
+      <td><img src="data:image/{{image.contentType}};base64,
+                     {{image.data}}"></td>
+      <td>{{genre}}</td>
+      <td>{{country}}</td>
+      <td>{{minute}}</td>
+      <td>{{year}}</td>
+      <td>{{actor}}</td>
+      <td>{{director}}</td>
+      <td>{{language}}</td>
+      <td>{{rated}}</td>
+      <td>{{description}}</td>
+      <td>{{subArrayDocumentRender quality}}</td>
+      <td><iframe width="250" height="150" src="https://www.youtube.com/embed/{{key_link}}"></iframe></td>
+      <td>{{subObjDocumentRender sub_category}}</td>
+      <td><a href="/admin/films/update?id={{_id}}">Sửa</a>/<a href="/admin/films/delete?id={{_id}}">Xóa</a></td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+       

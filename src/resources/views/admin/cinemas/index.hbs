@@ -1,0 +1,26 @@
+<h2>Danh sách Rạp </h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Area</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+      <th scope="col">Room Toltal</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each cinemas}}
+    <tr>
+      <td>{{_id}}</td>
+      <td>{{name}}</td>
+      <td>{{subObjDocumentRender area}}</td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/cinemas/update?id={{_id}}">Sửa</a>/<a href="/admin/cinemas/delete?id={{_id}}">Xóa</a>/<a href="/admin/rooms?cinema_id={{_id}}">Chi tiết</a></td>
+     {{/each}}
+      <td>{{_id}}</td>
+    </tr>
+  </tbody>
+</table>
+

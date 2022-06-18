@@ -1,0 +1,29 @@
+{{#with room}}
+<h1 class="">Update Room</h1>
+<form id ="form-sub-category-create" method="POST" action="/admin/rooms?_method=PATCH&room_id={{_id}}&cinema_id={{@root.cinema_id}}">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Seat</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" name ="seat" value ='{{seat}}'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Status</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+      {{#if status}}
+      <option selected value="1">{{statusHandle status}}</option>
+      {{else}}
+      <option selected value="0">{{statusHandle status}}</option>
+      {{/if}}
+      {{#if status}}
+      <option value=0>Disable</option>
+      {{else}}
+      <option value=1>Active</option>
+      {{/if}}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{{/with}}

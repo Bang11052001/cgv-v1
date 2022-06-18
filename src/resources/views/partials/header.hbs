@@ -1,0 +1,60 @@
+<main>
+    <div class="header ">
+        <div class="header-top ">
+            <ul class="header-top__menu">
+                <li class="header-top__nav">
+                    <a href="" class="header-top__link"><img src="/img/tuyendung.png"> TUYỂN DỤNG</a>
+                </li>
+                <li class="header-top__nav">
+                    <a href="" class="header-top__link"><img src="/img/sale.png"> TIN MỚI & ƯU ĐÃI</a>
+                </li>
+                <li class="header-top__nav">
+                    <a href="" class="header-top__link"><img src="/img/ticket.png"> VÉ CỦA TÔI</a>
+                </li>
+                <li class="header-top__nav">
+                    <img src="/img/user.png">
+                    <a href="" class="header-top__link">ĐĂNG NHẬP</a>
+                        /
+                    <a href="" class="header-top__link">ĐĂNG KÝ </a>
+                </li>
+            </ul>
+        </div>
+        <div class="header-mid">
+            <div class="header-mid-wraper">
+                <div class="header-mid-left">
+                    <a href="/" class="header-logo__link">
+                        <img class ='main-logo' src ='/img/cgv.png'>
+                    </a>
+                    <ul class="header-mid-menu">
+                        {{#each menu}}
+                        <li class="header-mid__nav">
+                            <a href="#" class="header-mid__link text-uppercase">
+                                {{name}}
+                            </a>
+                            <div class="sub-menu-container">
+                                <ul class="sub-menu">
+                                    {{#each sub_menu}}
+                                    <li class ="sub-menu__nav"><a href="/category?id={{_id._id}}&type={{_id._id}}">{{_id.name}}</a></li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="header-mid-right">
+                    <a href="" class="header-logo__link">
+                        <img class ='main-logo' src ='/img/kenhcine.gif'>
+                    </a>
+                    <a href="" class="header-logo__link">
+                        <img class ='main-logo' src ='/img/ticket-header-mid.png'>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+
+</script>
+
+

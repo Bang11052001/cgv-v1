@@ -1,0 +1,22 @@
+<h2>Danh sách Area</h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each areas}}
+    <tr>
+      <td>{{_id}}</td>
+      <td>{{name}}</td>
+      <td>{{status}}</td>
+      <td><a href="/admin/areas/update?id={{_id}}">Sửa</a>/<a href="/admin/areas/delete?id={{_id}}">Xóa</a></td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+       
+

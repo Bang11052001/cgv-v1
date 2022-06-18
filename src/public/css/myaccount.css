@@ -1,0 +1,61 @@
+.myaccount-container{
+    max-width: 98rem;
+    width: 100%;
+    margin: 30px auto 100px ;
+    font-size: 1.6rem;
+}   
+
+.myaccount-navbar{
+
+}
+
+.myaccount-navbar__headding{
+    color: var(--primary-color);
+    font-size: 3rem;
+    font-weight: 700;
+}   
+
+.myaccount-navbar__nav{
+    margin: 3px 0;
+}
+
+.myaccount-navbar__nav.tabs{
+    background-color: #ccc;
+    font-weight: 700;
+    color: #666;
+}
+
+.myaccount-navbar__nav.tabs::after{
+    display: none;
+}
+
+.myaccount-navbar__nav.tabs::before{
+   border-color: #ccc #ccc #ccc #fdfcf0;
+}
+
+.myaccount-content {
+    border-bottom: 1px solid black;
+}
+
+.myaccount-content-history{
+    margin-top: 20px;
+}
+
+.myaccount-content-history__code{
+    font-weight: 500;
+}
+
+.myaccount-content-history-content{
+    margin-top: 10px;
+    display: flex;
+}
+
+.myaccount-content-history-content__img{
+    width: 160px;
+    height: 237px;
+}
+
+.myaccount-content-history-content-desc{
+    margin-left: 10px;
+    font-size: 1.4rem;
+}

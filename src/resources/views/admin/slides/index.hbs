@@ -1,0 +1,25 @@
+<h2>Danh sách slide</h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Slide</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each slides}}
+    <tr>
+      <td>{{_id}}</td>
+      <td>{{name}}</td>
+      <td><img src="data:image/{{image.contentType}};base64,{{image.data}}"></td>
+      <td>{{status}}</td>
+      <td><a href="/admin/slides/update?id={{_id}}">Sửa</a>/<a href="/admin/slides/delete?id={{_id}}">Xóa</a></td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+       
+

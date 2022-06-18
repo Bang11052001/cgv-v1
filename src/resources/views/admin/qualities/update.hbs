@@ -1,0 +1,18 @@
+{{#with quality}}
+<h1 class="">Update Slide</h1>
+<form id ="form-slides-update" method="POST" action="/admin/qualities?_method=PATCH&id={{_id}}">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Price</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" name ="price" value ='{{price}}'>
+  </div>
+  <div class="mb-3">
+    <label for="form-slides-update-file_name" class="form-label">Status</label>
+    <input type='text' class="form-control" id="form-slides-update_name" aria-describedby="emailHelp"  value='{{status}}' name ="status" required >
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{{/with}}

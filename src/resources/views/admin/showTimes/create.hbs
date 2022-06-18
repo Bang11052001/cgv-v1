@@ -1,0 +1,72 @@
+<a href="/admin/showTimes?room_id={{room_id}}&cinema_id={{cinema_id}}">Back /</a>
+<a href="/admin/showTimes/create?room_id={{room_id}}&cinema_id={{cinema_id}}">Chọn lại</a>
+<h1 class="">Add Show Time</h1>
+<form id ="form-showTime-create" method="POST" action="/admin/showTimes?room_id={{room_id}}&cinema_id={{cinema_id}}">
+ <div class="mb-3">
+ <label for="exampleInputPassword1" class="form-label">Film</label>
+    <select class="form-select select-showTime-create-film" aria-label=".form-select-lg example" name ='film_id'>
+      {{#if films}}
+      <option selected disabled>--Select Film--</option>
+      {{#each films}}
+      <option class ="select-showTime-create-film-option" value="{{_id}}">{{name}}</option></a>
+      {{/each}}
+      {{/if}}
+      {{#if film}}
+      {{#each film}}
+      <option selected value="{{_id}}">{{name}}</option></a>
+      {{/each}}
+      {{/if}}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Quality</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='quality_id'>
+      <option selected disabled>--Select Quality--</option>
+      {{#each film }}
+          {{#each quality}}
+          <option value='{{_id._id}}'>{{_id.name}}</option>
+          {{/each}}
+      {{/each}}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Time</label>
+    <input type="time" class="form-control" class="" id="exampleInputPassword1" name ="time" >
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Date</label>
+    <input type="date" class="form-control" class="" id="exampleInputPassword1" name ="date" >
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Status</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+      <option selected disabled>--Chọn Status--</option>
+      <option value=1>Active</option>
+      <option value=0>Disable</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form> 
+
+{{#each films}}
+  <form class ="form-film" index ="{{_id}}"method="POST" action="/admin/showTimes/create/quality?id={{_id}}&room_id={{@root.room_id}}&cinema_id={{@root.cinema_id}}"></form>
+{{/each}}
+
+</form>
+<script>
+  const formShowTime = document.querySelector('.select-showTime-create-film');
+
+  console.log(formShowTime)
+  formShowTime.onchange = function(event) {
+      console.log(event.target.value)
+      const fomrFilm = document.querySelectorAll('.form-film');
+      
+      Array.from(fomrFilm).map(form => {
+        if(form.getAttribute('index') == event.target.value ){
+          form.submit();
+        }
+      })
+  }
+
+</script>
+ 

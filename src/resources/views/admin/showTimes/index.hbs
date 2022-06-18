@@ -1,0 +1,56 @@
+<h2>Phòng </h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Name</th>
+      <th scope="col">Seat</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#with room}}
+    <tr>
+      <td>1</td>
+      <td>{{name}}</td>
+      <td>{{seat}}</td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/rooms/update?id={{_id}}">Sửa</a>/<a href="/admin/rooms/delete?id={{_id}}">Xóa</a></td>
+    </tr>
+    {{/with}}
+  </tbody>
+</table>
+       
+
+<a href="/admin/showTimes/create?room_id={{room_id}}&cinema_id={{cinema_id}}">Add Show Times</a>
+<h2>Show Times </h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Film</th>
+      <th scope="col">Quality</th>
+      <th scope="col">Time</th>
+      <th scope="col">Date</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each showTimes}}
+    <tr>
+      <td>{{countIndex @index 1}}</td>
+      <td>{{film_id.name}}</td>
+      <td>{{quality_id.name}}</td>
+      <td>{{time}}</td>
+      <td>{{date}}</td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/showTimes/update?cinema_id={{@root.cinema_id}}&room_id={{@root.room_id}}&showtime_id={{_id}}">Sửa</a>/<a href="/admin/showTimes/delete?cinema_id={{@root.cinema_id}}&room_id={{@root.room_id}}&showtime_id={{_id}}">Xóa</td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+
+
+       

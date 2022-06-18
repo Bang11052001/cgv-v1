@@ -1,0 +1,28 @@
+<a href="/admin/cinemas">Back</a>
+<h1 class="">Add Room</h1>
+<form id ="form-sub-category-create" method="POST" action="/admin/rooms?room_id={{room_id}}&cinema_id={{cinema_id}}">
+ <label for="exampleInputPassword1" class="form-label">Rạp</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='cinema_id'>
+      <option selected disabled>--Chọn Rạp--</option>
+      {{#each cinemas}}
+      <option value={{_id}}>{{name}}</option>
+      {{/each}}
+    </select>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Seat</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" name ="seat">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Status</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+      <option selected disabled>--Chọn Status--</option>
+      <option value=1>Active</option>
+      <option value=0>Disable</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

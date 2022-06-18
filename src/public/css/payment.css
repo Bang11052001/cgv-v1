@@ -1,0 +1,75 @@
+p{
+    margin: 0;
+}
+
+.payment-container{
+    max-width: 98rem;
+    width: 100%;
+    margin: 30px auto;
+    font-size: 1.4rem;
+}
+
+
+.payment-container {
+    margin-top: 30px;
+}
+
+
+.payment-container-step1{
+
+}
+
+.payment-container__headding{
+    display: flex;
+    background-color: #bcbdc0;
+    border: 2px solid #9d9fa2;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 15px;
+    font-size: 1.6rem;
+}
+
+.payment-container-step1__desc{
+    padding: 10px 10px;
+}
+
+.payment-container-option{
+    background-color: #fff1ce;
+    width: 100%;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.payment-container-option__input{
+    margin: 0 10px;
+}
+
+.payment-container-option__label{
+    display: flex;
+    align-items: center;
+}
+
+.payment-container-option img{
+    width: 37px;
+    height: 37px;
+    margin-right: 10px;
+}
+
+.payment-container-step2{
+    margin-top: 20px;
+}
+
+.payment-container-option-wrap{
+    margin-top: 5px;
+}
+
+.form-booking__payment{
+    background: url('/img/buttons/button-director.png') no-repeat -152px -112px;
+    width: 104px;
+    height: 104px;
+    margin-left: 20px;
+    border: none;
+    align-self: center;
+}

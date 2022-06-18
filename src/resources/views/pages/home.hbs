@@ -1,0 +1,138 @@
+  <div class = "content">
+        <div class="content-header">
+            <ul class="content-header__menu">
+                <li class="content-header__nav"><a href="" class="rap-link"></a></li>
+                <li class="content-header__nav"><a href="" class="phim-link"></a></li>
+                <li class="content-header__nav"><a href="" class="special-link"></a></li>
+                <li class="content-header__nav"><a href="" class="project-link"></a></li>
+                <li class="content-header__nav"><a href="" class="contact-link"></a></li>
+                <li class="content-header__nav"><a href="" class="news-link"></a></li>
+                <li class="content-header__nav"><a href="" class="register-link"></a></li>
+            </ul>
+        </div>
+        <div class="content-slider">
+
+            {{!-- slider  --}}
+            <div class="slider-wrap">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="true">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    <div class="carousel-inner">
+                    {{#each slides}}
+                        <div class="carousel-item " data-bs-interval="3000">
+                        <img src="data:image/{{image.contentType}};base64,
+                     {{image.data}}" class="slider-img d-block w-100" alt="..."> 
+                        </div>
+                    {{/each}}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{!-- main content  --}}
+        <div class="content-main">
+            <div class="content-film-selector ">
+                <div class ="content__headding">
+                    <div class="movie-headding"></div>
+                </div>
+
+                <div class="content-film-selector__list row g-2">
+                    {{#each films}}
+                    <div class="content-film-selector__nav col col-lg-3 col-xs-6 col-md-4 col-md-4">
+                        <a href="" class ="content-film-selector__link">
+                            <img src="data:image/{{image.contentType}};base64,
+                     {{image.data}}" alt="" class="content-film-selector__film">
+                        </a>
+                        <ul class="content-film-model">
+                            <li class="content-film-model__headding">{{name}}</li>
+                            <div class="content-film-model-desc">
+                                <li class="content-film-model__item"><a href="" class="content-film-model__link">Xem chi tiết</a></li>
+                                <li class="content-film-model__item"><a href="" class="content-film-model__link">Mua vé</a></li>
+                            </div>
+                        </ul>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="content-event">
+                <div class="content__headding">
+                    <div class="event-headding"></div>
+                </div>
+                <div class="tabs">
+                    <p class="content-event__option">
+                        <a href="" class="content-event-link">Tin mới & Ưu đãi</a>
+                            |
+                        <a href="" class="content-event-link">Thành viên CGV</a>
+                    </p>
+                </div>
+                <div class="content-event__small row g-2 mt-4">
+                    <div class="content-event__small-item col col-lg-3">
+                        <a href="">
+                            <img src="img/events/event1-sm.png" alt="" class="content-event__small-img">
+                        </a>
+                    </div>
+
+                    <div class="content-event__small-item col col-lg-3">
+                        <a href="">
+                            <img src="img/events/event2-sm.jpg" alt="" class="content-event__small-img">
+                        </a>
+                    </div>
+                    
+                    <div class="content-event__small-item col col-lg-3">
+                        <a href="">
+                            <img src="img/events/event3-sm.jpg" alt="" class="content-event__small-img">
+                        </a>
+                    </div>
+
+                    <div class="content-event__small-item col col-lg-3">
+                        <a href="">
+                            <img src="img/events/event4-sm.jpg" alt="" class="content-event__small-img">
+                        </a>
+                    </div>
+
+                    <div class="content-event__small-item col col-lg-3">
+                        <a href="">
+                            <img src="img/events/event4-sm.jpg" alt="" class="content-event__small-img">
+                        </a>
+                    </div>
+                </div>
+                <div class="content-event__big">
+                    <div class="ruler"></div>
+                    <div class = "content-event__big-wrap row g-2">
+                        <div class="content-event__big-item col col-lg-3">
+                            <a href="">
+                                <img src="img/events/event1-big.jpg" alt="" class="content-event__big-img">
+                            </a>
+                        </div>
+                        <div class="content-event__big-item col col-lg-6">
+                            <a href="">
+                                <img src="img/events/event2-big.jpg" alt="" class="content-event__big-img">
+                            </a>
+                        </div>
+                        <div class="content-event__big-item col col-lg-3">
+                            <a href="">
+                                <img src="img/events/event3-big.png" alt="" class="content-event__big-img">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    const slideElement = document.querySelectorAll('.carousel-item')[0];
+    slideElement.classList.add('active');
+</script>

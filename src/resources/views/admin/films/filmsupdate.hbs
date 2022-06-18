@@ -1,0 +1,90 @@
+{{#with film}}
+<h1 class="">Update films</h1>
+<form id ="form-film-update" method ="POST" action="/admin/films?_method=PATCH&id={{_id}}" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required value='{{name}}' name ='name'>
+  </div>
+  <div class="mb-3">
+    <label for="form-film-update-file_name" class="form-label">Image</label>
+    <div class =" d-flex ">
+    <img class ='form-film-update-img' src="data:image/{{image.contentType}};base64,
+                     {{image.data}}"></div>
+    <input type='file' class="form-control" id="form-film-update-file_name" aria-describedby="emailHelp"  title='dsafsd' name ='file_image' required>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Genre</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{genre}}' name ='genre'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Country</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{country}}' name ='country'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Minute</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{minute}}' name ='minute'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Year</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{year}}' name ='year'>
+  </div>
+     <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Actor</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{actor}}' name ="actor">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Director</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{director}}' name ='director'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Rated</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{rated}}' name ='rated'>
+  </div> 
+     <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Language</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{language}}' name ="language">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Key_link</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{key_link}}' name ='key_link'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Description</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{description}}' name ='description'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Quality</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" value='{{HandleQualityId quality}}' name ='quality_id'>
+  </div>
+   <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Status</label>
+    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+      {{#if status}}
+      <option selected value="1">{{statusHandle status}}</option>
+      {{else}}
+      <option selected value="0">{{statusHandle status}}</option>
+      {{/if}}
+      {{#if status}}
+      <option value=0>Disable</option>
+      {{else}}
+      <option value=1>Active</option>
+      {{/if}}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Sub Category</label>
+      <select class="form-select" aria-label=".form-select-lg example" name ='sub_category'>
+        <option selected disabled>--Chọn Category--</option>
+        <option value='4'>Phim đang chiếu</option>
+        <option value='5'>Phim sắp chiếu</option>
+      </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{{/with}}
+<script>
+  
+  
+
+
+</script>

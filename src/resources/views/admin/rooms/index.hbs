@@ -1,0 +1,53 @@
+<a href="/admin/cinemas">Back</a>
+<h2>Rạp </h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Name</th>
+      <th scope="col">Area</th>
+      <th scope="col">Room Toltal</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#with cinema}}
+    <tr>
+      <td>1</td>
+      <td>{{name}}</td>
+      <td>{{subObjDocumentRender area}}</td>
+      <td></td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/cinemas/update?id={{_id}}">Sửa</a>/<a href="/admin/cinemas/delete?id={{_id}}">xóa</td>
+    </tr>
+     {{/with}}
+  </tbody>
+</table>
+<a href="/admin/rooms/create">Thêm phòng</a>
+<h2>Danh sách Phòng</h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Name</th>
+      <th scope="col">Seat</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each rooms}}
+    <tr>
+      <td>{{countIndex @index 1}}</td>
+      <td>{{name}}</td>
+      <td>{{seat}}</td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/rooms/update?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Sửa</a>/<a href="/admin/rooms/delete?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Xóa</a>/<a href="/admin/showTimes?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Chi tiết</a></td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+       
+
+       

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v4.0.2
+* @link https://coreui.io
+* Copyright (c) 2021 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v4.0.2
+* @link https://coreui.io
+* Copyright (c) 2021 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+<!-- Breadcrumb-->
+<html lang="en">
+  <head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>CoreUI Free Bootstrap Admin Template</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Vendors styles-->
+    <link rel="stylesheet" href="/node_modules/simplebar/dist/simplebar.css">
+    <link rel="stylesheet" href="/dist/css/vendors/simplebar.css">
+    <!-- Main styles for this application-->
+    <link href="/dist/css/style.css" rel="stylesheet">
+    <!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      // Shared ID
+      gtag('config', 'UA-118965717-3');
+      // Bootstrap ID
+      gtag('config', 'UA-118965717-5');
+    </script>
+    <link href="/node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css" rel="stylesheet">
+    <link href="/css/admin/index.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+      <div class="sidebar-brand d-none d-md-flex">
+        <img class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo" src ="/img/cgv.png">
+        </img>
+        <img class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo" src ="/img/cgv.png">
+        </img>
+      </div>
+      <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+        <li class="nav-item"><a class="nav-link" href="index.html">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-speedometer"></use>
+            </svg>Dashboard</a></li>
+        
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý phim</a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/films" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách phim</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/films/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm</a></li>
+          </ul>
+        </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý danh mục</a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/categorys" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách danh</a></li>  
+            <li class="nav-item"><a class="nav-link" href="/admin/categorys/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm danh mục cha</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/subcategorys/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm danh mục con</a></li>    
+          </ul>
+        </li>
+         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý slide</a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/slides" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách slide</a></li>  
+            <li class="nav-item"><a class="nav-link" href="/admin/slides/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm slide</a></li>
+          </ul>
+        </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý chất lượng phim</a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/qualities" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách chất lượng phim</a></li>  
+            <li class="nav-item"><a class="nav-link" href="/admin/qualities/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm chất lượng phim</a></li>
+          </ul>
+        </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý rạp & phòng </a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/cinemas" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách rạp </a></li>  
+            <li class="nav-item"><a class="nav-link" href="/admin/cinemas/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm rạp</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/rooms/create" target="_top">
+              <svg class="nav-icon">
+              </svg>Thêm phòng</a></li>
+          </ul>
+        </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-star"></use>
+            </svg>Quản lý khu vực hoạt động </a>
+          <ul class="nav-group-items">
+            <li class="nav-item"><a class="nav-link" href="/admin/areas" target="_top">
+                <svg class="nav-icon">
+                </svg>Danh sách khu vực</a></li>  
+             <li class="nav-item"><a class="nav-link" href="/admin/areas/create" target="_top">
+                <svg class="nav-icon">
+                </svg>Thêm khu vực</a></li>
+          </ul>
+        </li>
+      </ul>
+      
+      <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+    </div>

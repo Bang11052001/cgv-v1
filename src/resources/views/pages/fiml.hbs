@@ -1,0 +1,240 @@
+<div class="film-detail">
+    <div class="location-wrap">
+        <div class="location">
+            <a href="" class="home"></a>
+            <a href="" class="next"></a>
+            <a href="">Phim</a>
+            <a href="" class="next"></a>
+            <a href="">Phim đang chiếu</a>
+            <a href="" class="next"></a>
+            {{#with film}}
+            <a class="" href=""><u>{{name}}</u></a>
+            {{/with}}
+        </div> 
+    </div>
+    <div class="film-detail-wrap">
+        <h2 class="content-headding content-headding--detail">Phim đang chiếu</h2>
+        <div class="row g-1 mt-4">
+            {{#with film}}
+            <div class="col col-lg-3">
+                <div class="film-detail-content">
+                    <img src ="data:image/{{image.contentType}};base64,
+                     {{image.data}}" class="film-detail-content__img"></img>
+                </div>
+            </div>
+            <div class="col col-lg-9">
+                <div class="film-detail-content-desc">
+                    <p class="film-detail-content-desc__headding text-uppercase">{{name}}</h2>
+                    <div class="film-detail-content-desc__sub">
+                        <p><b>Đạo diễn: </b>{{director}}</p>
+                        <p><b>Diễn diễn:</b>{{actor}}</p>
+                        <p><b>Thể loại: </b>{{genre}}</p>
+                        <p><b>Khởi chiếu: </b>{{year}}</p>
+                        <p><b>Thời lượng: </b>{{minute}} phút</p>
+                        <p><b>Ngôn ngữ: </b>{{language}}</p>
+                        <p><b>Rated: {{rated}}</b> </p>
+                    </div>
+                    <div class="film-detail-content-desc__option">
+                        <a href="" class="film-detail-content__option--c13"></a>
+                        <a href="" class="film-detail-content__option--3d"></a>
+                        <a href="" class="film-detail-content__option--4dx"></a>
+                        <a href="" class="film-detail-content__option--imax"></a>
+                    </div>
+                </div>
+                    <div class="col col-lg-12">
+                        <div class="film-detail-content__control">
+                        <button class="btn-like"><i class="fa-solid fa-thumbs-up"></i> Like 389 </button>
+                        <a href ="/category/film/bookingTicket?id={{_id}}" class="btn-buy"><span>MUA VÉ</span></a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        
+        <div class="film-detail-bottom">
+            <div class="tabs">
+                <p class="content-event__option">
+                    <a href="" class="content-event-link">Chi tiết</a>
+                        |
+                    <a href="" class="content-event-link">Trailer</a>
+                </p>
+            </div>
+            <div class="film-detail-bottom__sumary">
+                {{description}}
+            </div>
+        </div>
+        {{/with}}
+    </div>
+</div>
+{{!-- <div class="booking-ticket-model">
+    <form class="booking-ticket-content">
+        <div class="booking-ticket-day row">
+        </div>
+        <div class="booking-ticket-site row">
+            {{#lap showTimes}}
+                <input type="radio" id='site{{countIndex @index 1}}' name="site" value='{{name}}'>
+                <label class ='booking-ticket-site-label col col-lg-1 booking-ticket-site-label' for="site{{countIndex @index 1}}">{{name}}</label>
+            {{/lap}}
+        </div>
+        <div class="booking-ticket-option row">
+            {{#each film}}
+                {{#each quality}}
+                    <input type="radio" id="option{{countIndex @index 1}}" name="option" value='{{_id.name}}'>
+                    <label class ='booking-ticket-option-label col col-lg-1 ' for="option{{countIndex @index 1}}">{{_id.name}}</label>
+                {{/each}}
+           {{/each}}
+        </div>
+        <div class="booking-ticket-time row">
+            <h2>CGV Hùng Vương Plaza</h2>
+            <p>Rạp 2D</p>
+            <input type="radio" id="time1" name="time" value='8:30 AM'>
+            <label class ='booking-ticket-time-label col col-lg-1 ' for="time1">8:30 AM</label>
+            <input type="radio" id="time2" name="time" value='09:00 AM'>
+            <label class ='booking-ticket-time-label col col-lg-1'  for="time2">09:00 AM</label>
+            <input type="radio" id="time3" name="time" value='10:10 AM'>
+            <label class ='booking-ticket-time-label col col-lg-1'  for="time3">10:10 AM</label>
+            <input type="radio" id="time4" name="time" value='11:00 AM'>
+            <label class ='booking-ticket-time-label col col-lg-1'  for="time4">11:00 AM</label>
+            <input type="radio" id="time5" name="time" value='11:30 AM'>
+            <label class ='booking-ticket-time-label col col-lg-1'  for="time5">11:30 AM</label>
+            <input type="radio" id="time6" name="time" value='12:00 PM'>
+            <label class ='booking-ticket-time-label col col-lg-1'  for="time6">12:00 PM</label>
+        </div>
+    </form>
+</div> --}}
+<form id="form-date" method ="POST" ></form>
+<script>
+    {{!-- const btnBuyTicket = document.querySelector('.btn-buy');
+    const bookingTicketModel = document.querySelector('.booking-ticket-model');
+    const bookingTicketContent = document.querySelector('.booking-ticket-content');
+    const siteInput = document.querySelectorAll('.booking-ticket-site input');
+    const labelSiteElement = document.querySelectorAll('.booking-ticket-site-label');
+    const optionInput = document.querySelectorAll('.booking-ticket-option input');
+    const labelOptionElement = document.querySelectorAll('.booking-ticket-option-label');
+    const timeInput = document.querySelectorAll('.booking-ticket-time input');
+    const labelTimeElement = document.querySelectorAll('.booking-ticket-time-label');
+    const formDate = document.querySelector('#form-date')
+    var bookingTicketDay = document.querySelector('.booking-ticket-day');
+    var today = new Date();
+    let mm = today.getMonth() + 1; 
+    var yyyy = today.getFullYear();
+    var dd = today.getDate();  
+    var today = dd + '/' + mm + '/' + yyyy;
+
+
+    // setting day 
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    let html='';
+    for(let i =0;i<=30;i++){
+        if(dd>31){
+            dd =1;
+            mm = parseInt(mm)+1;
+        }
+
+        today = dd + '/' + mm + '/' + yyyy;
+        dateValue = dd + '/' + mm; 
+
+        html += `
+                <input type="radio" id="day${i}" name="day" value='${today}'>
+                <label class ='booking-ticket-day-label col col-lg-1' for="day${i}">${dateValue}</label>
+        `;
+        dd += 1;
+    }
+    bookingTicketDay.innerHTML =html;
+
+
+    console.log(today)
+    
+    btnBuyTicket.onclick = function(event){
+        bookingTicketModel.style.display = 'flex';
+    }
+
+    bookingTicketModel.onclick = function(e) {
+        bookingTicketModel.style.display ='none';
+    }
+
+    bookingTicketContent.onclick = function(event) {
+        event.stopImmediatePropagation();
+    }
+
+    // Xu ly chon  day
+    const dayInput = document.querySelectorAll('.booking-ticket-day input');
+    const labelDayElement = document.querySelectorAll('.booking-ticket-day-label');
+
+    Array.from(dayInput).map(input =>{
+        input.onclick = function() {
+            if(input.checked == true ){
+                // bo active cua label cu
+                var [label2] = Array.from(labelDayElement).filter(label=>label.classList.contains('booking-ticket-day-label--active'))
+                if(label2){
+                    label2.classList.remove('booking-ticket-day-label--active')
+                }
+
+                // them active vao label dc check
+                var [label] = Array.from(labelDayElement).filter(label=>label.getAttribute('for') == input.id)
+                label.classList.add('booking-ticket-day-label--active');
+                formDate.setAttribute('action',`/category/film/handleDate?date=${input.getAttribute('value')}`)
+                formDate.submit();
+                console.log(input.value)
+            }
+        }
+    })
+
+    // Xu ly chon dia diem
+    Array.from(siteInput).map(input =>{
+        input.onclick = function() {
+            if(input.checked == true ){
+                // bo active cua label cu
+                var [label2] = Array.from(labelSiteElement).filter(label=>label.classList.contains('booking-ticket-site-label--active'))
+                if(label2){
+                    label2.classList.remove('booking-ticket-site-label--active')
+                }
+
+                // them active vao label dc check
+                var [label] = Array.from(labelSiteElement).filter(label=>label.getAttribute('for') == input.id)
+                
+                label.classList.add('booking-ticket-site-label--active');
+            }
+        }
+    })
+
+    // Xu ly chon chat luong
+    Array.from(optionInput).map(input =>{
+        input.onclick = function() {
+            if(input.checked == true ){
+                // bo active cua label cu
+                var [label2] = Array.from(labelOptionElement).filter(label=>label.classList.contains('booking-ticket-option-label--active'))
+                if(label2){
+                    label2.classList.remove('booking-ticket-option-label--active')
+                }
+
+                // them active vao label dc check
+                var [label] = Array.from(labelOptionElement).filter(label=>label.getAttribute('for') == input.id)
+                
+                label.classList.add('booking-ticket-option-label--active');
+            }
+        }
+    })
+    
+    // Xu ly chon time
+    Array.from(timeInput).map(input =>{
+        input.onclick = function() {
+            if(input.checked == true ){
+                // bo active cua label cu
+                var [label2] = Array.from(labelTimeElement).filter(label=>label.classList.contains('booking-ticket-time-label--active'))
+                if(label2){
+                    label2.classList.remove('booking-ticket-time-label--active')
+                }
+
+                // them active vao label dc check
+                var [label] = Array.from(labelTimeElement).filter(label=>label.getAttribute('for') == input.id)
+                
+                label.classList.add('booking-ticket-time-label--active');
+            }
+        }
+    }) --}}
+   
+    
+
+
+</script>

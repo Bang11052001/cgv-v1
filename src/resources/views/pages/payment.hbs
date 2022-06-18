@@ -1,0 +1,117 @@
+<div class="payment-container">
+    <h2 class="booking-payment-headding">THANH TOÁN</h2>
+    <div class="payment-container row">
+        <div class="col col-lg-8">
+            <div class="payment-container-step1">
+                <div class="payment-container__headding">
+                    <p>
+                        <i>Bước 1:</i>
+                        <b> GIẢM GIÁ</b>
+                    </p>
+                    <b>Đặt lại</b>
+                </div>
+                <div class="payment-container-step1__desc">
+                    <p>Hiện tại tính năng thanh toán bằng Voucher, 
+                        Coupon, Điểm trên Website đang bảo trì, 
+                        để sử dụng vui lòng tải/cập nhật ứng dụng CGV mới nhất để tiếp tục
+                    </p>
+                </div>
+                <div class="payment-container-option">
+                    <p>Đối tác</p>
+                </div>
+                <div class="payment-container-option mt-2">
+                    <p>Mã khuyến mãi</p>
+                </div>
+            </div>
+            <div class="payment-container-step2">
+                <div class="payment-container-headding">
+                    <div class="payment-container__headding">
+                    <p>
+                        <i>Bước 2:</i>
+                        <b> HÌNH THỨC THANH TOÁN</b>
+                    </p>
+                </div>
+                </div>
+                <div class="payment-container-option-wrap">
+                    <div class="payment-container-option">
+                        <input name ='payment' type="radio" id="payment-container-option__input-atm" class ='payment-container-option__input'>
+                        <label for ="payment-container-option__input-atm" class="payment-container-option__label">
+                            <img src="/img/icons/atm_icon.png" alt="" class="payment-container-option__label-img">
+                            <p>ATM card (Thẻ nội địa)</p>
+                        </label>
+                    </div>
+                    <div class="payment-container-option">
+                        <input name ='payment' type="radio" id="payment-container-option__input-visa" class ='payment-container-option__input'>
+                        <label for ="payment-container-option__input-visa" class="payment-container-option__label">
+                            <img src="/img/icons/visa-mastercard-icon.png" alt="" class="payment-container-option__label-img">
+                            <p>Thẻ quốc tế(Visa, Master, Amex, JCB)</p>
+                        </label>
+                    </div>
+                    <div class="payment-container-option">
+                        <input name ='payment' type="radio" id="payment-container-option__input-momo" class ='payment-container-option__input'>
+                        <label for ="payment-container-option__input-momo" class="payment-container-option__label">
+                            <img src="/img/icons/momo_icon.png" alt="" class="payment-container-option__label-img">
+                            <p>Ví MoMo </p>
+                        </label>
+                    </div>
+                    <div class="payment-container-option">
+                        <input name ='payment' type="radio" id="payment-container-option__input-zalo" class ='payment-container-option__input'>
+                        <label for ="payment-container-option__input-zalo" class="payment-container-option__label">
+                            <img src="/img/icons/zalopay_icon.png" alt="" class="payment-container-option__label-img">
+                            <p>ZaloPay: Bạn mới 9k/vé, Bạn cũ 69k/vé</p>
+                        </label>
+                    </div>
+                    <div class="payment-container-option">
+                        <input name ='payment' type="radio" id="payment-container-option__input-shopee" class ='payment-container-option__input'>
+                        <label for ="payment-container-option__input-shopee" class="payment-container-option__label">
+                            <img src="/img/icons/sppay-icon.png" alt="" class="payment-container-option__label-img">
+                            <p>ShopeePay - Giảm 30%, tối đa 30k với mã SPPCGVYEU</p>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-content-accept-wrap">  
+                    <input type="checkbox" id="form-content-accept">
+                    <label for="form-content-accept" >Tôi đồng ý với <span>Điều khoản sử dụng và mua vé cho người có độ tuổi phù hợp</span></label>
+                </div>  
+            </div>
+        </div>
+        <div class="col col-lg-4"></div>
+    </div>
+    <div class="booking-bottom">
+        <form action="/category/film/booking?" method="POST" class="form-booking">
+            <button class="form-booking__prev"></button>
+            <div class="form-booking-left">
+                <img class="form-booking__img" src="/img/films/film1.jpg">
+                <div class="form-booking-left-desc">
+                    <p class="form-booking__name">Thế giới khủng long: lãnh địa</p>
+                    <p class="form-booking__option">2D</p>
+                </div>
+            </div>
+            <div class="form-booking-mid">
+                <div class ="form-booking-wrap">
+                    <span>Rạp:</span>   
+                    <p class="form-booking__cinema"> CGV Hùng Vương Plaza</p>
+                </div>
+                <div class ="form-booking-wrap">
+                    <span>Suất chiếu:</span>
+                    <p class="form-booking__time"> 10:10, 11/06/2022</p>
+                </div>
+                <div class ="form-booking-wrap">
+                    <span>Phòng chiếu:</span>
+                    <p class="form-booking__room"> Cinema 5</p>
+                </div>
+                <div class ="form-booking-wrap">
+                    <span>ghế:</span>
+                    <p class="form-booking__seat"></p>
+                </div>
+            </div>
+            <div class="form-booking-right">
+                <div class ="form-booking-wrap"> 
+                    <span>Tổng: </span>
+                    <p class="form-booking__total">0 ₫</p>
+                </div>
+            </div>
+            <button type="submit" class="form-booking__payment"></button>
+        </form>
+    </div>
+</div>

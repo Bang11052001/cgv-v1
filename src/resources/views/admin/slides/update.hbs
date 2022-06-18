@@ -1,0 +1,21 @@
+{{#with slides}}
+<h1 class="">Update Slide</h1>
+<form id ="form-slides-update" method="POST" action="/admin/slides?_method=PATCH&id={{_id}}" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Status</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" name ="status" value ='{{status}}'>
+  </div>
+  <div class="mb-3">
+    <label for="form-slides-update-file_name" class="form-label">Image</label>
+    <div class =" d-flex ">
+    <img class ='form-slides-update-img' src="data:image/{{image.contentType}};base64,
+                     {{image.data}}"></div>
+    <input type='file' class="form-control" id="form-slides-update_name" aria-describedby="emailHelp"  title='dsafsd' name ='file_image'required >
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{{/with}}
