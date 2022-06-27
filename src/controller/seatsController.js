@@ -1,17 +1,16 @@
 const { populate } = require('../modules/category');
 const Room = require('../modules/room')
-const Cinema = require('../modules/cinemas')
+const Seat = require('../modules/seat')
 
-var roomController={
+var seatController={
     index(req,res,next) {
-        Promise.all([Cinema.findById({_id: req.query.cinema_id}).populate('area'),Room.find({cinema_id: req.query.cinema_id})])
-            .then(([cinema,rooms]) => {
-                cinema = cinema.toObject();
-                rooms = rooms.map(room => room.toObject());
-                res.render('admin/rooms/index',{
+        Room.findById({_id: req.query.room_id})
+            .then((room) => {
+                room = room.toObject();
+                console.log(room)
+                res.render('admin/seats/index',{
                     layout: 'main2',
-                    cinema,
-                    rooms
+                    room,
                 });
             })
             .catch(error => next(error));
@@ -52,39 +51,35 @@ var roomController={
     handleCreate(req,res,next) {
         var column = req.body.column;
         var row = req.body.row;
-        var cinema_id = req.body.cinema_id;
-        var name = req.body.name;
-        var status = req.body.status;
-        var seats = [];
 
         delete req.body.column;
         delete req.body.row;
-        delete req.body.cinema_id;
-        delete req.body.name;
-        delete req.body.status;
-        
+
         
         for(i in req.body){
             req.body[i] = req.body[i].split(',');
             req.body[i] ={
                 name : req.body[i][0],
                 brand : req.body[i][1],
+                room_id: req.query.room_id,
             }
-            seats.push(req.body[i]);
+            console.log(req.body[i])
+            const seat = new Seat(req.body[i]);
+            seat.save();
         }
-        const room = new Room({column, row, cinema_id, name, status, seats});
-        room.save()
-            .then(() =>{
-                res.render('admin/rooms/create',{
-                    layout: 'main2',
-                });
+        Room.updateOne({_id: req.query.room_id}, {column: column, row: row})
+            .then(room =>{
+                res.json(req.body);
             })
+            .catch(err => next(err))
+        
     },
     handleUpdate(req,res,next) {
+        console.log(req.query.room_id)
         Room.updateOne({_id : req.query.room_id},req.body) 
             .then((room) =>{
                 res.redirect('/admin/rooms/?cinema_id=' + req.query.cinema_id);
             })
     },
 }
-module.exports = roomController;
+module.exports = seatController;

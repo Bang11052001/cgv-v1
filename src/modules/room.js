@@ -6,8 +6,10 @@ const room = new Schema({
     _id: Number,
     cinema_id: Number,
     name: String,
-    seat: Number,
     status: Number,
+    row: Number,
+    column: Number,
+    seats: Array
 })
 
 room.plugin(AutoIncrement,{id: '<room_id>', inc_field: '_id'});

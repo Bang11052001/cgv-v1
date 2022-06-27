@@ -2,8 +2,10 @@
     <div class="booking-top">
         <h2 class="booking-payment-headding">BOOKING ONLINE</h2>
         <div class="booking-top-desc">
-            <p>CGV HÙNG VƯƠNG Plaza | Cinema 5 | Số ghế (277/260)</p>
-            <p>11/06/2022 10:10 ~ 11/06/2022 13:02</p>
+            {{#with filmDesc}}
+            <p>{{cinema}} | {{room}} | Số ghế (277/260)</p>
+            <p>{{date}} {{time}} ~ {{date}} 13:02</p>
+            {{/with}}
         </div>
     </div>
     <div class="booking-content">
@@ -11,7 +13,7 @@
         <img src= "/img/backgrounds/background-booking-content.png" class="booking-content__screen"></img>
         <div class="booking-content-ticketbox">
             <div class="seat-normal-container">
-                <div class="seat seat--normal seat--active">A1</div>
+                <div class="seat seat--normal" price ="120000" id ='A1'>A1</div>
                 <div class="seat seat--normal" price ="120000" id ='A2'>A2</div>
                 <div class="seat seat--normal" price ="120000" id ='A3'>A3</div>
                 <div class="seat seat--normal" price ="120000" id ='A4'>A4</div>
@@ -194,30 +196,35 @@
     <div class="booking-bottom">
         <form action="/category/film/booking?" method="POST" class="form-booking">
             <button class="form-booking__prev"></button>
+            {{#with film}}
             <div class="form-booking-left">
-                <img class="form-booking__img" src="/img/films/film1.jpg">
+                <img class="form-booking__img" src ="data:image/{{image.contentType}};base64,
+                     {{image.data}}">
                 <div class="form-booking-left-desc">
-                    <p class="form-booking__name">Thế giới khủng long: lãnh địa</p>
-                    <p class="form-booking__option">2D</p>
+                    <p class="form-booking__name">{{name}}</p>
+                    <p class="form-booking__option">{{@root.filmDesc.quality}}</p>
                 </div>
             </div>
+            {{/with}}
             <div class="form-booking-mid">
+                {{#with filmDesc}}
                 <div class ="form-booking-wrap">
                     <span>Rạp:</span>   
-                    <p class="form-booking__cinema"> CGV Hùng Vương Plaza</p>
+                    <p class="form-booking__cinema"> {{cinema}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Suất chiếu:</span>
-                    <p class="form-booking__time"> 10:10, 11/06/2022</p>
+                    <p class="form-booking__time">{{time}},{{date}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Phòng chiếu:</span>
-                    <p class="form-booking__room"> Cinema 5</p>
+                    <p class="form-booking__room">{{room}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>ghế:</span>
                     <p class="form-booking__seat"></p>
                 </div>
+                {{/with}}
             </div>
             <div class="form-booking-right">
                 <div class ="form-booking-wrap"> 

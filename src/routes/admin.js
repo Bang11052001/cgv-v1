@@ -10,6 +10,7 @@ const cinemasControler = require('../controller/cinemasControler');
 const areasController = require('../controller/areasController');
 const roomsController = require('../controller/roomsController');
 const showTimesController = require('../controller/showTimesController');
+const seatsController = require('../controller/seatsController');
 const multer = require('multer');
 
 //set up multer for storing uploaded files
@@ -97,6 +98,14 @@ router.get('/showTimes/update',showTimesController.update);
 router.get('/showTimes/delete',showTimesController.delete); 
 router.get('/showTimes/create',showTimesController.create); 
 router.post('/showTimes/create/quality',showTimesController.handleQualityreate); 
+
+// seats
+router.get('/seats',seatsController.index); 
+router.post('/seats',seatsController.handleCreate); 
+router.patch('/seats',seatsController.handleUpdate); 
+router.get('/seats/update',seatsController.update);  
+router.get('/seats/delete',seatsController.delete); 
+router.get('/seats/create',seatsController.create); 
 
 module.exports = router;
 

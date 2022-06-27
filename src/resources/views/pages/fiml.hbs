@@ -7,9 +7,7 @@
             <a href="" class="next"></a>
             <a href="">Phim đang chiếu</a>
             <a href="" class="next"></a>
-            {{#with film}}
-            <a class="" href=""><u>{{name}}</u></a>
-            {{/with}}
+            <a class="" href=""><u>{{film.name}}</u></a>
         </div> 
     </div>
     <div class="film-detail-wrap">
@@ -24,7 +22,7 @@
             </div>
             <div class="col col-lg-9">
                 <div class="film-detail-content-desc">
-                    <p class="film-detail-content-desc__headding text-uppercase">{{name}}</h2>
+                    <p class="film-detail-content-desc__headding text-uppercase" data-id ="{{_id}}">{{name}}</h2>
                     <div class="film-detail-content-desc__sub">
                         <p><b>Đạo diễn: </b>{{director}}</p>
                         <p><b>Diễn diễn:</b>{{actor}}</p>
@@ -41,12 +39,12 @@
                         <a href="" class="film-detail-content__option--imax"></a>
                     </div>
                 </div>
-                    <div class="col col-lg-12">
-                        <div class="film-detail-content__control">
-                        <button class="btn-like"><i class="fa-solid fa-thumbs-up"></i> Like 389 </button>
-                        <a href ="/category/film/bookingTicket?id={{_id}}" class="btn-buy"><span>MUA VÉ</span></a>
-                        </div>
+                <div class="col col-lg-12">
+                    <div class="film-detail-content__control">
+                    <button class="btn-like"><i class="fa-solid fa-thumbs-up"></i> Like 389 </button>
+                    <button class="btn-buy"><span>MUA VÉ</span></button>
                     </div>
+                </div>
             </div>
         </div>
         
@@ -65,63 +63,219 @@
         {{/with}}
     </div>
 </div>
-{{!-- <div class="booking-ticket-model">
-    <form class="booking-ticket-content">
-        <div class="booking-ticket-day row">
-        </div>
-        <div class="booking-ticket-site row">
-            {{#lap showTimes}}
-                <input type="radio" id='site{{countIndex @index 1}}' name="site" value='{{name}}'>
-                <label class ='booking-ticket-site-label col col-lg-1 booking-ticket-site-label' for="site{{countIndex @index 1}}">{{name}}</label>
-            {{/lap}}
-        </div>
-        <div class="booking-ticket-option row">
-            {{#each film}}
-                {{#each quality}}
-                    <input type="radio" id="option{{countIndex @index 1}}" name="option" value='{{_id.name}}'>
-                    <label class ='booking-ticket-option-label col col-lg-1 ' for="option{{countIndex @index 1}}">{{_id.name}}</label>
-                {{/each}}
-           {{/each}}
-        </div>
-        <div class="booking-ticket-time row">
-            <h2>CGV Hùng Vương Plaza</h2>
-            <p>Rạp 2D</p>
-            <input type="radio" id="time1" name="time" value='8:30 AM'>
-            <label class ='booking-ticket-time-label col col-lg-1 ' for="time1">8:30 AM</label>
-            <input type="radio" id="time2" name="time" value='09:00 AM'>
-            <label class ='booking-ticket-time-label col col-lg-1'  for="time2">09:00 AM</label>
-            <input type="radio" id="time3" name="time" value='10:10 AM'>
-            <label class ='booking-ticket-time-label col col-lg-1'  for="time3">10:10 AM</label>
-            <input type="radio" id="time4" name="time" value='11:00 AM'>
-            <label class ='booking-ticket-time-label col col-lg-1'  for="time4">11:00 AM</label>
-            <input type="radio" id="time5" name="time" value='11:30 AM'>
-            <label class ='booking-ticket-time-label col col-lg-1'  for="time5">11:30 AM</label>
-            <input type="radio" id="time6" name="time" value='12:00 PM'>
-            <label class ='booking-ticket-time-label col col-lg-1'  for="time6">12:00 PM</label>
-        </div>
+<div class="booking-ticket-model">
+    <form class="form-booking-ticket" action ="/category/film/booking?film_id={{film._id}}" method="POST">
+        <div class="booking-ticket-day row"></div>
+        <div class="booking-ticket-site row"></div>
+        <div class="booking-ticket-option row"></div>
+        <div class="booking-ticket-cinema row"></div>
     </form>
-</div> --}}
-<form id="form-date" method ="POST" ></form>
+</div>
 <script>
-    {{!-- const btnBuyTicket = document.querySelector('.btn-buy');
-    const bookingTicketModel = document.querySelector('.booking-ticket-model');
-    const bookingTicketContent = document.querySelector('.booking-ticket-content');
-    const siteInput = document.querySelectorAll('.booking-ticket-site input');
-    const labelSiteElement = document.querySelectorAll('.booking-ticket-site-label');
-    const optionInput = document.querySelectorAll('.booking-ticket-option input');
-    const labelOptionElement = document.querySelectorAll('.booking-ticket-option-label');
-    const timeInput = document.querySelectorAll('.booking-ticket-time input');
-    const labelTimeElement = document.querySelectorAll('.booking-ticket-time-label');
-    const formDate = document.querySelector('#form-date')
-    var bookingTicketDay = document.querySelector('.booking-ticket-day');
+const btnBuy = document.querySelector('.btn-buy');
+const modelBooking = document.querySelector('.booking-ticket-model');
+const modelBookingDay = document.querySelector('.booking-ticket-day');
+const modelBookingSite = document.querySelector('.booking-ticket-site');
+const modelBookingOption = document.querySelector('.booking-ticket-option');
+const modelBookingCinema = document.querySelector('.booking-ticket-cinema');
+const formBookingTicket = document.querySelector('.form-booking-ticket');
+const filmHeadding = document.querySelector('.film-detail-content-desc__headding');
+let siteInput,siteLabel,optionInput,optionLabel,timeInput,timeLabel,inputCinema,dayInput,dayLabel;
+
+//them noi dung vao model booking site
+function handleBookingSite(showTimes){
+    var html ;
+    var filterSame = [];
+   
+    // loc giong nhau
+    if(showTimes.length >0 )
+    {
+        showTimes.map(function(data) {
+            if(!filterSame.includes(data.cinema_id.area.name)){
+                filterSame.push(data.cinema_id.area.name);
+            }
+        })
+    
+        if(filterSame.length != 0){
+            filterSame.map((curr,index)=>{
+                if(index == 0){
+                    html = 
+                        `
+                            <input onclick ="handleSiteInput(event)" type="radio" id="site${index}" name="site" value='${curr}' checked>
+                            <label class ='booking-ticket-site-label booking-ticket-site-label--active col col-lg-1 ' for="site${index}">${curr}</label>
+                        `
+                    }
+                else{
+                    html += 
+                        `
+                            <input onclick = "handleSiteInput(event)" type="radio" id="site${index}" name="site" value='${curr}'>
+                            <label class ='booking-ticket-site-label col col-lg-1 ' for="site${index}">${curr}</label>
+                        `
+                }
+            })
+        }
+        modelBookingSite.innerHTML = html;
+            siteInput = document.querySelectorAll('.booking-ticket-site input');
+        siteLabel = document.querySelectorAll('.booking-ticket-site-label');
+    }
+    else{
+        modelBookingSite.innerHTML = '';
+        siteInput = [];
+        siteLabel = [];
+    }
+}
+
+//them noi dung vao model booking quality
+function handleBookingQuality(showTimes){
+    var html ='';
+    if(siteInput.length > 0){
+        Array.from(siteInput).map(siteInput => {
+            if(siteInput.checked == true){
+                showTimes = showTimes.filter((curr) =>{
+                    if(curr.cinema_id.area.name == siteInput.value){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                })
+                filterSame = [];
+                showTimes.map(data => {
+                    if(!filterSame.includes(data.quality_id.name)){
+                        filterSame.push(data.quality_id.name);
+                    }
+                })
+                filterSame.map((curr,index)=>{
+                    if(index == 0){
+                        html = 
+                            `
+                                <input onclick ="handleQualityInput(event)" type="radio" id="option${index}" name="option" value='${curr}' checked>
+                                <label class ='booking-ticket-option-label booking-ticket-option-label--active col col-lg-1 ' for="option${index}">${curr}</label>
+                            `
+                        }
+                    else{
+                        html += 
+                            `
+                                <input onclick ="handleQualityInput(event)" type="radio" id="option${index}" name="option" value='${curr}'>
+                                <label class ='booking-ticket-option-label col col-lg-1 ' for="option${index}">${curr}</label>
+                            `
+                    }
+                })
+            
+                modelBookingOption.innerHTML = html;
+                optionInput = document.querySelectorAll('.booking-ticket-option input');
+                optionLabel = document.querySelectorAll('.booking-ticket-option-label');
+            }
+        })
+       
+    }
+    else{
+        modelBookingOption.innerHTML = '';
+        optionInput = [];
+        optionLabel = [];
+    }
+}
+
+//them noi dung vao model booking desc
+function handleBookingDesc(showTimes){
+    if(optionInput.length >0){
+        Array.from(siteInput).map(siteInput => {
+            Array.from(optionInput).map(optionInput => {
+                if(optionInput.checked == true && siteInput.checked == true){
+                    showTimes = showTimes.filter((curr) =>{
+                        if(curr.quality_id.name == optionInput.value ){
+                            if(curr.cinema_id.area.name == siteInput.value){
+                                return true;
+                            }
+                        }
+                        else{
+                            return false;
+                        }
+                    })
+                    var filterCinema = [];
+
+                    showTimes.map((data,parentIndex) => {
+                        if(filterCinema.every(curr => curr.name != data.cinema_id.name)){
+                            filterCinema.push({
+                                name : data.cinema_id.name,
+                                time : [data.time],
+                                room : [data.room_id.name],
+                                quality : data.quality_id.name,
+                                date: data.date
+                            })
+                        }
+                        else{
+                            filterCinema[filterCinema.length-1].time.push(data.time)
+                            filterCinema[filterCinema.length-1].room.push(data.room_id.name)
+                        } 
+                    })
+                        console.log(filterCinema)
+
+                    var cinemaHtml = ''
+                    var timeHtml ='';
+                    var roomHtml ='';
+                        filterCinema.map((curr,index)=>{
+                            curr.time.map((time,index)=>{  
+                                timeHtml += `
+                                            <input onclick ="handleTimeInput(event)" type="radio" id="${time}" name="desc" value='${time + ',' +curr.name + ',' + curr.room[index] + ',' +curr.date  + ',' +curr.quality }' >
+                                            <label class ='booking-ticket-time-label col col-lg-1' for="${time}">${time}</label>
+                                            `
+                            })
+                            
+                            if(index == 0){
+                                cinemaHtml = 
+                                    `
+                                        <p>${curr.name}</p>
+                                        ${timeHtml}
+                                        </br>
+                                    `
+                                }
+                            else{
+                                cinemaHtml += 
+                                    `
+                                        <hr>
+                                        <p>${curr.name}</p>
+                                        ${timeHtml}
+                                        </br>
+                                    `
+                            }
+                        })
+                        modelBookingCinema.innerHTML = cinemaHtml;
+                        timeInput = document.querySelectorAll('.booking-ticket-time input');
+                        timeLabel = document.querySelectorAll('.booking-ticket-time-label');
+                        inputCinema = document.querySelectorAll('.input-cinema');
+                }
+            })       
+        })
+    }
+    else{
+            modelBookingCinema.innerHTML = '';
+        }
+}
+
+//ngan chan su noi bot
+function hanldeBubbling(){
+    btnBuy.onclick = function(event){
+        modelBooking.style.display = 'flex';
+    }
+
+    modelBooking.onclick = function(e) {
+        modelBooking.style.display ='none';
+    }
+
+    formBookingTicket.onclick = function(event) {
+        event.stopImmediatePropagation();
+    }
+}
+
+//setting day 
+function settingDay(){
     var today = new Date();
     let mm = today.getMonth() + 1; 
     var yyyy = today.getFullYear();
     var dd = today.getDate();  
-    var today = dd + '/' + mm + '/' + yyyy;
+    var today;
 
-
-    // setting day 
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
     let html='';
@@ -131,110 +285,165 @@
             mm = parseInt(mm)+1;
         }
 
-        today = dd + '/' + mm + '/' + yyyy;
-        dateValue = dd + '/' + mm; 
-
-        html += `
-                <input type="radio" id="day${i}" name="day" value='${today}'>
-                <label class ='booking-ticket-day-label col col-lg-1' for="day${i}">${dateValue}</label>
-        `;
+        today = yyyy + '-' + mm + '-' + dd;
+        dateValue = dd + '-' + mm; 
+        if(i == 0){
+            html = `
+                    <input onclick = "handleDayInput(event)" type="radio" id="day${i}" name="day" value='${today}' checked>
+                    <label class ='booking-ticket-day-label booking-ticket-day-label--active col col-lg-1' for="day${i}">${dateValue}</label>
+            `;
+        }
+        else{
+            html += `
+                    <input onclick = "handleDayInput(event)" type="radio" id="day${i}" name="day" value='${today}'>
+                    <label class ='booking-ticket-day-label col col-lg-1' for="day${i}">${dateValue}</label>
+            `;
+        }
         dd += 1;
     }
-    bookingTicketDay.innerHTML =html;
+    modelBookingDay.innerHTML =html;
 
+    dayInput = document.querySelectorAll('.booking-ticket-day input');
+    dayLabel = document.querySelectorAll('.booking-ticket-day-label');
+}
 
-    console.log(today)
-    
-    btnBuyTicket.onclick = function(event){
-        bookingTicketModel.style.display = 'flex';
+// Xu ly truong hop mac dinh
+function handleBookingDefault() {
+     $(document).ready(function() {
+            Array.from(dayInput).map(dayInput => {
+                if(dayInput.checked == true){
+                    $.ajax({
+                        url : `/ajax/showTimes?film_id=${filmHeadding.getAttribute('data-id')}&date=${dayInput.value}`,
+                        method : 'GET',
+                        contentType: 'application/json',
+                        success: function (data){
+                            var showTimes = data;
+                            handleBookingSite(showTimes);
+                            handleBookingQuality(showTimes);
+                            handleBookingDesc(showTimes);
+                        }
+                    })
+                }
+            })
+        })
+}
+
+// Xu ly chon  day
+function handleDayInput(event) {
+        // bo active cua label cu
+        var [oldLabel] = Array.from(dayLabel).filter(label=>label.classList.contains('booking-ticket-day-label--active'))
+        if(oldLabel){
+            oldLabel.classList.remove('booking-ticket-day-label--active')
+        }
+        // them active vao label dc check
+        var [label] = Array.from(dayLabel).filter(label=>label.getAttribute('for') == event.target.id)
+        label.classList.add('booking-ticket-day-label--active');
+
+        // ajax
+        $(document).ready(function() {
+            $.ajax({
+                url : `/ajax/showTimes?film_id=${filmHeadding.getAttribute('data-id')}&date=${event.target.value}`,
+                method : 'GET',
+                contentType: 'application/json',
+                success: function (data){
+                    var showTimes = data;
+                    handleBookingSite(showTimes);
+                    handleBookingQuality(showTimes);
+                    handleBookingDesc(showTimes);
+                }
+            })
+        })
+}
+
+// Xu ly chon dia diem
+function handleSiteInput(event) {
+    if(event.target.checked == true ){
+        // bo active cua label cu
+        var [label2] = Array.from(siteLabel).filter(label=>label.classList.contains('booking-ticket-site-label--active'))
+        if(label2){
+            label2.classList.remove('booking-ticket-site-label--active')
+        }
+
+        // them active vao label dc check
+        var [label] = Array.from(siteLabel).filter(label=>label.getAttribute('for') == event.target.id)
+        label.classList.add('booking-ticket-site-label--active');
+
+        Array.from(dayInput).map(dayInput => {
+            if(dayInput.checked == true){
+                $(document).ready(function() {
+                    $.ajax({
+                        url : `/ajax/showTimes?film_id=${filmHeadding.getAttribute('data-id')}&date=${dayInput.value}`,
+                        method : 'GET',
+                        contentType: 'application/json',
+                        success: function (data){
+                        var showTimes = data;
+
+                        handleBookingQuality(showTimes);
+                        handleBookingDesc(showTimes);
+                        }
+                    })
+                })
+
+            }
+        })
+        
     }
+}
 
-    bookingTicketModel.onclick = function(e) {
-        bookingTicketModel.style.display ='none';
+// Xu ly chon quality
+function handleQualityInput(event) {
+        // bo active cua label cu
+        var [oldLabel] = Array.from(optionLabel).filter(label=>label.classList.contains('booking-ticket-option-label--active'))
+        if(oldLabel){
+            oldLabel.classList.remove('booking-ticket-option-label--active')
+        }
+
+        // them active vao label dc check
+        var [label] = Array.from(optionLabel).filter(label=>label.getAttribute('for') == event.target.id)
+        label.classList.add('booking-ticket-option-label--active');
+
+        // ajax
+        Array.from(dayInput).map(dayInput => {
+            if(dayInput.checked == true){
+                $(document).ready(function() {
+                    $.ajax({
+                        url : `/ajax/showTimes?film_id=${filmHeadding.getAttribute('data-id')}&date=${dayInput.value}`,
+                        method : 'GET',
+                        contentType: 'application/json',
+                        success: function (data){
+                            var showTimes = data;
+
+                            handleBookingDesc(showTimes);
+
+                        }
+                    })
+                })
+            }
+        })
+}
+
+// Xu ly chon time
+function handleTimeInput(event) {
+        var [oldLabel] = Array.from(timeLabel).filter(label=>label.classList.contains('booking-ticket-time-label--active'))
+        if(oldLabel){
+            oldLabel.classList.remove('booking-ticket-time-label--active')
+        }
+        // them active vao label dc check
+        var [label] = Array.from(timeLabel).filter(label=>{
+            return label.getAttribute('for') == event.target.id
+        });
+        label.classList.add('booking-ticket-time-label--active');
+        formBookingTicket.submit();
+        inputCinema
+}
+
+var app ={
+    start() {
+        hanldeBubbling();
+        settingDay();
+        handleBookingDefault();
     }
-
-    bookingTicketContent.onclick = function(event) {
-        event.stopImmediatePropagation();
-    }
-
-    // Xu ly chon  day
-    const dayInput = document.querySelectorAll('.booking-ticket-day input');
-    const labelDayElement = document.querySelectorAll('.booking-ticket-day-label');
-
-    Array.from(dayInput).map(input =>{
-        input.onclick = function() {
-            if(input.checked == true ){
-                // bo active cua label cu
-                var [label2] = Array.from(labelDayElement).filter(label=>label.classList.contains('booking-ticket-day-label--active'))
-                if(label2){
-                    label2.classList.remove('booking-ticket-day-label--active')
-                }
-
-                // them active vao label dc check
-                var [label] = Array.from(labelDayElement).filter(label=>label.getAttribute('for') == input.id)
-                label.classList.add('booking-ticket-day-label--active');
-                formDate.setAttribute('action',`/category/film/handleDate?date=${input.getAttribute('value')}`)
-                formDate.submit();
-                console.log(input.value)
-            }
-        }
-    })
-
-    // Xu ly chon dia diem
-    Array.from(siteInput).map(input =>{
-        input.onclick = function() {
-            if(input.checked == true ){
-                // bo active cua label cu
-                var [label2] = Array.from(labelSiteElement).filter(label=>label.classList.contains('booking-ticket-site-label--active'))
-                if(label2){
-                    label2.classList.remove('booking-ticket-site-label--active')
-                }
-
-                // them active vao label dc check
-                var [label] = Array.from(labelSiteElement).filter(label=>label.getAttribute('for') == input.id)
-                
-                label.classList.add('booking-ticket-site-label--active');
-            }
-        }
-    })
-
-    // Xu ly chon chat luong
-    Array.from(optionInput).map(input =>{
-        input.onclick = function() {
-            if(input.checked == true ){
-                // bo active cua label cu
-                var [label2] = Array.from(labelOptionElement).filter(label=>label.classList.contains('booking-ticket-option-label--active'))
-                if(label2){
-                    label2.classList.remove('booking-ticket-option-label--active')
-                }
-
-                // them active vao label dc check
-                var [label] = Array.from(labelOptionElement).filter(label=>label.getAttribute('for') == input.id)
-                
-                label.classList.add('booking-ticket-option-label--active');
-            }
-        }
-    })
-    
-    // Xu ly chon time
-    Array.from(timeInput).map(input =>{
-        input.onclick = function() {
-            if(input.checked == true ){
-                // bo active cua label cu
-                var [label2] = Array.from(labelTimeElement).filter(label=>label.classList.contains('booking-ticket-time-label--active'))
-                if(label2){
-                    label2.classList.remove('booking-ticket-time-label--active')
-                }
-
-                // them active vao label dc check
-                var [label] = Array.from(labelTimeElement).filter(label=>label.getAttribute('for') == input.id)
-                
-                label.classList.add('booking-ticket-time-label--active');
-            }
-        }
-    }) --}}
-   
-    
-
+}
+app.start();
 
 </script>

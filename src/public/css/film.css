@@ -90,7 +90,7 @@
 
 /* model  */
 .booking-ticket-model{
-    display: flex;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -101,7 +101,7 @@
 }
 
 
-.booking-ticket-content{
+.form-booking-ticket{
     background-color: white;
     width: 875px;
     color: black;
@@ -161,18 +161,32 @@
     border-radius: 3px;
 }
 
-.booking-ticket-time{
+.booking-ticket-cinema{
     margin-top: 20px;
     border-top: 2px solid black;
     padding-top: 20px;
     font-size: 1.2rem;
 }
 
-.booking-ticket-time input{
+.booking-ticket-cinema input{
     display: none;
 }
+
+.booking-ticket-time-cinema--active{
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+/* .booking-ticket-time{
+    margin-top: 20px;
+    border-top: 2px solid black;
+    padding-top: 20px;
+    font-size: 1.2rem;
+} */
+
 
 .booking-ticket-time-label--active{
     border: 2px solid black;
     border-radius: 3px;
 }
+

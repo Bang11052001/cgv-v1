@@ -1,31 +1,33 @@
-<a href="/admin/cinemas">Back</a>
-<h1 class="">Add Room</h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/rooms?room_id={{room_id}}&cinema_id={{cinema_id}}">
- <label for="exampleInputPassword1" class="form-label">Rạp</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='cinema_id'>
-      <option selected disabled>--Chọn Rạp--</option>
-      {{#each cinemas}}
-      <option value={{_id}}>{{name}}</option>
-      {{/each}}
-    </select>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      <option selected disabled>--Chọn Status--</option>
-      <option value=1>Active</option>
-      <option value=0>Disable</option>
-    </select>
-  </div>
+<h2>Phòng </h2>
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Name</th>
+      <th scope="col">Seat</th>
+      <th scope="col">Status</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#with room}}
+    <tr>
+      <td>1</td>
+      <td>{{name}}</td>
+      <td>{{seat}}</td>
+      <td>{{statusHandle status}}</td>
+      <td><a href="/admin/rooms/update?id={{_id}}">Sửa</a>/<a href="/admin/rooms/delete?id={{_id}}">Xóa</a></td>
+    </tr>
+    {{/with}}
+  </tbody>
+</table>
 
 <h2>Seats</h2>
+<form id="form-seats-create" method ="POST" action ="/admin/seats?room_id={{room._id}}">
   <label for="exampleInputEmail1" class="form-label">Số Cột</label>
-  <input class="seats-create-column" type="number" min ="1" name ="column" value ="3" required>
+  <input class="seats-create-column" type="number" min ="1" name ="column" value ="{{room.column}}" required>
   <label for="exampleInputEmail1" class="form-label" >Số hàng</label>
-  <input class="seats-create-row" type="number" min ="1" name ="row" value ="3" required>
+  <input class="seats-create-row" type="number" min ="1" name ="row" value ="{{room.row}}" required>
   <div class ="btn btn-primary mt-2" onclick ="handleSetRoomSeats()">click</div>
   <br>
   <div class ="btn btn-primary  mt-2" onclick="handleAddColumn()">THêm cột</div>
@@ -303,3 +305,5 @@ function handleSetRoomSeats(){
 
 }
 </script>
+
+

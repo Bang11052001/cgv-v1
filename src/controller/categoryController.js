@@ -18,18 +18,26 @@ var categoryController={
             .catch(err => next(err));
     },
     detail(req,res,next) {
-            Promise.all([ShowTime.find({status: 1,film_id: req.query.id}).populate(['cinema_id', 'room_id','film_id','quality_id',{path: 'cinema_id',populate: {path: 'area'}}]),Film.findById({_id: req.query.id} )])
-            .then(([showTimes,film]) => {
-                showTimes = showTimes.map(showTime => showTime.toObject());
+        Film.findById({status: 1, _id :req.query.id})
+            .then((film) => {
                 film = film.toObject();
                 res.render('pages/fiml',{
-                    showTimes,
                     film
                 });
             })
     },
     booking(req,res,next) {
-        res.render('pages/booking');
+        [req.body.time,req.body.cinema,req.body.room,req.body.date,req.body.quality] = req.body.desc.split(',');
+        var filmDesc = req.body;
+        console.log(filmDesc)
+        Film.findById({status: 1, _id: req.query.film_id})
+            .then(film => {
+                film = film.toObject();
+                res.render('pages/booking',{
+                    film,filmDesc
+                });
+            })
+            .catch(err => next(err));
     },
     pay(req,res,next) {
         res.render('pages/payment');
@@ -40,37 +48,37 @@ var categoryController={
     handleDate(req,res,next) {
         Promise.all(
             [
-                Film.find({status:1,category : req.query.type}),
-                ShowTime.find({status: 1,film_id: req.query.film_id,date: req.query.date}).populate({path: 'cinema_id',populate: 'area'})
+                Film.find({status:1,category : req.query.type, _id: req.query.id}),
+                ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date}).populate({path: 'cinema_id',populate: 'area'})
             ]
         )
-            .then(([films,showTimes1]) =>{
-                console.log(req.query)
-                films = films.map(film => film.toObject());
-                showTimes1 = showTimes1.map(showTime => showTime.toObject());
-                res.render('pages/bookingTicket',{
-                    films,
-                    showTimes1
+            .then(([film,showTimes]) =>{
+                film = film.map(film => film.toObject());
+                showTimes = showTimes.map(showTime => showTime.toObject());
+                res.render('pages/fiml',{
+                    film,
+                    showTimes
                 });
             })
             .catch(err => next(err));
     },
-    bookingTicket(req,res,next) {
+    handleArea(req,res,next) {
         Promise.all(
             [
-                    ShowTime.find({status: 1,film_id: req.query.id}).populate(['cinema_id', 'room_id','film_id','quality_id',{path: 'cinema_id',populate: {path: 'area'}}]),
-                    Film.findById({_id: req.query.id} )
+                Film.find({status:1,category : req.query.type, _id: req.query.id}),
+                ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date,}).populate({path: 'cinema_id',populate: 'area'})
             ]
         )
-            .then(([showTimes,film]) => {
+            .then(([film,showTimes]) =>{
+                film = film.map(film => film.toObject());
                 showTimes = showTimes.map(showTime => showTime.toObject());
-                film = film.toObject();
-                res.render('pages/bookingTicket',{
-                    showTimes,
-                    film
+                res.render('pages/fiml',{
+                    film,
+                    showTimes
                 });
             })
-    }
+            .catch(err => next(err));
+    },
 }
 
 module.exports = categoryController;

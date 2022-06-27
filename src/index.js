@@ -88,24 +88,9 @@ app.engine('.hbs',engine({
     countIndex(a, b) {
       return a + b;
     },
-  
-    // lap(showTimes){
-    //   var html ;
-    //   var check = [];
-    //     Array.from(showTimes).map(curr=>{
-    //       if(!check.includes(curr.cinema_id.area.name)){
-    //         check.push(curr.cinema_id.area.name);
-    //       }
-    //     })
-    //     var result = check.map(((curr,index)=>{
-    //       return html =  `
-    //       <input type="radio" id='site${index}' name="site" value='${curr}'>
-    //       <label class ='booking-ticket-site-label col col-lg-1 booking-ticket-site-label' for="site${index}">${curr}</label>
-    //     `;
-    //     }))
-    //     result = result.join('');
-    //     return result;
-    // }
+    getNextChar(char) {
+      return String.fromCharCode(char.charCodeAt(0) + 1);
+    }
   }
 }))
 app.set('view engine', '.hbs');
