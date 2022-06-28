@@ -7,10 +7,54 @@ var seatController={
         Room.findById({_id: req.query.room_id})
             .then((room) => {
                 room = room.toObject();
-                console.log(room)
+                var result =[];
+                room.seats.map(seat => {
+                    if(!result.some(curr => curr.name == seat.name[0]))
+                        if((result[result.length-1])){
+                            if(String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1) == seat.name[0]){
+                                result.push({name : seat.name[0], brand: seat.brand, seats: []});
+                            }
+                            else{
+                                result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1), brand: '', seats: []});
+                            }
+                        }
+                        else{
+                            result.push({name: seat.name[0], brand: seat.brand, seats: []})
+                        }
+                    })
+
+                result.map(curr => {
+                    room.seats.map(seat => {
+                        if(curr.name == seat.name[0]){
+                            if(curr.seats[curr.seats.length-1]){
+                                if(parseInt(curr.seats[curr.seats.length-1].name[1]) + 1 == seat.name.slice(1))
+                                {
+                                    curr.seats.push({name : seat.name});
+                                }
+                                else{
+                                    curr.seats.push({name : ''});
+                                    curr.seats.push({name : seat.name});
+                                }
+                            }
+                            else{
+                                if(seat.name[1] == 2){
+                                    curr.seats.push({name : ''});
+                                    curr.seats.push({name : seat.name});
+
+                                }
+                                else{
+                                    curr.seats.push({name : seat.name});
+                                }
+                            }
+                        }
+                    })
+                })
+                console.log(result[3].seats)
+                // console.log(result)
                 res.render('admin/seats/index',{
                     layout: 'main2',
                     room,
+                    result
                 });
             })
             .catch(error => next(error));

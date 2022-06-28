@@ -32,7 +32,6 @@
   <br>
   <div class ="btn btn-primary  mt-2" onclick="handleAddColumn()">THêm cột</div>
   <div class ="btn btn-primary mt-2" onclick="handleAddRow()">THêm hàng</div><br>
-
   <div class="booking-content">
     <div class ="d-flex">
       <div class ="table-seats-head d-flex">
@@ -44,19 +43,29 @@
       <div class ="table-seats-title" >Opt</div>
     </div>
       <div class ="table-seats-body">
-        <div class ="table-seats-item  d-flex">
+        {{#each result}}
+        <div class ="table-seats-item table-seats-{{brand}}-container d-flex">
           <div class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >A</div>
-            <input type="checkbox" id="A1"  name ="A1"></input>
-            <label class ="seat" for ="A1" name ="A1" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="A2" name ="A2"  ></input>
-            <label class ="seat" for ="A2" name ="A2" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="A3" name ="A3"  ></input>
-            <label class ="seat" for ="A3" name ="A3" onclick = "handleCreateSeat(event)">+</label>
+            <div class ="table-seats-title table-seats-row-brand">{{name}}</div>
+            {{#each seats}}
+            {{#if name}}
+              <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
+              <label class ="seat seat--{{@root.result.[0].brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">{{name}}</label>
+            {{/if}}
+            {{#unless name}}
+              <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
+              <label class ="seat seat--{{@root.result.[0].brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">+</label>
+            {{/unless}}
+              {{!-- <input type="checkbox" id="A2" name ="A2"  ></input>
+              <label class ="seat" for ="A2" name ="A2" onclick = "handleCreateSeat(event)">+</label>
+              <input type="checkbox" id="A3" name ="A3"  ></input>
+              <label class ="seat" for ="A3" name ="A3" onclick = "handleCreateSeat(event)">+</label> --}}
+            {{/each}}
           </div>
           <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
         </div>
-        <div class="table-seats-item d-flex">
+        {{/each}}
+        {{!-- <div class="table-seats-item d-flex">
           <div  class ="table-seats-row d-flex">
             <div class ="table-seats-title table-seats-row-brand" >{{getNextChar 'A'}}</div>
             <input type="checkbox" id="B1" name ="B1"></input>
@@ -79,7 +88,7 @@
             <label for ="C3" class ="seat" name ="C3" onclick = "handleCreateSeat(event)" >+</label>
           </div>
           <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div>
+        </div> --}}
     </div>
   </div>
   <button type ="submit" class ="btn btn-primary">Save</button>
@@ -122,8 +131,9 @@ const modalSetSeatsBrand = document.querySelector('#modalSetSeatsBrand');
 const modal = document.querySelector('.modal');
 const modalSaveBtn = document.querySelector('.modalSetSeatsBrandLabelSave');
 const modalSetSeatsBrandSelect = document.querySelector('.modalSetSeatsBrand-Select');
-const columnInput = document.querySelector('.seats-create-column');
-const rowInput = document.querySelector('.seats-create-row');
+let columnInput = document.querySelector('.seats-create-column');
+let rowInput = document.querySelector('.seats-create-row');
+
 // Thêm cột
 function handleAddColumn(){
   tableSeatHead.innerHTML += `<div class ="table-seats-title table-seats-head--item">${parseInt(tableSeatsHeadLastItem.textContent) + 1}</div>`;
@@ -140,7 +150,7 @@ function handleAddColumn(){
   })
   tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
   tableSeatsHeadLastItem = tableSeatsHeadItems[tableSeatsHeadItems.length - 1];
-  columnInput.setAttribute('value', tableSeatsHeadItems.length - 1)
+  columnInput.setAttribute('value', tableSeatsHeadItems.length -1 )
 }
 
 // Thêm hàng
@@ -175,7 +185,7 @@ function handleAddRow(){
   tableSeatBrandLast = tableSeatBrand[tableSeatBrand.length - 1];
   tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
   tableSeatItems = document.querySelectorAll('.table-seats-item');
-  rowInput.setAttribute('value',tableSeatRows.length )
+  rowInput.setAttribute('value',tableSeatRows.length );
 }
 
 // Xóa cột
@@ -195,6 +205,7 @@ function handleDeleteRow(){
   tableSeatItems = document.querySelectorAll('.table-seats-item');
  
 }
+
 // Xử lý tăng chữ cái
 function getNextChar(char) {
   return String.fromCharCode(char.charCodeAt(0) + 1);
@@ -279,12 +290,14 @@ function handleSetSeatsBrand(event){
 // Xử lý tạo cột và hàng ghế
 function handleSetRoomSeats(){
   var rowDefault = tableSeatRows.length ;
-  console.log(rowDefault);
   var columnDefault = tableSeatLastRow.querySelectorAll('.seat').length;
-  for(let i=0;i<columnInput.value - columnDefault;i++){
+  var a = columnInput.value;
+  var b = rowInput.value;
+  for(let i=0;i<a - columnDefault;i++){
     handleAddColumn();
   }
-  for(let i=0;i<rowInput.value - rowDefault;i++){
+
+  for(let i=0;i<b - rowDefault;i++){
     handleAddRow();
   }
 
@@ -299,10 +312,14 @@ function handleSetRoomSeats(){
       handleDeleteColumn();
     }
   }
-  
   tableSeatRows = document.querySelectorAll('.table-seats-row');
   tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
+}
+handleSetRoomSeats()
 
+
+function renderSeatsDefault(){
+  
 }
 </script>
 
