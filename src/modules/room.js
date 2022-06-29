@@ -9,7 +9,8 @@ const room = new Schema({
     status: Number,
     row: Number,
     column: Number,
-    seats: Array
+    seats: [
+    ]
 })
 
 room.plugin(AutoIncrement,{id: '<room_id>', inc_field: '_id'});

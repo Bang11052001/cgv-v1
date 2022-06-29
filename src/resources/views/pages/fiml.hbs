@@ -194,12 +194,12 @@ function handleBookingDesc(showTimes){
                     })
                     var filterCinema = [];
 
-                    showTimes.map((data,parentIndex) => {
+                    showTimes.map((data) => {
                         if(filterCinema.every(curr => curr.name != data.cinema_id.name)){
                             filterCinema.push({
                                 name : data.cinema_id.name,
                                 time : [data.time],
-                                room : [data.room_id.name],
+                                room : [data.room_id._id],
                                 quality : data.quality_id.name,
                                 date: data.date
                             })
@@ -209,7 +209,7 @@ function handleBookingDesc(showTimes){
                             filterCinema[filterCinema.length-1].room.push(data.room_id.name)
                         } 
                     })
-                        console.log(filterCinema)
+                    console.log(filterCinema)
 
                     var cinemaHtml = ''
                     var timeHtml ='';
@@ -217,7 +217,7 @@ function handleBookingDesc(showTimes){
                         filterCinema.map((curr,index)=>{
                             curr.time.map((time,index)=>{  
                                 timeHtml += `
-                                            <input onclick ="handleTimeInput(event)" type="radio" id="${time}" name="desc" value='${time + ',' +curr.name + ',' + curr.room[index] + ',' +curr.date  + ',' +curr.quality }' >
+                                            <input onclick ="handleTimeInput(event)" type="radio" id="${time}" name="desc" value='${time + ',' +curr.name + ',' + curr.room[index] + ',' +curr.date  + ',' + curr.quality }' >
                                             <label class ='booking-ticket-time-label col col-lg-1' for="${time}">${time}</label>
                                             `
                             })

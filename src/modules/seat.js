@@ -11,5 +11,4 @@ const seat = new Schema({
     status: Number,
 })
 
-seat.plugin(AutoIncrement,{id: '<seat_id>', inc_field: '_id'});
 module.exports = mongoose.model('seat', seat);

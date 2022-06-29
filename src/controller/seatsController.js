@@ -8,49 +8,81 @@ var seatController={
             .then((room) => {
                 room = room.toObject();
                 var result =[];
-                room.seats.map(seat => {
+                room.seats.map((seat,index) => {
                     if(!result.some(curr => curr.name == seat.name[0]))
                         if((result[result.length-1])){
                             if(String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1) == seat.name[0]){
                                 result.push({name : seat.name[0], brand: seat.brand, seats: []});
                             }
                             else{
-                                result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1), brand: '', seats: []});
+                                var length = seat.name[0].charCodeAt(0) - (result[result.length-1].name).charCodeAt(0);
+                                for(let i =1 ; i<length ; i++){
+                                    result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1), brand: '', seats: []});
+                                }
+                                result.push({name : seat.name[0], brand: seat.brand, seats: []});
                             }
                         }
                         else{
-                            result.push({name: seat.name[0], brand: seat.brand, seats: []})
+                            var length = seat.name[0].charCodeAt(0) - ('A').charCodeAt(0);
+                            if(length !=0){
+                                for(let i=0;i<length ;i++){
+                                    result.push({name : String.fromCharCode(('A').charCodeAt(0) + i), brand: '', seats: []});
+                                }
+                                result.push({name: seat.name[0], brand: seat.brand, seats: []})
+                            }
+                            else{
+                                result.push({name: seat.name[0], brand: seat.brand, seats: []})
+                            }
+
                         }
                     })
-
                 result.map(curr => {
+                    let dem =1;
                     room.seats.map(seat => {
                         if(curr.name == seat.name[0]){
                             if(curr.seats[curr.seats.length-1]){
-                                if(parseInt(curr.seats[curr.seats.length-1].name[1]) + 1 == seat.name.slice(1))
+                                if(parseInt(seat.name.slice(1) - curr.seats[curr.seats.length-1].name[1]) == 1)
                                 {
                                     curr.seats.push({name : seat.name});
+                                    dem++;
                                 }
                                 else{
-                                    curr.seats.push({name : ''});
+                                    var length = seat.name.slice(1) - curr.seats[curr.seats.length-1].name.slice(1);
+                                    for(let i=0;i<length -1;i++){
+                                        curr.seats.push({name : '', index : dem++});
+                                    }
                                     curr.seats.push({name : seat.name});
+                                    dem++;
                                 }
                             }
                             else{
-                                if(seat.name[1] == 2){
-                                    curr.seats.push({name : ''});
-                                    curr.seats.push({name : seat.name});
+                                var length = room.column - seat.name.slice(1);
+                                for(let i=0;i<room.column - length -1;i++){
+                                    curr.seats.push({name : '', index : dem++});
 
                                 }
-                                else{
-                                    curr.seats.push({name : seat.name});
-                                }
+                                curr.seats.push({name : seat.name});
+                                dem++;
                             }
                         }
                     })
+                    var rowlength = curr.seats.length;
+                    if(curr.seats.length < room.column){
+                        for(let i=0;i< room.column - rowlength;i++){
+                            curr.seats.push({name : '',index : dem++});
+                        }
+                        rowlength = curr.seats.length
+                    }
+                    if(rowlength < room.row){
+                        var seatsFake = [];
+                        for(let i=1; i<= rowlength ; i++){
+                            seatsFake.push({name : '',brand: '', index : i});
+                        }
+                        for(let i=0;i< room.row - result.length ;i++){
+                            result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
+                        }
+                    }
                 })
-                console.log(result[3].seats)
-                // console.log(result)
                 res.render('admin/seats/index',{
                     layout: 'main2',
                     room,
@@ -95,31 +127,45 @@ var seatController={
     handleCreate(req,res,next) {
         var column = req.body.column;
         var row = req.body.row;
-
+        var result  =[];
         delete req.body.column;
         delete req.body.row;
-
-        
         for(i in req.body){
             req.body[i] = req.body[i].split(',');
-            req.body[i] ={
+            result.push({
                 name : req.body[i][0],
                 brand : req.body[i][1],
-                room_id: req.query.room_id,
-            }
-            console.log(req.body[i])
-            const seat = new Seat(req.body[i]);
-            seat.save();
-        }
-        Room.updateOne({_id: req.query.room_id}, {column: column, row: row})
-            .then(room =>{
-                res.json(req.body);
             })
-            .catch(err => next(err))
+        }
+        Room.updateOne({_id: req.query.room_id},{$pull : {seats: {}}, column , row})
+            .then(room =>{
+                Room.findById({_id: req.query.room_id})
+                    .then(room =>{
+                        result.map(curr => {room.seats.push(curr)})
+                        room.save();
+                        res.redirect('/admin/seats?room_id='+ req.query.room_id);
+                    })
+                // console.log(room.seats)
+                // console.log(room)
+
+            })
+        // Room.updateOne(
+        //         {_id: req.query.room_id}, 
+        //         {column: column, row: row},
+        //         {
+        //         $pull : {
+        //             seats: {}
+        //         }
+        //         }
+        //     )
+        //     .then(room =>{
+        //         // res.redirect('/admin/seats?room_id='+ req.query.room_id);
+        //         res.json(req.body)
+        //     })
+        //     .catch(err => next(err))
         
     },
     handleUpdate(req,res,next) {
-        console.log(req.query.room_id)
         Room.updateOne({_id : req.query.room_id},req.body) 
             .then((room) =>{
                 res.redirect('/admin/rooms/?cinema_id=' + req.query.cinema_id);

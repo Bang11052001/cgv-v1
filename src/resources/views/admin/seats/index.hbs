@@ -35,10 +35,12 @@
   <div class="booking-content">
     <div class ="d-flex">
       <div class ="table-seats-head d-flex">
-        <div class ="table-seats-title table-seats-head--item"></div>
-        <div class ="table-seats-title table-seats-head--item">1</div>
-        <div class ="table-seats-title table-seats-head--item">2</div>
-        <div class ="table-seats-title table-seats-head--item">3</div>
+        {{#with result.[0]}}
+          <div class ="table-seats-title table-seats-head--item"></div>
+            {{#each seats}}
+              <div class ="table-seats-title table-seats-head--item">{{countIndex @index 1}}</div>
+            {{/each}}
+        {{/with}}
       </div>
       <div class ="table-seats-title" >Opt</div>
     </div>
@@ -49,46 +51,18 @@
             <div class ="table-seats-title table-seats-row-brand">{{name}}</div>
             {{#each seats}}
             {{#if name}}
-              <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
-              <label class ="seat seat--{{@root.result.[0].brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">{{name}}</label>
+              <input type="checkbox" id="{{name}}" name ="{{name}}" checked></input>
+              <label class ="seat seat--{{../brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">{{name}}</label>
             {{/if}}
             {{#unless name}}
-              <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
-              <label class ="seat seat--{{@root.result.[0].brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">+</label>
+              <input type="checkbox" id="{{../name}}{{index}}" name ="{{../name}}{{index}}"></input>
+              <label class ="seat " for ="{{../name}}{{index}}" name ="{{../name}}{{index}}" onclick = "handleCreateSeat(event)">+</label>
             {{/unless}}
-              {{!-- <input type="checkbox" id="A2" name ="A2"  ></input>
-              <label class ="seat" for ="A2" name ="A2" onclick = "handleCreateSeat(event)">+</label>
-              <input type="checkbox" id="A3" name ="A3"  ></input>
-              <label class ="seat" for ="A3" name ="A3" onclick = "handleCreateSeat(event)">+</label> --}}
             {{/each}}
           </div>
           <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
         </div>
         {{/each}}
-        {{!-- <div class="table-seats-item d-flex">
-          <div  class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >{{getNextChar 'A'}}</div>
-            <input type="checkbox" id="B1" name ="B1"></input>
-            <label for ="B1" class ="seat" name ="B1" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="B2" name ="B2"></input>
-            <label for ="B2" class ="seat" name ="B2" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="B3" name ="B3"></input>
-            <label for ="B3" class ="seat" name ="B3" onclick = "handleCreateSeat(event)">+</label>
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div>
-        <div class="table-seats-item d-flex">
-          <div class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >C</div>
-            <input type="checkbox" id="C1" name ="C1"></input>
-            <label for ="C1" class ="seat" name ="C1" onclick = "handleCreateSeat(event)" >+</label>
-            <input type="checkbox" id="C2" name ="C2"></input>
-            <label for ="C2" class ="seat" name ="C2" onclick = "handleCreateSeat(event)" >+</label>
-            <input type="checkbox" id="C3" name ="C3"></input>
-            <label for ="C3" class ="seat" name ="C3" onclick = "handleCreateSeat(event)" >+</label>
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div> --}}
     </div>
   </div>
   <button type ="submit" class ="btn btn-primary">Save</button>
@@ -211,50 +185,76 @@ function getNextChar(char) {
   return String.fromCharCode(char.charCodeAt(0) + 1);
 }
 
+// Xử lý tạo ghế mặc định
+function handleCreateSeatDefault(){
+  Array.from(tableSeatBody.querySelectorAll('input')).map(input =>{
+    if(input.checked ==true){
+      if(input.parentElement.parentElement.classList.contains('table-seats-normal-container')){
+        input.setAttribute('value',input.getAttribute('name')+',normal');
+      }
+      if(input.parentElement.parentElement.classList.contains('table-seats-vip-container')){
+        input.setAttribute('value',input.getAttribute('name')+',vip');
+      }
+      if(input.parentElement.parentElement.classList.contains('table-seats-sweetbox-container')){
+        input.setAttribute('value',input.getAttribute('name')+',sweetbox');
+      }
+    }
+  })
+}
+handleCreateSeatDefault();
+
+function handleCreateSeat(event){
+  handleCreateSeatlabel(event.target)
+}
+
 // Xử lý tạo ghế
-function handleCreateSeat(event) {
-  if(event.target.parentElement.parentElement.classList.contains('table-seats-normal-container')){
-      if(event.target.classList.contains('seat--normal-active')){
-        event.target.classList.remove('seat--normal-active');
-        event.target.textContent = '+';
+function handleCreateSeatlabel(_this) {
+  if(_this.parentElement.parentElement.classList.contains('table-seats-normal-container')){
+      if(_this.classList.contains('seat--normal-active')){
+        _this.classList.remove('seat--normal-active');
+        _this.classList.remove('seat--vip-active');
+        _this.classList.remove('seat--sweetbox-active');
+        _this.textContent = '+';
       }
       else{
-        event.target.classList.add('seat--normal-active');
-        event.target.textContent = event.target.getAttribute('name');
-        Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-          if(event.target.getAttribute('for') == input.id){
-            input.setAttribute('value',input.getAttribute('name')+',normal');
+        _this.classList.add('seat--normal-active');
+        _this.textContent = _this.getAttribute('name');
+        Array.from(_this.parentElement.querySelectorAll('input')).map(input=>{
+          if(_this.getAttribute('for') == input.id){
+              input.setAttribute('value',input.getAttribute('name')+',normal');
           }
         })
       }
   }
-  else if(event.target.parentElement.parentElement.classList.contains('table-seats-vip-container')){
-    if(event.target.classList.contains('seat--vip-active')){
-        event.target.classList.remove('seat--vip-active');
-        event.target.textContent = '+';
+  else if(_this.parentElement.parentElement.classList.contains('table-seats-vip-container')){
+    if(_this.classList.contains('seat--vip-active')){
+         _this.classList.remove('seat--normal-active');
+        _this.classList.remove('seat--vip-active');
+        _this.classList.remove('seat--sweetbox-active');
+        _this.textContent = '+';
       }
     else{
-      event.target.textContent = event.target.getAttribute('name');
-      event.target.classList.add('seat--vip-active');
-      Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-            console.log(input)
-          if(event.target.getAttribute('for') == input.id){
-            console.log(input)
+      _this.textContent = _this.getAttribute('name');
+      _this.classList.add('seat--vip-active');
+      Array.from(_this.parentElement.querySelectorAll('input')).map(input=>{
+          if(_this.getAttribute('for') == input.id){
             input.setAttribute('value',input.getAttribute('name')+',vip');
           }
         })
     }
   }
-  else if(event.target.parentElement.parentElement.classList.contains('table-seats-sweetbox-container')){
-    if(event.target.classList.contains('seat--sweetbox-active')){
-        event.target.classList.remove('seat--sweetbox-active');
-        event.target.textContent = '+';
+  else if(_this.parentElement.parentElement.classList.contains('table-seats-sweetbox-container')){
+    if(_this.classList.contains('seat--sweetbox-active')){
+        _this.classList.remove('seat--normal-active');
+        _this.classList.remove('seat--vip-active');
+        _this.classList.remove('seat--sweetbox-active');
+        _this.textContent = '+';
       }
     else{
-      event.target.textContent = event.target.getAttribute('name');
-      event.target.classList.add('seat--sweetbox-active');
-      Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-          if(event.target.getAttribute('for') == input.id){
+      _this.textContent = _this.getAttribute('name');
+      _this.classList.add('seat--sweetbox-active');
+      Array.from(_this.parentElement.querySelectorAll('input')).map(input=>{
+          if(_this.getAttribute('for') == input.id){
             input.setAttribute('value',input.getAttribute('name')+',sweetbox');
           }
         })
@@ -270,18 +270,44 @@ function handleCreateSeat(event) {
   }
 }
 
-// modal
+// Xử lý thay đổi nhãn những ghế đang dc chọn
+function handelChangeSeatsBrand(myBrand,brand1,brand2,_this){
+  Array.from(_this.parentElement.querySelectorAll('input')).map(input => {
+          if(input.checked == true){
+            Array.from(_this.parentElement.querySelectorAll('label')).map(label => {
+              if(label.getAttribute('for') == input.getAttribute('id')){
+               label.classList.add(`seat--${myBrand}-active`);
+               label.classList.remove(`seat--${brand1}-active`);
+               label.classList.remove(`seat--${brand2}-active`);
+              }
+            })
+            input.setAttribute('value',input.getAttribute('name')+','+ myBrand)
+          }
+        });
+}
+
+// Xử lý tạo nhãn ghế
 function handleSetSeatsBrand(event){
   modalSaveBtn.onclick = function() {
     switch (modalSetSeatsBrandSelect.value){
       case 'normal':
+        (event.target.parentElement).classList.remove('table-seats-vip-container');
+        (event.target.parentElement).classList.remove('table-seats-sweetbox-container');
         (event.target.parentElement).classList.add('table-seats-normal-container');
+        console.log(event.target.parentElement.querySelectorAll('input'))
+        handelChangeSeatsBrand('normal','vip','sweetbox',event.target);
         break;
       case 'vip':
+        (event.target.parentElement).classList.remove('table-seats-normal-container');
+        (event.target.parentElement).classList.remove('table-seats-sweetbox-container');
         (event.target.parentElement).classList.add('table-seats-vip-container');
+        handelChangeSeatsBrand('vip','normal','sweetbox',event.target);
         break;
       case 'sweetbox':
+        (event.target.parentElement).classList.remove('table-seats-vip-container');
+        (event.target.parentElement).classList.remove('table-seats-normal-container');
         (event.target.parentElement).classList.add('table-seats-sweetbox-container');
+        handelChangeSeatsBrand('sweetbox','vip','normal',event.target);
         break;
     }
   }
