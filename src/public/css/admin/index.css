@@ -2,10 +2,8 @@ img{
     width: 100px;
 }
 
-.form-film-update-img{
-}
 
-/* Seat setting */
+/* Seat */
 .table-seats-container{
     width: 0px;
 }
@@ -22,15 +20,15 @@ img{
     cursor: pointer;
 } 
 
-.table-seats-title{
+/* .table-seats-title{
     width: 22px;
     height: 22px;
     border: 1px solid rgb(159, 159, 159);
     margin: 1px;
-}
+} */
 
-/* modal  */
-.table-seats-normal-container .seat{
+/* seat */
+/* .table-seats-normal-container .seat{
     border: 1px solid #01c73c !important;
 }
 
@@ -40,7 +38,7 @@ img{
 
 .table-seats-sweetbox-container .seat{
     border: 1px solid #FF62B0 !important;
-}
+} */
 
 .seat--normal-active{
     background-color: #01c73c !important;
@@ -60,7 +58,6 @@ img{
     color: white;
 }
 
-/* form  */
 #form-seats-create {
 
 }

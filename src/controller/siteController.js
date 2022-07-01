@@ -1,5 +1,8 @@
 const Film = require('../modules/films');
 const Slide = require('../modules/slides');
+const User = require('../modules/user');
+const Area = require('../modules/area');
+const Cinema = require('../modules/cinemas');
 
 var siteController={
     index(req,res,next) {
@@ -15,10 +18,48 @@ var siteController={
             .catch(err => next(err));
     },
     login(req,res,next) {
-        res.render('pages/login')
+        Promise.all([Area.find({}),Cinema.find({})]) 
+            .then(([areas,cinemas]) => {
+                areas = areas.map(area => area.toObject());
+                cinemas = cinemas.map(cinema => cinema.toObject());
+                res.render('pages/login',{
+                    areas,
+                    cinemas
+                })
+            })
+    },
+    handleLogin(req,res,next){
+        User.find({email: req.body.email, password : req.body.password})
+            .then(user =>{
+                if(user.length > 0){
+                    res.redirect('/');
+                }
+                else{   
+                    res.render('pages/login',{
+                        alert: 'Thông tin đăng nhập không đúng!'
+                    })
+                }
+            })
+    },
+    handlecreateUser(req,res,next){
+        const user = new User(req.body)
+        user.date = req.body.day +'/'+req.body.date+'/'+req.body.year
+        user.save()
+            .then(user => {
+                // res.redirect('back');
+                res.json(req.body)
+            })
     },
     redgister(req,res,next) {
-        res.render('pages/redgister')
+        Promise.all([Area.find({}),Cinema.find({})]) 
+        .then(([areas,cinemas]) => {
+            areas = areas.map(area => area.toObject());
+            cinemas = cinemas.map(cinema => cinema.toObject());
+            res.render('pages/redgister',{
+                areas,
+                cinemas
+            })
+        })
     },
     myaccount(req,res,next) {
         res.render('pages/myaccount')

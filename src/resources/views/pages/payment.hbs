@@ -78,39 +78,44 @@
         <div class="col col-lg-4"></div>
     </div>
     <div class="booking-bottom">
-        <form action="/category/film/booking?" method="POST" class="form-booking">
+        <form action="/category/film/booking/payment/finally?" method="POST" class="form-booking">
             <button class="form-booking__prev"></button>
+            {{#with film}}
             <div class="form-booking-left">
-                <img class="form-booking__img" src="/img/films/film1.jpg">
+                <img class="form-booking__img" src ="data:image/{{image.contentType}};base64,
+                     {{image.data}}">
                 <div class="form-booking-left-desc">
-                    <p class="form-booking__name">Thế giới khủng long: lãnh địa</p>
-                    <p class="form-booking__option">2D</p>
+                    <p class="form-booking__name">{{name}}</p>
+                    <p class="form-booking__option">{{@root.bookingInfo.quality}}</p>
                 </div>
             </div>
+            {{/with}}
+            {{#with bookingInfo}}
             <div class="form-booking-mid">
                 <div class ="form-booking-wrap">
                     <span>Rạp:</span>   
-                    <p class="form-booking__cinema"> CGV Hùng Vương Plaza</p>
+                    <p class="form-booking__cinema">{{cinema}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Suất chiếu:</span>
-                    <p class="form-booking__time"> 10:10, 11/06/2022</p>
+                    <p class="form-booking__time">{{time}}, {{date}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Phòng chiếu:</span>
-                    <p class="form-booking__room"> Cinema 5</p>
+                    <p class="form-booking__room">{{room}}</p>
                 </div>
                 <div class ="form-booking-wrap">
                     <span>ghế:</span>
-                    <p class="form-booking__seat"></p>
+                    <p class="form-booking__seat">{{seats}}</p>
                 </div>
             </div>
             <div class="form-booking-right">
                 <div class ="form-booking-wrap"> 
                     <span>Tổng: </span>
-                    <p class="form-booking__total">0 ₫</p>
+                    <p class="form-booking__total">{{total}}</p>
                 </div>
             </div>
+            {{/with}}
             <button type="submit" class="form-booking__payment"></button>
         </form>
     </div>

@@ -3,7 +3,7 @@
         <h2 class="booking-payment-headding">BOOKING ONLINE</h2>
         <div class="booking-top-desc">
             {{#with filmDesc}}
-            <p>{{cinema}} | {{room}} | Số ghế (277/260)</p>
+            <p>{{cinema}} | {{room_name}} | Số ghế (277/260)</p>
             <p>{{date}} {{time}} ~ {{date}} 13:02</p>
             {{/with}}
         </div>
@@ -27,14 +27,14 @@
           <div class ="table-seats-row d-flex">
             <div class ="table-seats-title table-seats-row-brand">{{name}}</div>
             {{#each seats}}
-            {{#if name}}
-              <input type="checkbox" id="{{name}}" name ="{{name}}" checked></input>
-              <label class ="seat seat--{{../brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">{{name}}</label>
-            {{/if}}
-            {{#unless name}}
-              <input type="checkbox" id="{{../name}}{{index}}" name ="{{../name}}{{index}}"></input>
-              <label class ="seat " for ="{{../name}}{{index}}" name ="{{../name}}{{index}}" onclick = "handleCreateSeat(event)">+</label>
-            {{/unless}}
+                {{#if name}}
+                    <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
+                    <label class ="seat seat--{{../brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleSelectSeat(event)" price ="{{price}}">{{name}}</label>
+                {{/if}}
+                {{#unless name}}
+                    <input type="checkbox" id="{{../name}}{{index}}" name ="{{../name}}{{index}}"></input>
+                    <label class ="seat seat--empty" for ="{{../name}}{{index}}" name ="{{../name}}{{index}}" onclick = "handleSelectSeat(event)"></label>
+                {{/unless}}
             {{/each}}
           </div>
         </div>
@@ -42,7 +42,7 @@
     </div>
     </div>
     <div class="booking-bottom">
-        <form action="/category/film/booking?" method="POST" class="form-booking">
+        <form action="/category/film/booking/payment?film_id={{film._id}}" method="POST" class="form-booking">
             <button class="form-booking__prev"></button>
             {{#with film}}
             <div class="form-booking-left">
@@ -51,6 +51,7 @@
                 <div class="form-booking-left-desc">
                     <p class="form-booking__name">{{name}}</p>
                     <p class="form-booking__option">{{@root.filmDesc.quality}}</p>
+                    <input type="text" name ="quality" value="{{@root.filmDesc.quality}}" >
                 </div>
             </div>
             {{/with}}
@@ -58,19 +59,24 @@
                 {{#with filmDesc}}
                 <div class ="form-booking-wrap">
                     <span>Rạp:</span>   
-                    <p class="form-booking__cinema"> {{cinema}}</p>
+                    <p class="form-booking__cinema" name ="cinema"> {{cinema}}</p>
+                    <input type="text" name ="cinema" value="{{cinema}}" >
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Suất chiếu:</span>
-                    <p class="form-booking__time">{{time}},{{date}}</p>
+                    <p class="form-booking__time">{{time}}, {{date}}</p>
+                    <input type="text" name ="time" value="{{time}}" >
+                    <input type="text" name ="day" value="{{day}}" >
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Phòng chiếu:</span>
-                    <p class="form-booking__room">{{room}}</p>
+                    <p class="form-booking__room">{{room_name}}</p>
+                    <input type="text" name ="room" value="{{room_name}}" >
                 </div>
                 <div class ="form-booking-wrap">
-                    <span>ghế:</span>
+                    <span>Ghế:</span>
                     <p class="form-booking__seat"></p>
+                    <input class = "form-booking-seats" type="text" name ="seat" value="" >
                 </div>
                 {{/with}}
             </div>
@@ -78,38 +84,65 @@
                 <div class ="form-booking-wrap"> 
                     <span>Tổng: </span>
                     <p class="form-booking__total">0 ₫</p>
+                    <input type="text" class ="form-booking-total" name ="total" value="" >
                 </div>
             </div>
-            <button type="submit" class="form-booking__next"></button>
+            <div  onclick="validateBooking(event)" class="form-booking__next"></div>
         </form>
     </div>
 </div>
 
 <script>
+const formBooking = document.querySelector('.form-booking');
 const seats = document.querySelectorAll('.seat');
 const formTotal = document.querySelector('.form-booking__total');
 const formSeat = document.querySelector('.form-booking__seat');
-
+const TotalInput = document.querySelector('.form-booking-total');
+const SeatInput = document.querySelector('.form-booking-seats');
 let total =0;
-let ghe =[];
+let seat =[];
 
-Array.from(seats).map((seat,index)=>{
-    seat.setAttribute('data-index',index);
-    seat.onclick = function() {
-        if(seat.classList.contains('seat--active')){
-            total -= (parseInt(seat.getAttribute('price')));
-            ghe.splice(ghe.indexOf(seat.id),1);
-            seat.classList.remove('seat--active');
-        }
-        else{
-            total += (parseInt(seat.getAttribute('price')));
-            ghe.push(seat.id)
-            seat.classList.add('seat--active');
-        }
-        formTotal.textContent = total + ' ₫';
-        formSeat.textContent = ghe;
+// Format tiền
+function formatCash(str) {
+ 	return str.split('').reverse().reduce((prev, next, index) => {
+ 		return ((index % 3) ? next : (next + ',')) + prev
+ 	})
+}
+
+// Xử lý khi chọn ghế
+function handleSelectSeat(event){
+    if(event.target.classList.contains('seat--active')){
+            event.target.classList.remove('seat--active');
+            var index = seat.findIndex(curr => curr == event.target.textContent)
+            seat.splice(index,1);
+            total -= parseInt(event.target.getAttribute('price'));
     }
-})
+    else{
+            seat.push(event.target.textContent);
+            event.target.classList.add('seat--active');
+            total += parseInt(event.target.getAttribute('price'));
 
+    }
+        var result = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 2
+        }).format(total)
+
+        formSeat.textContent = seat;
+        formTotal.textContent = result;
+        TotalInput.setAttribute('value',result);
+        SeatInput.setAttribute('value',seat);
+}
+
+// Kiểm tra người dùng chọn ghế chưa
+function validateBooking(event){
+    if(seat.length > 0){
+        formBooking.submit();
+    }
+    else{
+        alert("Bạn chưa chọn ghế!");
+    }
+}
 
 </script>

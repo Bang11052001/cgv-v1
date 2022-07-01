@@ -1,45 +1,88 @@
 <div class="login-redgiter-container">
     <div class="row">
         <div class="col col-lg-7">
-            <form class="login-redgister-form">
+            <form class="login-redgister-form" action="/login" method="POST">
                 <div class="form-headding">
                     <a href="/login" class="form-login-redgister-link">Đăng nhập</a>
                     <a href="/redgister" class="form-login-redgister-link form-login-redgister-link--active">Đăng ký</a>
                 </div>
                 <div class="form-content">
                     <label for="form-content__email-phone" >Tên<span>*</span></label><br>
-                    <input type="text" id="form-content__email-phone" placeholder="Tên"><br>
+                    <input type="text" id="form-content__email-phone" placeholder="Tên" name ="name"><br>
                     <label for="form-content__phone" >Số điện thoại<span>*</span></label><br>
-                    <input type="text" id="form-content__phone" placeholder="Số điện thoại"><br>
+                    <input type="text" id="form-content__phone" placeholder="Số điện thoại" name ="phone"><br>
                     <label for="form-content__email" >Email<span>*</span></label><br>
-                    <input type="text" id="form-content__email" placeholder="Email"><br>
+                    <input type="email" id="form-content__email" placeholder="Email" name ="email"><br>
                     <label for="form-content__password" >Mật khẩu<span>*</span></label><br>
-                    <input type="text" id="form-content__password" placeholder="Mật khẩu"><br>
+                    <input type="password" id="form-content__password" placeholder="Mật khẩu" name ="password"><br>
                     <label for="form-content__date" >Ngày sinh<span>*</span></label><br>
                     <div class="form-content-date-gender-wrap">
-                        <select name="ngay" id="form-content__day">
+                        <select name="day" id="form-content__day">
                             <option selected disabled value="">Ngày</option>
-                            <option value="1" >1</option>
-                            <option value="2" >2</option>
-                            <option value="3" >3</option>
-                            <option value="4" >4</option>
-                            <option value="5" >5</option>
+                            <option value="01" >01</option>
+                            <option value="02" >02</option>
+                            <option value="03" >03</option>
+                            <option value="04" >04</option>
+                            <option value="05" >05</option>
+                            <option value="06" >06</option>
+                            <option value="07" >07</option>
+                            <option value="08" >08</option>
+                            <option value="09" >09</option>
+                            <option value="10" >10</option>
+                            <option value="11" >11</option>
+                            <option value="12" >12</option>
+                            <option value="13" >13</option>
+                            <option value="14" >14</option>
+                            <option value="15" >15</option>
+                            <option value="16" >16</option>
+                            <option value="17" >17</option>
+                            <option value="18" >18</option>
+                            <option value="19" >19</option>
+                            <option value="20" >20</option>
+                            <option value="21" >21</option>
+                            <option value="22" >22</option>
+                            <option value="23" >23</option>
+                            <option value="24" >24</option>
+                            <option value="25" >25</option>
+                            <option value="26" >26</option>
+                            <option value="27" >27</option>
+                            <option value="28" >28</option>
+                            <option value="29" >29</option>
+                            <option value="30" >30</option>
+                            <option value="31" >31</option>
                         </select>
-                        <select name="thang" id="form-content__month">
+                        <select name="date" id="form-content__month">
                             <option selected disabled value="">Tháng</option>
-                            <option value="1" >01</option>
-                            <option value="2" >02</option>
-                            <option value="3" >03</option>
-                            <option value="4" >04</option>
-                            <option value="5" >05</option>
+                            <option value="01" >01</option>
+                            <option value="02" >02</option>
+                            <option value="03" >03</option>
+                            <option value="04" >04</option>
+                            <option value="05" >05</option>
+                            <option value="06" >06</option>
+                            <option value="07" >07</option>
+                            <option value="08" >08</option>
+                            <option value="09" >09</option>
+                            <option value="10" >10</option>
+                            <option value="11" >11</option>
+                            <option value="12" >12</option>
                         </select>
-                        <select name="nam" id="form-content__year">
+                        <select name="year" id="form-content__year">
                             <option selected disabled value="">Năm</option>
-                            <option value="1" >2010</option>
-                            <option value="2" >2009</option>
-                            <option value="3" >2008</option>
-                            <option value="4" >2007</option>
-                            <option value="5" >2006</option>
+                            <option value="2010" >2010</option>
+                            <option value="2009" >2009</option>
+                            <option value="2008" >2008</option>
+                            <option value="2007" >2007</option>
+                            <option value="2006" >2006</option>
+                            <option value="2005" >2005</option>
+                            <option value="2004" >2004</option>
+                            <option value="2003" >2003</option>
+                            <option value="2002" >2002</option>
+                            <option value="2001" >2001</option>
+                            <option value="2000" >2000</option>
+                            <option value="1999" >1999</option>
+                            <option value="1998" >1998</option>
+                            <option value="1997" >1997</option>
+                            <option value="1996" >1996</option>
                         </select>
                         <div class="form-content-gender">
                             <input id ="fom-content__male" type="radio" name ='gender' value ='male'>
@@ -49,11 +92,21 @@
                         </div>
                     </div>
                     <label for="form-content__site" >Khu vực<span>*</span></label><br>
-                    <input type="text" id="form-content__site" placeholder="Khu vực"><br>
+                    <select name="site" id="form-content__day">
+                            <option selected disabled value="">-- Khu vực --</option>
+                            {{#each areas}}
+                                <option value="{{name}}">{{name}}</option>
+                            {{/each}}
+                    </select><br>
                     <label for="form-content__cinema" >Rạp yêu thích<span>*</span></label><br>
-                    <input type="text" id="form-content__password" placeholder="Rạp yêu thích"><br>
+                    <select name="cinema_favourite" id="form-content__day">
+                            <option selected disabled value="">-- Rạp yêu thích --</option>
+                            {{#each cinemas}}
+                                <option value="{{name}}">{{name}}</option>
+                            {{/each}}
+                    </select><br>
                     <div class="form-content-accept-wrap">  
-                        <input type="checkbox" id="form-content-accept">
+                        <input type="checkbox" id="form-content-accept" required>
                         <label for="form-content-accept" >Tôi đồng ý với <span>Điều khoản sử dụng của CGV</span></label>
                     </div>  
                 </div>

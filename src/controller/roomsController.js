@@ -56,20 +56,37 @@ var roomController={
         var name = req.body.name;
         var status = req.body.status;
         var seats = [];
+        var brandNormalPrice = req.body.brandNormalPrice;
+        var brandVipPrice = req.body.brandVipPrice;
+        var brandSweetboxPrice = req.body.brandSweetboxPrice;
 
         delete req.body.column;
         delete req.body.row;
         delete req.body.cinema_id;
         delete req.body.name;
         delete req.body.status;
-        
+        delete req.body.brandNormalPrice;
+        delete req.body.brandVipPrice;
+        delete req.body.brandSweetboxPrice;
         
         for(i in req.body){
             req.body[i] = req.body[i].split(',');
-            req.body[i] ={
+
+            req.body[i] = {
                 name : req.body[i][0],
                 brand : req.body[i][1],
             }
+
+            if(('brandNormalPrice'.toLowerCase()).includes(req.body[i].brand)){
+               req.body[i].price = brandNormalPrice;
+            }
+            if(('brandVipPrice'.toLowerCase()).includes(req.body[i].brand)){
+                req.body[i].price = brandVipPrice;
+            }
+            if(('brandSweetboxPrice'.toLowerCase()).includes(req.body[i].brand)){
+                req.body[i].price = brandSweetboxPrice;
+            }
+
             seats.push(req.body[i]);
         }
         const room = new Room({column, row, cinema_id, name, status, seats});

@@ -5,9 +5,8 @@ const CategoryController = require('../controller/categoryController.js');
 
 router.get('/',CategoryController.show);
 router.get('/film',CategoryController.detail);
-router.post('/film/handleDate',CategoryController.handleDate);
 router.post('/film/booking',CategoryController.booking);
-router.get('/film/booking/payment',CategoryController.pay);
+router.post('/film/booking/payment',CategoryController.pay);
 router.get('/film/booking/payment/finally',CategoryController.finally);
 
 module.exports = router;

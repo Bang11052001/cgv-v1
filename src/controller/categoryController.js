@@ -29,9 +29,9 @@ var categoryController={
     booking(req,res,next) {
         [req.body.time,req.body.cinema,req.body.room_id,req.body.date,req.body.quality] = req.body.desc.split(',');
         var filmDesc = req.body;
-        console.log(req.body.room_id)
-        Film.findById({status: 1, _id: 1})
-            .then(film => {
+        Promise.all([Film.findById({status: 1, _id: req.query.film_id}),Room.findById({_id: req.body.room_id})])
+            .then(([film,room])=> {
+                filmDesc.room_name = room.name;
                 film = film.toObject();
                 Room.findById({_id: req.body.room_id})
                 .then((room) => {
@@ -65,7 +65,6 @@ var categoryController={
 
                             }
                         })
-                        console.log(result)
                     result.map(curr => {
                         let dem =1;
                         room.seats.map(seat => {
@@ -73,7 +72,7 @@ var categoryController={
                                 if(curr.seats[curr.seats.length-1]){
                                     if(parseInt(seat.name.slice(1) - curr.seats[curr.seats.length-1].name[1]) == 1)
                                     {
-                                        curr.seats.push({name : seat.name});
+                                        curr.seats.push({name : seat.name, price : seat.price});
                                         dem++;
                                     }
                                     else{
@@ -81,7 +80,7 @@ var categoryController={
                                         for(let i=0;i<length -1;i++){
                                             curr.seats.push({name : '', index : dem++});
                                         }
-                                        curr.seats.push({name : seat.name});
+                                        curr.seats.push({name : seat.name,price : seat.price});
                                         dem++;
                                     }
                                 }
@@ -91,7 +90,7 @@ var categoryController={
                                         curr.seats.push({name : '', index : dem++});
 
                                     }
-                                    curr.seats.push({name : seat.name});
+                                    curr.seats.push({name : seat.name, price : seat.price});
                                     dem++;
                                 }
                             }
@@ -103,23 +102,21 @@ var categoryController={
                             }
                             rowlength = curr.seats.length
                         }
-                        console.log(rowlength)
-                        if(rowlength < room.row){
-                            var seatsFake = [];
-                            for(let i=1; i<= rowlength ; i++){
-                                seatsFake.push({name : '',brand: '', index : i});
-                            }
-                            for(let i=0;i< room.row - result.length ;i++){
-                                result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
-                            }
-                        }
+                        // if(rowlength < room.row){
+                        //     var seatsFake = [];
+                        //     for(let i=1; i<= rowlength ; i++){
+                        //         seatsFake.push({name : '',brand: '', index : i});
+                        //     }
+                        //     for(let i=0;i< room.row - result.length ;i++){
+                        //         result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
+                        //     }
+                        // }
                     })
-                    // console.log(result)
                     res.render('pages/booking',{
                         layout: 'main',
                         result,
                         filmDesc,
-                        film
+                        film, 
                     });
                 })
                 .catch(error => next(error));
@@ -127,45 +124,52 @@ var categoryController={
             .catch(err => next(err));
     },
     pay(req,res,next) {
-        res.render('pages/payment');
+        Film.findById({_id : req.query.film_id})
+            .then(film =>{
+                film = film.toObject();
+                res.render('pages/payment',{
+                    film,
+                    bookingInfo : req.body
+                });
+            })
     },
     finally(req,res,next) {
         res.render('pages/finally');
     },
-    handleDate(req,res,next) {
-        Promise.all(
-            [
-                Film.find({status:1,category : req.query.type, _id: req.query.id}),
-                ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date}).populate({path: 'cinema_id',populate: 'area'})
-            ]
-        )
-            .then(([film,showTimes]) =>{
-                film = film.map(film => film.toObject());
-                showTimes = showTimes.map(showTime => showTime.toObject());
-                res.render('pages/fiml',{
-                    film,
-                    showTimes
-                });
-            })
-            .catch(err => next(err));
-    },
-    handleArea(req,res,next) {
-        Promise.all(
-            [
-                Film.find({status:1,category : req.query.type, _id: req.query.id}),
-                ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date,}).populate({path: 'cinema_id',populate: 'area'})
-            ]
-        )
-            .then(([film,showTimes]) =>{
-                film = film.map(film => film.toObject());
-                showTimes = showTimes.map(showTime => showTime.toObject());
-                res.render('pages/fiml',{
-                    film,
-                    showTimes
-                });
-            })
-            .catch(err => next(err));
-    },
+    // handleDate(req,res,next) {
+    //     Promise.all(
+    //         [
+    //             Film.find({status:1,category : req.query.type, _id: req.query.id}),
+    //             ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date}).populate({path: 'cinema_id',populate: 'area'})
+    //         ]
+    //     )
+    //         .then(([film,showTimes]) =>{
+    //             film = film.map(film => film.toObject());
+    //             showTimes = showTimes.map(showTime => showTime.toObject());
+    //             res.render('pages/fiml',{
+    //                 film,
+    //                 showTimes
+    //             });
+    //         })
+    //         .catch(err => next(err));
+    // },
+    // handleArea(req,res,next) {
+    //     Promise.all(
+    //         [
+    //             Film.find({status:1,category : req.query.type, _id: req.query.id}),
+    //             ShowTime.find({status: 1,film_id: req.query.id,date: req.query.date,}).populate({path: 'cinema_id',populate: 'area'})
+    //         ]
+    //     )
+    //         .then(([film,showTimes]) =>{
+    //             film = film.map(film => film.toObject());
+    //             showTimes = showTimes.map(showTime => showTime.toObject());
+    //             res.render('pages/fiml',{
+    //                 film,
+    //                 showTimes
+    //             });
+    //         })
+    //         .catch(err => next(err));
+    // },
 }
 
 module.exports = categoryController;

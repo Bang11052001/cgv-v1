@@ -119,8 +119,11 @@
 
 .seat--active{
     background: #b11500;
-    border: 1px solid #b11500;
     color: #fff;
+}
+
+.table-seats-normal-container .seat--active {
+    border: 1px solid #b11500 !important;
 }
 
 .form-booking{
@@ -244,8 +247,6 @@
 
 }
 
-
-
 .form-booking__next{
     background: url('/img/buttons/button-director.png') no-repeat -152px -441px;
     width: 104px;
@@ -253,4 +254,8 @@
     margin-left: 20px;
     border: none;
     align-self: center;
+}
+
+.form-booking input{
+    display: none;
 }

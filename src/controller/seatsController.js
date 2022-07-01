@@ -73,15 +73,15 @@ var seatController={
                         }
                         rowlength = curr.seats.length
                     }
-                    if(rowlength < room.row){
-                        var seatsFake = [];
-                        for(let i=1; i<= rowlength ; i++){
-                            seatsFake.push({name : '',brand: '', index : i});
-                        }
-                        for(let i=0;i< room.row - result.length ;i++){
-                            result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
-                        }
-                    }
+                    // if(rowlength < room.row){
+                    //     var seatsFake = [];
+                    //     for(let i=1; i<= rowlength ; i++){
+                    //         seatsFake.push({name : '',brand: '', index : i});
+                    //     }
+                    //     for(let i=0;i< room.row - result.length ;i++){
+                    //         result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
+                    //     }
+                    // }
                 })
                 res.render('admin/seats/index',{
                     layout: 'main2',
@@ -128,15 +128,36 @@ var seatController={
         var column = req.body.column;
         var row = req.body.row;
         var result  =[];
+        var brandNormalPrice = req.body.brandNormalPrice;
+        var brandVipPrice = req.body.brandVipPrice;
+        var brandSweetboxPrice = req.body.brandSweetboxPrice;
+
         delete req.body.column;
         delete req.body.row;
+        delete req.body.brandNormalPrice;
+        delete req.body.brandVipPrice;
+        delete req.body.brandSweetboxPrice;
+
         for(i in req.body){
             req.body[i] = req.body[i].split(',');
-            result.push({
+
+            req.body[i] = {
                 name : req.body[i][0],
                 brand : req.body[i][1],
-            })
+            }
+            if(('brandNormalPrice'.toLowerCase()).includes(req.body[i].brand)){
+                req.body[i].price = brandNormalPrice;
+            }
+            if(('brandVipPrice'.toLowerCase()).includes(req.body[i].brand)){
+                req.body[i].price = brandVipPrice;
+            }
+            if(('brandSweetboxPrice'.toLowerCase()).includes(req.body[i].brand)){
+                req.body[i].price = brandSweetboxPrice;
+            }
+
+            result.push(req.body[i]);
         }
+        console.log(result)
         Room.updateOne({_id: req.query.room_id},{$pull : {seats: {}}, column , row})
             .then(room =>{
                 Room.findById({_id: req.query.room_id})
@@ -145,24 +166,7 @@ var seatController={
                         room.save();
                         res.redirect('/admin/seats?room_id='+ req.query.room_id);
                     })
-                // console.log(room.seats)
-                // console.log(room)
-
             })
-        // Room.updateOne(
-        //         {_id: req.query.room_id}, 
-        //         {column: column, row: row},
-        //         {
-        //         $pull : {
-        //             seats: {}
-        //         }
-        //         }
-        //     )
-        //     .then(room =>{
-        //         // res.redirect('/admin/seats?room_id='+ req.query.room_id);
-        //         res.json(req.body)
-        //     })
-        //     .catch(err => next(err))
         
     },
     handleUpdate(req,res,next) {
