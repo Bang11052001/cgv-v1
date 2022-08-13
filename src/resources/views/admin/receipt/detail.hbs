@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/receipts">Quản lý hóa đơn 1</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách hóa đơn</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body ">
+          {{#with receipt}}
+          <div>
+            <p>Mã hóa đơn: {{_id}}</p>
+            <p>Rạp: {{cinema.[0].name}}</p>
+            <p>Phòng: {{cinema.[0].rooms.[0].name}}</p>
+            <p>Phim: {{cinema.[0].rooms.[0].showTimes.[0].film.name}}</p>
+            <img src="data:image/{{cinema.[0].rooms.[0].showTimes.[0].film.image.contentType}};base64,{{cinema.[0].rooms.[0].showTimes.[0].film.image.data}}">
+            <p>Chất lượng: {{cinema.[0].rooms.[0].showTimes.[0].quality.name}}</p>
+            <p>Ghế: {{seats.[0].name}}</p>
+            <p>Người đặt: {{user.name}}</p>
+            <p>Giờ: {{cinema.[0].rooms.[0].showTimes.[0].time}}</p>
+            <p>Ngày: {{cinema.[0].rooms.[0].showTimes.[0].date}}</p>
+            <p>Tổng tiền: {{total}}</p>
+            <p>Trạng thái: {{status}}</p>
+          </div>
+          {{/with}}
+      </div>
+    </div> 
+  </div> 
+</div> 
+

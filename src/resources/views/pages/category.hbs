@@ -1,11 +1,9 @@
 <div class="category-container">
     <div class="location-wrap">
         <div class="location">
-            <a href="" class="home"></a>
-            <a href="" class="next"></a>
-            <a href="">Phim</a>
-            <a href="" class="next"></a>
-            <a href="">{{films.[0].sub_category.name}}</a>
+            <a href="/" class="home"></a>
+            <a class="next"></a>
+            <a href="/danh-muc-phim/{{breadcumb.slug}}"><u>{{breadcumb.name}}</u> </a>
         </div> 
     </div>
     <div class="category-container-content">
@@ -15,11 +13,15 @@
             {{#each films}}
             <div class="col col-lg-3">
                 <div class="category-container__item ">
-                    <a href="/category/film?id={{_id}}"><img src ="data:image/{{image.contentType}};base64,
+                    <a href="/phim/{{slug}}"><img src ="data:image/{{image.contentType}};base64,
                      {{image.data}}" class="category-container__item-img"></img></a>
                     <h3 class="category-container__item-headding text-uppercase">{{name}}</h3>
                     <div class="category-container__item-desc">
-                        <p><b>Thể loại:</b>{{genre}}</p>
+                        <p><b>Thể loại:</b>
+                            {{#each quality}}
+                                {{name}},
+                            {{/each}}
+                        </p>
                         <p><b>Thời lượng:</b>{{minute}} phút</p>
                         <p><b>Khởi chiếu:</b>{{year}}</p>
                     </div>

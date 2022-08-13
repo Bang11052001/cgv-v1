@@ -1,53 +1,53 @@
-<a href="/admin/cinemas">Back</a>
-<h2>Rạp </h2>
-<table class="table table-bordered text-center">
-  <thead>
-    <tr>
-      <th scope="col">STT</th>
-      <th scope="col">Name</th>
-      <th scope="col">Area</th>
-      <th scope="col">Room Toltal</th>
-      <th scope="col">Status</th>
-      <th scope="col">Option</th>
-    </tr>
-  </thead>
-  <tbody>
-     {{#with cinema}}
-    <tr>
-      <td>1</td>
-      <td>{{name}}</td>
-      <td>{{subObjDocumentRender area}}</td>
-      <td></td>
-      <td>{{statusHandle status}}</td>
-      <td><a href="/admin/cinemas/update?id={{_id}}">Sửa</a>/<a href="/admin/cinemas/delete?id={{_id}}">xóa</td>
-    </tr>
-     {{/with}}
-  </tbody>
-</table>
-<a href="/admin/rooms/create">Thêm phòng</a>
-<h2>Danh sách Phòng</h2>
-<table class="table table-bordered text-center">
-  <thead>
-    <tr>
-      <th scope="col">STT</th>
-      <th scope="col">Name</th>
-      <th scope="col">Seat</th>
-      <th scope="col">Status</th>
-      <th scope="col">Option</th>
-    </tr>
-  </thead>
-  <tbody>
-     {{#each rooms}}
-    <tr>
-      <td>{{countIndex @index 1}}</td>
-      <td>{{name}}</td>
-      <td>{{seat}}</td>
-      <td>{{statusHandle status}}</td>
-      <td><a href="/admin/rooms/update?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Sửa</a>/<a href="/admin/rooms/delete?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Xóa</a>/<a href="/admin/showTimes?cinema_id={{@root.cinema._id}}&room_id={{_id}}">Chi tiết</a></td>
-    </tr>
-     {{/each}}
-  </tbody>
-</table>
-       
-
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/cinemas">Quản lý rạp & phòng</a></li>
+      <li class="breadcrumb-item"><a href="/admin/cinemas">Danh sách rạp</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách phòng</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body d-flex justify-content-between">
+        {{>adminFilter}}
+        <div class ="table-filter-right">
+          <a href = "/admin/rooms/create?cinema_id={{cinema._id}}" type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới </a>
+        </div>
+      </div>
+        <table class="table mt-2 text-center">
+          <thead class="table-dark">
+            <tr>
+              <th><input type="checkbox" class ="table-checkbox form-check-input"></th>
+              <th scope="col">STT</th>
+              <th scope="col">Tên</th>
+              <th scope="col">Sức chứa</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Tùy chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#with cinema}}
+              {{#each rooms}}
+              <tr>
+                <td><input type="checkbox" class = "table-checkbox form-check-input"></td>
+                <td>{{countIndex @index 1}}</td>
+                <td><a class ="text-decoration-none" href="/admin/showTimes?room_id={{_id}}&cinema_id={{../_id}}"> {{name}} </a></td>
+                <td>{{countTotal seats}}</td>
+                <td>{{status}}</td>
+                <td class ="table-option">
+                  <a href="/admin/rooms/update?room_id={{_id}}&cinema_id={{../_id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                  <a href="/admin/rooms/delete?room_id={{_id}}&cinema_id={{../_id}}"><i class="fa-solid fa-xmark"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            {{/with}}
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>
        

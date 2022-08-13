@@ -7,11 +7,11 @@
                     <a href="/redgister" class="form-login-redgister-link ">Đăng ký</a>
                 </div>
                 <div class="form-content">
-                    <h3>{{alert}}</h3>
+                    <h3 class ="form-content__login-message"></h3>
                     <label for="form-content__email-phone">Email hoặc số điện thoại</label><br>
-                    <input type="email" id="form-content__email-phone" placeholder="Email hoặc số điện thoại" name ="email" required><br>
+                    <input type="email" id="form-content__email-phone" placeholder="Email hoặc số điện thoại" name ="username" required><br>
                     <label for="form-content__password" >Mật khẩu</label><br>
-                    <input type="text" id="form-content__password" placeholder="Mật khẩu" name ="password" required><br>
+                    <input type="password" id="form-content__password" placeholder="Mật khẩu" name ="password" required><br>
                 </div>
                 <button id="login-submit" class ='form-content__submit' type ='submit'>Đăng Nhập</button>
             </form>
@@ -24,5 +24,44 @@
 </div>
 
 <script>
- 
+    // set cookie
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    $(document).ready(function() {
+        var formMessage = $('.form-content__login-message');
+
+        $('#login-submit').click(function(e){
+            var username = $('input[type="email"]').val();
+            var password = $('input[type="password"]').val();
+            
+            e.preventDefault();
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: {
+                    username: username,
+                    password: password
+                }
+            })
+            .then(data => {    
+                if(Object.keys(data).length > 0){
+                    console.log(data.token)
+                    setCookie('token',data.token,15);
+                    window.location.href = "http://localhost:3000";
+                }
+                else{
+                    console.log(formMessage)
+                    formMessage.html('Email hoặc mật khẩu không chính xác!');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    })
 </script>

@@ -1,107 +1,218 @@
-const { populate } = require('../modules/category');
 const Room = require('../modules/room')
 const Cinema = require('../modules/cinemas')
+const Seat = require('../modules/seat')
+const SeatType = require('../modules/seatType')
 
 var roomController={
     index(req,res,next) {
-        Promise.all([Cinema.findById({_id: req.query.cinema_id}).populate('area'),Room.find({cinema_id: req.query.cinema_id})])
-            .then(([cinema,rooms]) => {
+        Cinema.findById({_id: req.query.cinema_id})
+            .then((cinema) => {
                 cinema = cinema.toObject();
-                rooms = rooms.map(room => room.toObject());
                 res.render('admin/rooms/index',{
                     layout: 'main2',
-                    cinema,
-                    rooms
+                    cinema
                 });
             })
             .catch(error => next(error));
     },
-    update(req,res,next) {
-        Room.findById({_id : req.query.room_id, cinema_id: req.query.cinema_id})
-        .then(room =>{
-            room = room.toObject();
-            var room_id = req.query.room_id;
-            var cinema_id = req.query.cinema_id;
-            res.render('admin/rooms/update',{
-                layout: 'main2',
-                room,
-                room_id,
-                cinema_id
-            });
-        })
-        .catch(err => next(err));
-    },
-    delete(req,res,next) {
-        Room.deleteOne({_id : req.query.room_id})
-            .then(() =>{
-                res.redirect('/admin/rooms?cinema_id='+ req.query.cinema_id);
-            })
-            .catch(err => next(err));
-    },
     create(req,res,next) {
-        Cinema.find({status: 1})
-            .then((cinemas) =>{
-                cinemas = cinemas.map(cinema => cinema.toObject());
+        Promise.all([Cinema.findById({_id: req.query.cinema_id}),SeatType.find({status: true})])
+            .then(([cinema,seatTypes]) =>{
+                cinema = cinema.toObject();
+                seatTypes = seatTypes.map(curr => curr.toObject());
                 res.render('admin/rooms/create',{
                     layout: 'main2',
-                    cinemas
+                    cinema,
+                    seatTypes
                 });
             })
-            .catch(err => next(err));
+            .catch(err => err.status(400).send(err.message));
     },
     handleCreate(req,res,next) {
-        var column = req.body.column;
-        var row = req.body.row;
-        var cinema_id = req.body.cinema_id;
-        var name = req.body.name;
-        var status = req.body.status;
-        var seats = [];
-        var brandNormalPrice = req.body.brandNormalPrice;
-        var brandVipPrice = req.body.brandVipPrice;
-        var brandSweetboxPrice = req.body.brandSweetboxPrice;
+        SeatType.find({status: true})
+            .then(seatTypes => {
+                seatTypes = seatTypes.map(curr => curr.toObject());
+                return seatTypes;
+            })
+            .then(seatTypes => {
+                req.body.seats = req.body.seats.map(curr => {
+                    curr = curr.split(',');
+                    var type = seatTypes.find(type => type.name == curr[1])
+                    return {
+                        name: curr[0],
+                        brand: type,
+                    }
+                })
+                req.body.status = true;
+                return req.body;
+               
+            })
+            .then((data) =>{
+                Cinema.findById({_id: req.query.cinema_id})
+                    .then(cinema => {
+                        cinema.rooms.push(data);
+                        cinema.save(function(err){
+                            if(!err){
+                                res.redirect(`/admin/rooms/create?cinema_id=${req.query.cinema_id}`);
+                            }
+                            else{
+                                console.log('that bai');
+                            }
+                        });
+                  
+                    })
+                    .catch(err => res.status(400).send(err.message));       
+            })
+            .catch(err => res.status(400).send(err.message));
+    },
+    update(req,res,next) {
+        Promise.all([
+            Cinema.findById({_id : req.query.cinema_id}),
+            SeatType.find({status: true}),
+        ])
+            .then(([cinema,seatTypes]) => {
+                cinema = cinema.toObject();
+                var room = cinema.rooms.find(curr => curr._id == req.query.room_id);
+                var seats = room.seats;
+                seatTypes = seatTypes.map(curr => curr.toObject());
+                var result =[];
+                
+                seats.map((seat,index) => {
+                    if(!result.some(curr => curr.name == seat.name[0]))
+                        if((result[result.length-1])){
+                            if(String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1) == seat.name[0]){
+                                result.push({name : seat.name[0], brand: seat.brand,color: seat.brand.color, seats: []});
+                            }
+                            else{
+                                var length = seat.name[0].charCodeAt(0) - (result[result.length-1].name).charCodeAt(0);
+                                for(let i =1 ; i<length ; i++){
+                                    result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1), brand : {color: 'red'}, seats: []});
+                                }
+                                result.push({name : seat.name[0], brand: seat.brand,color: seat.brand.color, seats: []});
+                            }
+                        }
+                        else{
+                            var length = seat.name[0].charCodeAt(0) - ('A').charCodeAt(0);
+                            if(length !=0){
+                                for(let i=0;i<length ;i++){
+                                    result.push({name : String.fromCharCode(('A').charCodeAt(0) + i), brand : {color: 'red'}, seats: []});
+                                }
+                                result.push({name: seat.name[0], brand: seat.brand,color: seat.brand.color, seats: []})
+                            }
+                            else{
+                                result.push({name: seat.name[0], brand: seat.brand, color: seat.brand.color, seats: []})
+                            }
+                        }
+                    })
 
-        delete req.body.column;
-        delete req.body.row;
-        delete req.body.cinema_id;
-        delete req.body.name;
-        delete req.body.status;
-        delete req.body.brandNormalPrice;
-        delete req.body.brandVipPrice;
-        delete req.body.brandSweetboxPrice;
-        
-        for(i in req.body){
-            req.body[i] = req.body[i].split(',');
+                result.map(curr => {
+                    let dem =1;
+                    var color ='';
+                    seats.map(seat => {
+                        if(curr.name == seat.name[0]){
+                            if(curr.seats[curr.seats.length-1]){
+                                if(parseInt(seat.name.slice(1) - curr.seats[curr.seats.length-1].name[1]) == 1)
+                                {
+                                    curr.seats.push({
+                                        name : seat.name,
+                                    });
+                                    dem++;
+                                }
+                                else{
+                                    var length = seat.name.slice(1) - curr.seats[curr.seats.length-1].name.slice(1);
+                                    for(let i=0;i<length -1;i++){
+                                        curr.seats.push({
+                                            name : '', 
+                                            index : dem++,
+                                        });
+                                    }
+                                    curr.seats.push({
+                                        name : seat.name,
+                                    });
+                                    dem++;
+                                }
+                            }
+                            else{
+                                var length = room.column - seat.name.slice(1);
+                                for(let i=0;i<room.column - length -1;i++){
+                                    curr.seats.push({
+                                        name : '',
+                                        index : dem++,
+                                    });
 
-            req.body[i] = {
-                name : req.body[i][0],
-                brand : req.body[i][1],
-            }
-
-            if(('brandNormalPrice'.toLowerCase()).includes(req.body[i].brand)){
-               req.body[i].price = brandNormalPrice;
-            }
-            if(('brandVipPrice'.toLowerCase()).includes(req.body[i].brand)){
-                req.body[i].price = brandVipPrice;
-            }
-            if(('brandSweetboxPrice'.toLowerCase()).includes(req.body[i].brand)){
-                req.body[i].price = brandSweetboxPrice;
-            }
-
-            seats.push(req.body[i]);
-        }
-        const room = new Room({column, row, cinema_id, name, status, seats});
-        room.save()
-            .then(() =>{
-                res.render('admin/rooms/create',{
+                                }
+                                curr.seats.push({
+                                    name : seat.name,
+                                });
+                                dem++;
+                            }
+                        }
+                    })
+                    var rowlength = curr.seats.length;
+                    if(curr.seats.length < room.column){
+                        for(let i=0;i< room.column - rowlength;i++){
+                            curr.seats.push({name : '',index : dem++});
+                        }
+                        rowlength = curr.seats.length
+                    }
+                    // if(rowlength < room.row){
+                    //     var seatsFake = [];
+                    //     for(let i=1; i<= rowlength ; i++){
+                    //         seatsFake.push({name : '',brand: '', index : i});
+                    //     }
+                    //     for(let i=0;i< room.row - result.length ;i++){
+                    //         result.push({name : String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1),brand: '', seats : seatsFake});
+                    //     }
+                    // }
+                })
+                console.log('result',result)
+                res.render('admin/rooms/update',{
                     layout: 'main2',
+                    room,
+                    result,
+                    cinema,
+                    seatTypes
                 });
             })
+            .catch(error => next(error));
     },
     handleUpdate(req,res,next) {
-        Room.updateOne({_id : req.query.room_id},req.body) 
-            .then((room) =>{
-                res.redirect('/admin/rooms/?cinema_id=' + req.query.cinema_id);
+        Cinema.findById({_id: req.query.cinema_id})
+            .then((cinema) =>{
+                req.body.seats = req.body.seats.map(curr => {
+                            curr = curr.split(',');
+                            return curr ={
+                                name  : curr[0],
+                                brand: {
+                                    _id: curr[1],
+                                    name: curr[2],
+                                    price: curr[3],
+                                    color: curr[4],
+                                    status: true
+                                }
+                            }
+                        })
+                cinema.rooms.id(req.query.room_id).set(req.body)
+                cinema.save()
+                    .then(() =>{
+                        res.redirect('/admin/rooms?cinema_id='+ req.query.cinema_id );
+                    })
+                    .catch(err => res.status(400).send(err.message))
             })
+            .catch(err => res.status(400).send(err.message))
+    },
+    delete(req,res,next) {
+        Cinema.findById({_id : req.query.cinema_id})
+            .then((cinema) =>{
+                cinema.rooms.id(req.query.room_id).remove();
+                cinema.save()
+                    .then(() => {
+                        res.redirect('/admin/rooms?cinema_id='+ req.query.cinema_id );
+                    })
+                    .catch(err => res.status(400).send(err.message))
+            })
+            .catch(err => next(err));
     },
 }
+  
 module.exports = roomController;

@@ -1,35 +1,56 @@
-{{#with cinema}}
-<h1 class="">Update Sub Categorys</h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/cinemas?_method=PATCH&id={{_id}}">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+<div class="container-fluid">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 ms-2">
+    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+    <li class="breadcrumb-item"><a href="/admin/cinemas">Quản lý rạp & phòng</a></li>
+    <li class="breadcrumb-item active"><span>Sửa rạp</span></li>
+  </ol>
+</nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        {{#with cinema}}
+        <form id ="form-sub-category-create" method="POST" action="/admin/cinemas?_method=PATCH&id={{_id}}">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Name</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Area</label>
+            <select class="form-select" aria-label="Default select example" name ="area">
+              <option selected disabled>Khu vực</option>
+              {{#each @root.areas}}
+              {{#if selected}}
+              <option value="{{_id}}" selected>{{name}}</option>
+              {{/if}}
+              {{#unless selected}}
+              <option value="{{_id}}">{{name}}</option>
+              {{/unless}}
+              {{/each}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              {{#if status}}
+                <option selected value=true>Hiển thị</option>
+                <option value=false>Ẩn</option>
+              {{/if}}
+              {{#unless status}}
+                <option selected value=false>Ẩn</option>
+                <option value=true>Hiển thị</option>
+              {{/unless}}
+            </select>
+          </div>
+          {{/with}}
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-   <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      {{#if status}}
-      <option selected value="1">{{statusHandle status}}</option>
-      {{else}}
-      <option selected value="0">{{statusHandle status}}</option>
-      {{/if}}
-      {{#if status}}
-      <option value=0>Disable</option>
-      {{else}}
-      <option value=1>Active</option>
-      {{/if}}
-    </select>
-  </div>
-   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Area</label>
-    <select class="form-select" aria-label="Default select example" name ="area">
-      <option selected disabled>-- Chọn khu vực --</option>
-      <option selected disabled>{{area.name}}</option>
-      {{/with}}
-      {{#each areas}}
-      <option value="{{_id}}">{{name}}</option>
-      {{/each}}
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</div>

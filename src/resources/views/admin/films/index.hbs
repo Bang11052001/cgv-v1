@@ -1,0 +1,71 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý phim</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body d-flex justify-content-between">
+        {{>adminFilter}}
+        <div class ="table-filter-right">
+          <a href = "/admin/films/create" type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới </a>
+        </div>
+      </div>
+      <table class="table text-center mt-2">
+      <thead class="table-dark">
+      <tr> 
+      <th><input type="checkbox" class ="table-checkbox form-check-input"></th>
+      <th scope="col">STT</th>
+      <th scope="col">Tên phim</th>
+      <th scope="col">Ảnh</th>
+      <th scope="col">Thể loại</th>
+      <th scope="col">Quốc gia</th>
+      <th scope="col">Năm SX</th>
+      <th scope="col">Chất lượng phim</th>
+      <th scope="col">Danh mục</th>
+      <th scope="col">Trạng Thái</th>
+      <th scope="col">Tùy chọn</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each films}}
+      <tr>
+      <td><input type="checkbox" class = "table-checkbox form-check-input"></td>
+      <td>{{countIndex @index 1}}</td>
+      <td>{{name}}</td>
+      <td><img src="data:image/{{image.contentType}};base64,{{image.data}}"></td>
+      <td>
+        {{#each genre}}
+          <p>{{name}}</p>
+        {{/each}}
+      </td>
+      <td>{{country}}</td>
+      <td>{{year}}</td>
+      <td> 
+        {{#each quality}}
+          <p>{{name}}</p>
+        {{/each}}
+      </td>
+      <td> 
+        {{#each category}}
+          <p>{{name}}</p>
+        {{/each}}
+      </td>
+      <td>{{#if status}}<input class = "table-checkbox form-check-input" type="checkbox" checked>{{/if}}{{#unless status}}<input class = "table-checkbox form-check-input" type="checkbox">{{/unless}}</td>
+      <td class ="table-option">
+        <a href="/admin/films/update?id={{_id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="/admin/films/delete?id={{_id}}"><i class="fa-solid fa-xmark"></i></a>
+      </td>
+      </tr>
+      {{/each}}
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>

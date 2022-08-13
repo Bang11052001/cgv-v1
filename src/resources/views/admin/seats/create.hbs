@@ -31,11 +31,11 @@
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Time</label>
-    <input type="time" class="form-control" class="" id="exampleInputPassword1" name ="time" >
+    <input type="time" class="form-control" class="seats-create-column" id="exampleInputPassword1" name ="time" >
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Date</label>
-    <input type="date" class="form-control" class="" id="exampleInputPassword1" name ="date" >
+    <input type="date" class="form-control" class="seats-create-row" id="exampleInputPassword1" name ="date" >
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Status</label>
@@ -55,8 +55,6 @@
 </form>
 <script>
   const formShowTime = document.querySelector('.select-showTime-create-film');
-
-  console.log(formShowTime)
   formShowTime.onchange = function(event) {
       console.log(event.target.value)
       const fomrFilm = document.querySelectorAll('.form-film');

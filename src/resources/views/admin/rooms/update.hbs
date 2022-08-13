@@ -1,29 +1,377 @@
-{{#with room}}
-<h1 class="">Update Room</h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/rooms?_method=PATCH&room_id={{_id}}&cinema_id={{@root.cinema_id}}">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý rạp & phòng</a></li>
+      <li class="breadcrumb-item"><a href="javascript:history.back()">Danh sách phòng</a></li>
+      <li class="breadcrumb-item active"><span>Sửa phòng</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-sub-category-create" method="POST" action="/admin/rooms?cinema_id={{cinema._id}}&room_id={{room._id}}&_method=PATCH">
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Rạp</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ="cinema_id">
+              {{#with cinema}}
+                <option class ="form-select-cinema_id" data-cinema-id="{{_id}}"  value={{_id}} selected>{{name}}</option>
+              {{/with}}
+            </select>
+          </div>
+          {{#with room}}
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên phòng</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value ="{{name}}" name ="name">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              {{#if status}}
+              <option selected value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+              {{/if}}
+              {{#unless status}}
+              <option selected value=false>Ẩn</option>
+              <option value=true>Hiển thị</option>
+              {{/unless}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Số Cột</label>
+            <input type="number" class="form-control seats-create-column" id="exampleInputEmail1" aria-describedby="emailHelp" name ="column" min =1 value ={{column}}>
+          </div>
+          <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label" >Số hàng</label>
+          <input type="number" class="form-control seats-create-row" id="exampleInputEmail1" aria-describedby="emailHelp" name ="row" min =1 value ={{row}}>
+          </div>
+          {{/with}}
+          <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Ghế</label>
+            <div class="booking-content d-flex flex-column align-items-center">
+              <div class ="d-flex">
+                <div class ="table-seats-head d-flex">
+                  {{#with result.[0]}}
+                    <div class ="table-seats-title table-seats-head--item"></div>
+                      {{#each seats}}
+                        <div class ="table-seats-title table-seats-head--item">{{countIndex @index 1}}</div>
+                      {{/each}}
+                  {{/with}}
+                </div>
+                <div class ="table-seats-title table-seats-title--big" >Opt</div>
+              </div>
+              <div class ="table-seats-body">
+                {{#each result}}
+                <div class ="table-seats-item table-seats-{{brand.name}}-container d-flex" data ="{{brand._id}},{{brand.name}},{{brand.price}},{{brand.color}}">
+                  <div class ="table-seats-row d-flex">
+                    <div class ="table-seats-title table-seats-row-brand">{{name}}</div>
+                    {{#each seats}}
+                      {{#if name}}
+                        <input type="checkbox" id="{{name}}" name ="seats[]" value ="{{name}},{{../brand._id}},{{../brand.name}},{{../brand.price}},{{../brand.color}}" checked></input>
+                        <label class ="seat seat--{{../brand.name}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleCreateSeat(event)">{{name}}</label>
+                      {{/if}}
+                      {{#unless name}}
+                        <input type="checkbox" id="{{../name}}{{index}}" name ="seats[]"></input>
+                        <label class ="seat " for ="{{../name}}{{index}}" name ="{{../name}}{{index}}" onclick = "handleCreateSeat(event)">+</label>
+                      {{/unless}}
+                    {{/each}}
+                  </div>
+                  <div class ="table-seats-title table-seats-title--big btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+            <div class="d-flex justify-content-end"> 
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Seat</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name ="seat" value ='{{seat}}'>
+</div>
+{{!-- modal  --}}
+<div class="modal fade" id="modalSetSeatsBrand" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSetSeatsBrandLabel">Modal title</h5>
+        <div type="div" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></div>
+      </div>
+      <div class="modal-body">
+        <select class="modalSetSeatsBrand-Select form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option disabled selected value ="">Hãng ghế</option>
+          {{#each seatTypes}}
+            <option value = '{{_id}},{{name}},{{price}},{{color}}'>{{name}}</option>
+          {{/each}}
+
+        </select>
+      </div>
+      <div class="modal-footer">
+        <div type="div" class="btn btn-secondary" data-bs-dismiss="modal">Close</div>
+        <div type="div" class="btn btn-primary modalSetSeatsBrandLabelSave" data-bs-dismiss="modal">Save changes</div>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      {{#if status}}
-      <option selected value="1">{{statusHandle status}}</option>
-      {{else}}
-      <option selected value="0">{{statusHandle status}}</option>
-      {{/if}}
-      {{#if status}}
-      <option value=0>Disable</option>
-      {{else}}
-      <option value=1>Active</option>
-      {{/if}}
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-{{/with}}
+</div>
+
+<script>
+let tableSeatHead = document.querySelector('.table-seats-head');
+let tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
+let tableSeatsHeadLastItem = tableSeatsHeadItems[tableSeatsHeadItems.length - 1];
+let tableSeatRows = document.querySelectorAll('.table-seats-row');
+let tableSeatBrand = document.querySelectorAll('.table-seats-row-brand');
+let tableSeatBrandLast = tableSeatBrand[tableSeatBrand.length - 1];
+let tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
+let tableSeatBody = document.querySelector('.table-seats-body');
+let tableSeatItems = document.querySelectorAll('.table-seats-item');
+const modalSetSeatsBrand = document.querySelector('#modalSetSeatsBrand');
+const modal = document.querySelector('.modal');
+const modalSaveBtn = document.querySelector('.modalSetSeatsBrandLabelSave');
+const modalSetSeatsBrandSelect = document.querySelector('.modalSetSeatsBrand-Select');
+const columnInput = document.querySelector('.seats-create-column');
+const rowInput = document.querySelector('.seats-create-row');
+let seats = document.querySelectorAll('.seat');
+let color = '';
+console.log(color)
+// Thêm cột
+function handleAddColumn(){
+  tableSeatHead.innerHTML += `<div class ="table-seats-title table-seats-head--item">${parseInt(tableSeatsHeadLastItem.textContent) + 1}</div>`;
+  Array.from(tableSeatRows).map(tableSeatRow =>{
+    var brand = tableSeatRow.querySelector('.table-seats-row-brand').textContent;
+    tableSeatRow.innerHTML += `
+      <label class ="seat" name ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}"
+      onclick = "handleCreateSeat(event)"
+      for ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}">
+        +
+      </label>
+      <input type="checkbox" id="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}"  name="seats[]">
+    `
+  })
+  tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
+  tableSeatsHeadLastItem = tableSeatsHeadItems[tableSeatsHeadItems.length - 1];
+  columnInput.setAttribute('value', tableSeatsHeadItems.length - 1)
+}
+
+// Thêm hàng
+function handleAddRow(){
+  var html = '';
+  var brand = `<div class ="table-seats-title table-seats-row-brand">${getNextChar(tableSeatBrandLast.textContent)}</div>`;
+  Array.from(tableSeatLastRow.querySelectorAll('.seat')).map((curr,index) => {
+      html += `
+        <label class ="seat" name = "${getNextChar(tableSeatBrandLast.textContent)}${index + 1}"
+        onclick = "handleCreateSeat(event)" 
+        for ="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}"
+        >
+        +
+        </label>
+        <input type="checkbox" id="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}" name="seats[]">
+      `;
+  })
+  tableSeatBody.innerHTML += `
+          <div class="table-seats-item d-flex">
+            <div class ="table-seats-row d-flex">
+              ${brand}
+              ${html}
+            </div>
+            <div class ="table-seats-title table-seats-title--big btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div
+          </div>  
+        `;
+
+  tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
+  tableSeatsHeadLastItem = tableSeatsHeadItems[tableSeatsHeadItems.length - 1];
+  tableSeatRows = document.querySelectorAll('.table-seats-row');
+  tableSeatBrand = document.querySelectorAll('.table-seats-row-brand');
+  tableSeatBrandLast = tableSeatBrand[tableSeatBrand.length - 1];
+  tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
+  tableSeatItems = document.querySelectorAll('.table-seats-item');
+  rowInput.setAttribute('value',tableSeatRows.length )
+}
+
+// Xóa cột
+function handleDeleteColumn(){
+  tableSeatsHeadLastItem.remove();
+   Array.from(tableSeatRows).map(tableSeatRow =>{
+    tableSeatRow.querySelector('input:last-of-type').remove();
+    tableSeatRow.querySelector('label:last-of-type').remove();
+  })
+  tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
+  tableSeatsHeadLastItem = tableSeatsHeadItems[tableSeatsHeadItems.length - 1];
+}
+
+// Xóa hàng
+function handleDeleteRow(){
+  tableSeatItems[tableSeatItems.length -1].remove();
+  tableSeatItems = document.querySelectorAll('.table-seats-item');
+ 
+}
+
+// Xử lý tăng chữ cái
+function getNextChar(char) {
+  return String.fromCharCode(char.charCodeAt(0) + 1);
+}
+
+// Xử lý tạo ghế
+function handleCreateSeat(event) {
+  var data = event.target.parentElement.parentElement.getAttribute('data');
+
+  var regexCheckParentElement = /table-seats-[a-z]+-container/;
+  var regex = /seat--[a-z]+-active/
+  var color = (event.target.parentElement.parentElement.getAttribute('data')).split(',')[3];
+  var typeBrand = (event.target.parentElement.parentElement.getAttribute('data')).split(',')[1];
+  var id = (event.target.parentElement.parentElement.getAttribute('data')).split(',')[0];
+  var price = (event.target.parentElement.parentElement.getAttribute('data')).split(',')[2];
+  if(regexCheckParentElement.test(event.target.parentElement.parentElement.classList)){
+      if(regex.test(event.target.classList)){
+        Array.from(event.target.classList).map(curr => {
+          if(regex.test(curr)){
+            event.target.classList.remove(curr);
+          }
+        })
+
+        event.target.textContent = '+';
+        event.target.style.cssText = `    
+          background-color: none !important;
+          border: 1px solid ${color} !important;
+          color: black;
+        `
+      }
+      else{
+        event.target.classList.add(`seat--${typeBrand}-active`);
+        event.target.style.cssText = `    
+          background-color: ${color} !important;
+          border:none !important;
+          color: white;
+        `
+        event.target.textContent = event.target.getAttribute('name');
+        Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
+          if(event.target.getAttribute('for') == input.id){
+            input.setAttribute('value',input.getAttribute('id')+`,${data}`);
+          }
+        })
+      }
+  }
+  else{
+    alert("bạn phải chọn hãng ghế trước!");
+  }
+}
+
+// Xem có seat nào dc active không
+function start(){
+  Array.from(tableSeatBody.querySelectorAll('input')).map(input => {
+    if(input.checked == true){
+      var label = Array.from(seats).find(curr => curr.getAttribute('for') == input.getAttribute('id'))
+      var color = (label.parentElement.parentElement.getAttribute('data')).split(',')[3];
+        label.style.cssText = `    
+            background-color: ${color} !important;
+            border:none !important;
+            color: white;
+          `
+    }
+    else{
+      var label = Array.from(seats).find(curr => curr.getAttribute('for') == input.getAttribute('id'))
+      var color = (label.parentElement.parentElement.getAttribute('data')).split(',')[3];
+      label.style.cssText = `    
+        background-color: none !important;
+        border: 1px solid ${color} !important;
+        color: black;
+      `
+    }
+  })
+}
+
+start();
+
+
+// Xử lý chọn loại hàng
+function handleSetSeatsBrand(event){
+  modalSaveBtn.onclick = function() {
+        var regex = /seat--[a-z]+-active/;
+        var regexCheckParentElement = /table-seats-[a-z]+-container/;
+        color = modalSetSeatsBrandSelect.value.split(',')[3];
+        nameTypeBrand = modalSetSeatsBrandSelect.value.split(',')[1];
+        var parent = event.target.parentElement;
+        parent.setAttribute('data',modalSetSeatsBrandSelect.value);
+        var data = event.target.parentElement.getAttribute('data');
+
+        // Tìm clas cũ và xóa cũ
+        var classTarget = (Array.from(parent.classList)).find(curr => (regexCheckParentElement.test(curr)));
+        parent.classList.remove(classTarget);
+        parent.classList.add(`table-seats-${nameTypeBrand}-container`);
+
+        // Thêm class mới
+        var seats = (event.target.parentElement).querySelectorAll('.seat');
+        
+        Array.from(seats).map(curr => {
+          if(!regex.test(curr.classList)){
+            curr.style.cssText = `border: 1px solid ${color}`;
+          }
+          else{
+            Array.from(curr.classList).map(item => {
+              if(regex.test(item)){
+                curr.classList.remove(item);
+              }
+            })
+
+            curr.classList.add(`seat--${nameTypeBrand}-active`);
+
+            curr.style.cssText = `
+              background-color: ${color} !important;
+              border: none;
+              color: white 
+            `;
+          }
+          
+          console.log()
+          Array.from(tableSeatBody.querySelectorAll('input')).find(input => {
+            if(input.getAttribute('id') == curr.getAttribute('for')){
+              console.log(1)
+              input.setAttribute('value',`${input.getAttribute('id')},${data}`)
+            }
+          })
+        })   
+  }
+}
+
+// Xử lý tạo cột và hàng ghế
+columnInput.onchange = function(){
+  handleSetRoomSeats();
+}
+
+rowInput.onchange = function(){
+  handleSetRoomSeats();
+}
+
+function handleSetRoomSeats(){
+  var rowDefault = tableSeatRows.length ;
+  var columnDefault = tableSeatLastRow.querySelectorAll('.seat').length;
+  
+  for(let i=0;i<columnInput.value - columnDefault;i++){
+    handleAddColumn();
+  }
+    seats = document.querySelectorAll('.seat');
+    start()
+
+
+  for(let i=0;i<rowInput.value - rowDefault;i++){
+    handleAddRow();
+  }
+
+  if(rowInput.value - rowDefault < 0){
+    for(let i=0;i<rowDefault - rowInput.value;i++){
+      handleDeleteRow();
+    }
+  }
+  if(columnInput.value - columnDefault < 0){
+    for(let i=0; i<columnDefault - columnInput.value;i++){
+      handleDeleteColumn();
+    }
+  }
+  
+  tableSeatRows = document.querySelectorAll('.table-seats-row');
+  tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
+}
+</script>

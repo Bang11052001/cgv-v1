@@ -1,0 +1,73 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý phim</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+      {{#with news}}
+      <form id ="form-film-update" method ="POST" action="/admin/news?_method=PATCH&id={{_id}}">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tiêu đề</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value ="{{name}}" name ="name">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Đường dẫn</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value ="{{slug}}" name ="slug">
+          </div>
+          <div>
+            <script src="/ckeditor/ckeditor.js"></script>
+            <textarea cols="80" id="editor1" name="content" rows="10">
+              {{content}}
+            </textarea>
+            <script>
+              CKEDITOR.replace( 'editor1',{
+                extraPlugins:'filebrowser',
+                filebrowserBrowseUrl:'/list',//upload location
+                filebrowserUploadMethod:'form',
+                filebrowserUploadUrl:'/upload',
+                height:' 500px',
+              });
+            </script>
+          </div>
+          <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+          <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+            {{#if status}}
+            <option selected value=true>Hiển thị</option>
+            <option value=false>Ẩn</option>
+            {{/if}}
+            {{#unless status}}
+            <option selected value=false>Ẩn</option>
+            <option value=true>Hiển thị</option>
+            {{/unless}}
+          </select>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Danh mục</label>
+            {{#each @root.newsCategories}}
+            <div>
+              {{#if checked}}
+              <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value={{_id}} checked>
+              {{/if}}
+              {{#unless checked}}
+              <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value={{_id}}>
+              {{/unless}}
+
+              <label for="exampleInputPassword1" class="form-label">{{name}}</label>
+            </div>
+            {{/each}}
+        </div>
+        <div class="d-flex justify-content-end"> 
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+      {{/with}}
+    </div> 
+  </div>  
+</div> 

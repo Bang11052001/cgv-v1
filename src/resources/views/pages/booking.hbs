@@ -2,9 +2,9 @@
     <div class="booking-top">
         <h2 class="booking-payment-headding">BOOKING ONLINE</h2>
         <div class="booking-top-desc">
-            {{#with filmDesc}}
-            <p>{{cinema}} | {{room_name}} | Số ghế (277/260)</p>
-            <p>{{date}} {{time}} ~ {{date}} 13:02</p>
+            {{#with cinema}}
+            <p>{{name}} | {{rooms.[0].name}} | Số ghế ()</p>
+            <p>{{rooms.[0].showTimes.[0].date}} {{rooms.[0].showTimes.[0].time}} ~ {{rooms.[0].showTimes.[0].date}} 13:02</p>
             {{/with}}
         </div>
     </div>
@@ -13,7 +13,7 @@
         <img src= "/img/backgrounds/background-booking-content.png" class="booking-content__screen"></img>
       <div class ="d-flex">
       <div class ="table-seats-head d-flex">
-        {{#with result.[0]}}
+        {{#with seats.[0]}}
           <div class ="table-seats-title table-seats-head--item"></div>
             {{#each seats}}
               <div class ="table-seats-title table-seats-head--item">{{countIndex @index 1}}</div>
@@ -22,62 +22,64 @@
       </div>
     </div>
       <div class ="table-seats-body">
-        {{#each result}}
-        <div class ="table-seats-item table-seats-{{brand}}-container d-flex">
-          <div class ="table-seats-row d-flex">
+        {{#each seats}}
+        <div class ="table-seats-item table-seats-{{brand.name}}-container d-flex" data ="{{brand._id}},{{brand.name}},{{brand.price}},{{brand.color}}">
+            <div class ="table-seats-row d-flex">
             <div class ="table-seats-title table-seats-row-brand">{{name}}</div>
             {{#each seats}}
                 {{#if name}}
-                    <input type="checkbox" id="{{name}}" name ="{{name}}"></input>
-                    <label class ="seat seat--{{../brand}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleSelectSeat(event)" price ="{{price}}">{{name}}</label>
+                    <input data-status ="{{status}}" type="checkbox" id="{{name}}" name ="seats[]" value ="{{name}},{{../brand._id}},{{../brand.name}},{{../brand.price}},{{../brand.color}}"></input>
+                    <label class ="seat seat--{{../brand.name}}-active" for ="{{name}}" name ="{{name}}" onclick = "handleSelectSeat(event)" price ="{{../brand.price}}">{{name}}</label>
                 {{/if}}
                 {{#unless name}}
-                    <input type="checkbox" id="{{../name}}{{index}}" name ="{{../name}}{{index}}"></input>
-                    <label class ="seat seat--empty" for ="{{../name}}{{index}}" name ="{{../name}}{{index}}" onclick = "handleSelectSeat(event)"></label>
+                <label class ="seat"></label>
                 {{/unless}}
             {{/each}}
-          </div>
+            </div>
         </div>
         {{/each}}
     </div>
     </div>
     <div class="booking-bottom">
-        <form action="/category/film/booking/payment?film_id={{film._id}}" method="POST" class="form-booking">
+        <form action="/payment" method="POST" class="form-booking">
             <button class="form-booking__prev"></button>
-            {{#with film}}
+            {{#with cinema.rooms.[0].showTimes.[0]}}
             <div class="form-booking-left">
-                <img class="form-booking__img" src ="data:image/{{image.contentType}};base64,
-                     {{image.data}}">
+                <img class="form-booking__img" src ="data:image/{{film.image.contentType}};base64,
+                     {{film.image.data}}">
                 <div class="form-booking-left-desc">
-                    <p class="form-booking__name">{{name}}</p>
-                    <p class="form-booking__option">{{@root.filmDesc.quality}}</p>
-                    <input type="text" name ="quality" value="{{@root.filmDesc.quality}}" >
+                    <p class="form-booking__name">{{film.name}}</p>
+                    <p class="form-booking__option">{{quality.name}}</p>
+                    <input type="text" name ="film" value="{{film._id}}" >
+                    <input type="text" name ="quality" value="{{quality._id}}" >
                 </div>
             </div>
             {{/with}}
             <div class="form-booking-mid">
-                {{#with filmDesc}}
+                {{#with cinema}}
                 <div class ="form-booking-wrap">
                     <span>Rạp:</span>   
-                    <p class="form-booking__cinema" name ="cinema"> {{cinema}}</p>
-                    <input type="text" name ="cinema" value="{{cinema}}" >
+                    <p class="form-booking__cinema" name ="cinema"> {{name}}</p>
+                    <input type="text" name ="cinema" value="{{_id}}" >
                 </div>
-                <div class ="form-booking-wrap">
-                    <span>Suất chiếu:</span>
-                    <p class="form-booking__time">{{time}}, {{date}}</p>
-                    <input type="text" name ="time" value="{{time}}" >
-                    <input type="text" name ="day" value="{{day}}" >
-                </div>
-                <div class ="form-booking-wrap">
-                    <span>Phòng chiếu:</span>
-                    <p class="form-booking__room">{{room_name}}</p>
-                    <input type="text" name ="room" value="{{room_name}}" >
-                </div>
-                <div class ="form-booking-wrap">
-                    <span>Ghế:</span>
-                    <p class="form-booking__seat"></p>
-                    <input class = "form-booking-seats" type="text" name ="seat" value="" >
-                </div>
+                    {{#with rooms.[0]}}
+                    <div class ="form-booking-wrap">
+                        <span>Suất chiếu:</span>
+                        <p class="form-booking__time">{{showTimes.[0].time}}, {{showTimes.[0].date}}</p>
+                        <input type="text" name ="time" value="{{showTimes.[0].time}}" >
+                        <input type="text" name ="day" value="{{showTimes.[0].date}}" >
+                    </div>
+                    <div class ="form-booking-wrap">
+                        <span>Phòng chiếu:</span>
+                        <p class="form-booking__room">{{name}}</p>
+                        <input type="text" name ="room" value="{{_id}}" >
+                    </div>
+                    <div class ="form-booking-wrap">
+                        <span>Ghế:</span>
+                        <p class="form-booking__seat"></p>
+                        <input class = "form-booking-seats" type="text" name ="seat" value="" >
+                    </div>
+                    {{/with}}
                 {{/with}}
             </div>
             <div class="form-booking-right">
@@ -99,6 +101,8 @@ const formTotal = document.querySelector('.form-booking__total');
 const formSeat = document.querySelector('.form-booking__seat');
 const TotalInput = document.querySelector('.form-booking-total');
 const SeatInput = document.querySelector('.form-booking-seats');
+let tableSeatBody = document.querySelector('.table-seats-body');
+
 let total =0;
 let seat =[];
 
@@ -111,28 +115,30 @@ function formatCash(str) {
 
 // Xử lý khi chọn ghế
 function handleSelectSeat(event){
-    if(event.target.classList.contains('seat--active')){
-            event.target.classList.remove('seat--active');
-            var index = seat.findIndex(curr => curr == event.target.textContent)
-            seat.splice(index,1);
-            total -= parseInt(event.target.getAttribute('price'));
-    }
-    else{
+    var input =  Array.from(tableSeatBody.querySelectorAll('input')).find(input =>input.getAttribute('id') == event.target.getAttribute('for'));
+    if(input.disabled != true){
+        if(!event.target.classList.contains('seat--active')){
             seat.push(event.target.textContent);
             event.target.classList.add('seat--active');
             total += parseInt(event.target.getAttribute('price'));
+        }
+        else{
+                event.target.classList.remove('seat--active');
+                var index = seat.findIndex(curr => curr == event.target.textContent)
+                seat.splice(index,1);
+                total -= parseInt(event.target.getAttribute('price'));
+        }
+            var result = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 2
+            }).format(total)
 
-    }
-        var result = new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-            minimumFractionDigits: 2
-        }).format(total)
-
-        formSeat.textContent = seat;
-        formTotal.textContent = result;
-        TotalInput.setAttribute('value',result);
-        SeatInput.setAttribute('value',seat);
+            formSeat.textContent = seat;
+            formTotal.textContent = result;
+            TotalInput.setAttribute('value',result);
+            SeatInput.setAttribute('value',seat);
+        }
 }
 
 // Kiểm tra người dùng chọn ghế chưa
@@ -145,4 +151,35 @@ function validateBooking(event){
     }
 }
 
+// Hiển thị màu cho ghế
+function start(){
+  Array.from(tableSeatBody.querySelectorAll('input')).map(input => {
+    if(input.getAttribute('data-status') == 'selected'){
+        input.disabled = true;
+        var label = Array.from(seats).find(curr => curr.getAttribute('for') == input.getAttribute('id'))
+        label.classList.add('seat--disabled');
+    }
+    if(input.checked == true){
+      var label = Array.from(seats).find(curr => curr.getAttribute('for') == input.getAttribute('id'))
+      var color = (label.parentElement.parentElement.getAttribute('data')).split(',')[3];
+        label.style.cssText = `    
+            background-color: ${color} ;
+            border:none !important;
+            color: white;
+          `
+    }
+    else{
+      var label = Array.from(seats).find(curr => curr.getAttribute('for') == input.getAttribute('id'))
+      var color = (label.parentElement.parentElement.getAttribute('data')).split(',')[3];
+      label.style.cssText = `    
+        background-color: none !important;
+        border: 1px solid ${color} ;
+        color: black;
+      `
+    }
+ 
+  })
+}
+
+start();
 </script>

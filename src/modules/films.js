@@ -6,12 +6,18 @@ const film = new Schema({
     _id: Number,
     film_id: Number,
     name: String,
-    status : Number,
+    status : Boolean,
     image: {
         data: Buffer,
         contentType: String
     },
-    genre: String,
+    genre: [
+        {
+            _id: Number,
+            name: String,
+            status: Boolean
+        }
+    ],
     language: String,
     actor: String,
     minute: Number,
@@ -19,19 +25,27 @@ const film = new Schema({
     director: String,
     rated: String,
     description: String,
-    sub_category: {
-        type: Number,
-        ref: 'subcategory'
-    },
-    quality: [
+    category: [
         {
-            _id: {
-                type: Number,
-                ref : 'quality'
-            }
+            _id: Number,
+            name: String,
+            slug: String,
+            status: Boolean,
+            module: String,
+            parent_id: Number
         }
     ],
-    key_link: String,
+    quality: [
+        {
+            _id: Number,
+            name: String,
+            status: Boolean,
+            price: Number
+        }
+    ],
+    link: String,
+    slug: String,
+
 },)
 
 film.plugin(AutoIncrement,{id: '<film_id>', inc_field: '_id'});

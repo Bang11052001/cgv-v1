@@ -1,72 +1,102 @@
-<a href="/admin/showTimes?room_id={{room_id}}&cinema_id={{cinema_id}}">Back /</a>
-<a href="/admin/showTimes/create?room_id={{room_id}}&cinema_id={{cinema_id}}">Chọn lại</a>
-<h1 class="">Add Show Time</h1>
-<form id ="form-showTime-create" method="POST" action="/admin/showTimes?room_id={{room_id}}&cinema_id={{cinema_id}}">
- <div class="mb-3">
- <label for="exampleInputPassword1" class="form-label">Film</label>
-    <select class="form-select select-showTime-create-film" aria-label=".form-select-lg example" name ='film_id'>
-      {{#if films}}
-      <option selected disabled>--Select Film--</option>
-      {{#each films}}
-      <option class ="select-showTime-create-film-option" value="{{_id}}">{{name}}</option></a>
-      {{/each}}
-      {{/if}}
-      {{#if film}}
-      {{#each film}}
-      <option selected value="{{_id}}">{{name}}</option></a>
-      {{/each}}
-      {{/if}}
-    </select>
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý rạp & phòng</a></li>
+      <li class="breadcrumb-item"><a href="javascript:history.back()">Danh sách phòng</a></li>
+      <li class="breadcrumb-item active"><span>Thêm phòng</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-showTime-create" method="POST" action="/admin/showTimes?room_id={{room._id}}&cinema_id={{cinema._id}}">
+        <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Phim</label>
+            <select class="form-select select-showTime-create-film" aria-label=".form-select-lg example" name ='film_id'>
+              {{#if films}}
+              <option selected disabled>Phim</option>
+              {{#each films}}
+              <option class ="select-showTime-create-film-option" value="{{_id}}">{{name}}</option></a>
+              {{/each}}
+              {{/if}}
+              {{#if film}}
+              {{#each film}}
+              <option selected value="{{_id}}">{{name}}</option></a>
+              {{/each}}
+              {{/if}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Chất lượng</label>
+            <select class="form-select form-showTime-create-select-quality" aria-label=".form-select-lg example" name ='quality_id'>
+              <option selected disabled>Chất lượng</option>
+              {{#each film }}
+                  {{#each quality}}
+                  <option value='{{_id._id}}'>{{_id.name}}</option>
+                  {{/each}}
+              {{/each}}
+            </select>
+          </div>
+           <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Ngày tháng</label>
+            <input type="date" class="form-control" class="" id="exampleInputPassword1" name ="date" >
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Giờ</label>
+            <input type="time" class="form-control form-showTime-create-time-picker" class="" id="exampleInputPassword1" name ="time" {{#if expired}}value ="{{expired}}"{{/if}}{{#unless expired}}value ="{{expired}}"{{/unless}}>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Trạng thái</option>
+              <option value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+            </select>
+          </div>
+          <div class="d-flex justify-content-end"> 
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form> 
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Quality</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='quality_id'>
-      <option selected disabled>--Select Quality--</option>
-      {{#each film }}
-          {{#each quality}}
-          <option value='{{_id._id}}'>{{_id.name}}</option>
-          {{/each}}
-      {{/each}}
-    </select>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Time</label>
-    <input type="time" class="form-control" class="" id="exampleInputPassword1" name ="time" >
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Date</label>
-    <input type="date" class="form-control" class="" id="exampleInputPassword1" name ="date" >
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      <option selected disabled>--Chọn Status--</option>
-      <option value=1>Active</option>
-      <option value=0>Disable</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form> 
-
+</div>
 {{#each films}}
   <form class ="form-film" index ="{{_id}}"method="POST" action="/admin/showTimes/create/quality?id={{_id}}&room_id={{@root.room_id}}&cinema_id={{@root.cinema_id}}"></form>
 {{/each}}
 
 </form>
 <script>
-  const formShowTime = document.querySelector('.select-showTime-create-film');
+  const selectShowTime = document.querySelector('.select-showTime-create-film');
+  const selectQuality = document.querySelector('.form-showTime-create-select-quality');
 
-  console.log(formShowTime)
-  formShowTime.onchange = function(event) {
+  selectShowTime.onchange = function(event) {
       console.log(event.target.value)
       const fomrFilm = document.querySelectorAll('.form-film');
-      
-      Array.from(fomrFilm).map(form => {
-        if(form.getAttribute('index') == event.target.value ){
-          form.submit();
-        }
+      $.ajax({
+        url: `/api/v1/films/${event.target.value}`,
+        type: 'GET',
+
       })
+      .then(data => {
+        console.log(data)
+        var html ='';
+        data.quality.map(curr => {
+          html += `
+              <option value='${curr._id}'>${curr.name}</option>
+          `
+        })
+        selectQuality.innerHTML = html;
+
+      })
+      .catch(err => console.log(err))
+
   }
+
 
 </script>
  

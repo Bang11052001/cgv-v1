@@ -1,14 +1,14 @@
-const { populate } = require('../modules/category');
 const Room = require('../modules/room')
 const Seat = require('../modules/seat')
 
 var seatController={
     index(req,res,next) {
-        Room.findById({_id: req.query.room_id})
-            .then((room) => {
+        Promise.all([Room.findById({_id: req.query.room_id}),Seat.find({room_id : req.query.room_id})])
+            .then(([room,seats]) => {
                 room = room.toObject();
+                seats = seats.map(curr => curr.toObject());
                 var result =[];
-                room.seats.map((seat,index) => {
+                seats.map((seat,index) => {
                     if(!result.some(curr => curr.name == seat.name[0]))
                         if((result[result.length-1])){
                             if(String.fromCharCode((result[result.length-1].name).charCodeAt(0) + 1) == seat.name[0]){
@@ -38,7 +38,7 @@ var seatController={
                     })
                 result.map(curr => {
                     let dem =1;
-                    room.seats.map(seat => {
+                    seats.map(seat => {
                         if(curr.name == seat.name[0]){
                             if(curr.seats[curr.seats.length-1]){
                                 if(parseInt(seat.name.slice(1) - curr.seats[curr.seats.length-1].name[1]) == 1)
@@ -157,7 +157,6 @@ var seatController={
 
             result.push(req.body[i]);
         }
-        console.log(result)
         Room.updateOne({_id: req.query.room_id},{$pull : {seats: {}}, column , row})
             .then(room =>{
                 Room.findById({_id: req.query.room_id})

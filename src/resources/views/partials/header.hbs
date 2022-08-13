@@ -1,3 +1,4 @@
+
 <main>
     <div class="header ">
         <div class="header-top ">
@@ -13,9 +14,16 @@
                 </li>
                 <li class="header-top__nav">
                     <img src="/img/user.png">
-                    <a href="" class="header-top__link">ĐĂNG NHẬP</a>
+                        {{#if user}}
+                        <a href="" class="header-top__link">XIN CHÀO, {{user.name}}!</a>
+                        <a href="" class="logout-link">THOÁT</a>
+                        {{/if}}
+                        {{#unless user}}
+                        <a href="/login" class="header-top__link">ĐĂNG NHẬP</a>
                         /
-                    <a href="" class="header-top__link">ĐĂNG KÝ </a>
+                        <a href="/redgister" class="header-top__link">ĐĂNG KÝ </a>
+                        {{/unless}}
+     
                 </li>
             </ul>
         </div>
@@ -34,7 +42,7 @@
                             <div class="sub-menu-container">
                                 <ul class="sub-menu">
                                     {{#each sub_menu}}
-                                    <li class ="sub-menu__nav"><a href="/category?id={{_id._id}}&type={{_id._id}}">{{_id.name}}</a></li>
+                                    <li class ="sub-menu__nav"><a href="/{{module}}/{{slug}}">{{name}}</a></li>
                                     {{/each}}
                                 </ul>
                             </div>
@@ -54,7 +62,18 @@
         </div>
     </div>
 <script>
-
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    var logoutBtn = document.querySelector('.logout-link');
+    if(logoutBtn){
+        logoutBtn.onclick= function(){
+        setCookie('token',{},-1)
+        }
+    }
 </script>
 
 

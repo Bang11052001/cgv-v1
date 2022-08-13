@@ -78,41 +78,49 @@
         <div class="col col-lg-4"></div>
     </div>
     <div class="booking-bottom">
-        <form action="/category/film/booking/payment/finally?" method="POST" class="form-booking">
+        <form action="/finally?" method="POST" class="form-booking">
             <button class="form-booking__prev"></button>
-            {{#with film}}
+            {{#with cinema}}
+            {{#with rooms.[0].showTimes.[0]}}
             <div class="form-booking-left">
-                <img class="form-booking__img" src ="data:image/{{image.contentType}};base64,
-                     {{image.data}}">
+                <img class="form-booking__img" src ="data:image/{{film.image.contentType}};base64,
+                     {{film.image.data}}">
                 <div class="form-booking-left-desc">
-                    <p class="form-booking__name">{{name}}</p>
-                    <p class="form-booking__option">{{@root.bookingInfo.quality}}</p>
+                    <p class="form-booking__name">{{film.name}}</p>
+                    <p class="form-booking__option">{{quality.name}}</p>
+                    <input type="text" name ="film" value="{{film._id}}" >
+                    <input type="text" name ="quality" value="{{quality._id}}" >
                 </div>
             </div>
             {{/with}}
-            {{#with bookingInfo}}
             <div class="form-booking-mid">
                 <div class ="form-booking-wrap">
                     <span>Rạp:</span>   
-                    <p class="form-booking__cinema">{{cinema}}</p>
+                    <p class="form-booking__cinema">{{name}}</p>
+                    <input type="text" name ="cinema" value="{{_id}}" >
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Suất chiếu:</span>
-                    <p class="form-booking__time">{{time}}, {{date}}</p>
+                    <p class="form-booking__time">{{rooms.[0].showTimes.[0].time}},{{rooms.[0].showTimes.[0].date}}</p>
+                    <input type="text" name ="time" value="{{rooms.[0].showTimes.[0].time}}" >
+                    <input type="text" name ="day" value="{{rooms.[0].showTimes.[0].date}}" >
                 </div>
                 <div class ="form-booking-wrap">
                     <span>Phòng chiếu:</span>
-                    <p class="form-booking__room">{{room}}</p>
+                    <p class="form-booking__room">{{rooms.[0].name}}</p>
+                    <input type="text" name ="room" value="{{rooms.[0]._id}}" >
                 </div>
                 <div class ="form-booking-wrap">
                     <span>ghế:</span>
-                    <p class="form-booking__seat">{{seats}}</p>
+                    <p class="form-booking__seat">{{../seats}}</p>
+                    <input class = "form-booking-seats" type="text" name ="seat" value="{{../seats}}" >
                 </div>
             </div>
             <div class="form-booking-right">
                 <div class ="form-booking-wrap"> 
                     <span>Tổng: </span>
-                    <p class="form-booking__total">{{total}}</p>
+                    <p class="form-booking__total">{{../total}}</p>
+                    <input type="text" class ="form-booking-total" name ="total" value="{{../total}}" >
                 </div>
             </div>
             {{/with}}

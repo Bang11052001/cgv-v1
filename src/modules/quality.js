@@ -5,8 +5,9 @@ const {Schema} = mongoose;
 const quality = new Schema({
     _id: Number,
     name: String,
-    status : Number,
-    price: Number
+    status : Boolean,
+    price: Number,
+    checked: Boolean
 },)
 
 quality.plugin(AutoIncrement,{id: '<quality_id>', inc_field: '_id'});

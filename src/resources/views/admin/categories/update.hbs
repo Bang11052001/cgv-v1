@@ -1,0 +1,115 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/menus">Quản trị menu</a></li>
+      <li class="breadcrumb-item"><a href="/admin/menus">Danh sách menu</a></li>
+      <li class="breadcrumb-item active"><span>Sửa menu</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        {{#with menu}}
+        <form id ="form-menus-update" method="POST" action="/admin/menus?_method=PATCH&id={{_id}}" data-id="{{_id}}">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Name</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Menu cha</label>
+            <select class="form-select form-select-menu-update-parentId" aria-label=".form-select-lg example" name ='parent_id'>
+                {{#each @root.menus}}
+                {{#if selected}}
+                  <option value={{_id}} selected>{{name}}</option>
+                {{/if}}
+                {{#unless selected}}
+                  <option value={{_id}}>{{name}}</option>
+                {{/unless}}
+                {{/each}}
+            </select>
+          </div>
+           <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Số thứ tự</label>
+            <input type="number" class="form-control form-menu-update-index" id="exampleInputEmail1" aria-describedby="emailHelp" name ="index" max ='{{@root.maxIndex}}' min ='1' value="{{index}}">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              {{#if status}}
+                <option selected value=true>Hiển thị</option>
+                <option value=false>Ẩn</option>
+              {{/if}}
+              {{#unless status}}
+                <option selected value=false>Ẩn</option>
+                <option value=true>Hiển thị</option>
+              {{/unless}}
+            </select>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+        {{/with}}
+</div>
+<script>
+   $(document).ready(function() {
+        var formSelectParentId = $('.form-select-menu-update-parentId');
+        var inputIndex = $('.form-control.form-menu-update-index');
+        formSelectParentId.change(function(e){
+          $.ajax({
+              url: `/api/menus`,
+              type: 'GET',
+          })
+            .then(menus => {  
+              var menuId = document.querySelector('#form-menus-update').getAttribute('data-id');
+              var [menu] = menus.filter(curr => curr._id == menuId) 
+
+              if(e.target.value != 0){
+                var [parentMenu] = menus.filter(curr => e.target.value == curr._id )
+              }  
+              if(parentMenu){
+                if(menu.parent_id == parentMenu._id){
+                  var currIndex = menu.index;
+                  var maxIndex = menus.filter(curr => curr.parent_id == e.target.value);
+                  maxIndex = maxIndex.length;
+                  console.log(maxIndex)
+                }
+                else{
+                  var targetIndex = menus.filter(curr => curr.parent_id == parentMenu._id);
+                  var targetIndex = targetIndex.length + 1;
+                }
+              }
+              else{
+                if(menu.parent_id == 0){
+                  var currIndex = menu.index;
+                  var maxIndex = menus.filter(curr => curr.parent_id == 0);
+                  maxIndex = maxIndex.length;
+                }
+                else{
+                  var targetIndex = menus.filter(curr => curr.parent_id == 0);
+                  var targetIndex = targetIndex.length + 1;
+                }
+              }
+              
+
+                            
+              if(currIndex){
+                inputIndex.val(currIndex);
+                inputIndex.attr('max', maxIndex);
+              }
+              if(targetIndex){
+                inputIndex.val(targetIndex);
+                inputIndex.attr('max', targetIndex);
+              }
+            })
+            .catch(err => {
+            
+            })
+        })
+    })
+
+</script>

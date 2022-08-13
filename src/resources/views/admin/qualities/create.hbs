@@ -1,17 +1,40 @@
-<h1 class="">Add Quality </h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/qualities">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản trị phim</a></li>
+      <li class="breadcrumb-item"><a href="/admin/qualities">Danh sách chất lượng phim</a></li>
+      <li class="breadcrumb-item active"><span>Thêm chất lượng phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-sub-category-create" method="POST" action="/admin/qualities">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Giá</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name ="price">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Chọn Trạng thái</option>
+              <option value=true>Active</option>
+              <option value=false>Disable</option>
+            </select>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Price</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name ="price">
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name ="status">
-  </div>
- 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</div>

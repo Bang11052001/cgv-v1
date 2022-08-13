@@ -1,0 +1,110 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý phim</a></li>
+      <li class="breadcrumb-item active"><span>Thêm phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-film-update" method="POST" action="/admin/films" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="name">
+          </div>
+            <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Slug</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="slug">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Ảnh</label>
+            <input type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="file_image">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Thể loại</label>
+            <div class="row">
+              {{#each genres}}
+              <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="genre_id" value={{_id}}>
+                <label >{{name}}</label>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Quốc gia</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="country">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Phút</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name ="minute">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Năm</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="year">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Diễn viên</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name ="actor">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Đạo diễn</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name ="director">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Đánh giá</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="rated">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Ngôn ngữ</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="language">
+          </div>
+            <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">iframe link</label>
+            <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{key_link}}' name ='key_link'></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+            <textarea type="text" class="form-control" id="exampleInputPassword1" name ="description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Chất lượng</label><br>
+            <div class="row">
+              {{#each qualities}}
+              <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="quality_id" value={{_id}}>
+                <label >{{name}}</label>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Trạng thái</option>
+              <option value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Danh mục</label>
+              {{#each filmCategories}}
+              <div>
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value='{{_id}}'>
+                <label for="exampleInputPassword1" class="form-label">{{name}}</label>
+              </div>
+              {{/each}}
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

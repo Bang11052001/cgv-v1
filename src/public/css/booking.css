@@ -85,41 +85,22 @@
     cursor: pointer;
 }
 
-.seat--normal{
-    border: 1px solid #01c73c;
-}
-
-.seat-vip-container{
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-}
-
-.seat--vip{
-    border: 1px solid #f71708;
-}
-
 .sweet-box-container{
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
 }
 
-.sweet-box--vip{
-    border: 1px solid #FF62B0;
-    color: white;
-    background-color: #FF62B0;
-}
 
 .seat--disabled{
-    background: #bbb;
-    border: 1px solid #bbb;
-    color: #fff;
+    background: #bbb !important;
+    border: 1px solid #bbb !important;
+    color: #fff !important;
 }
 
 .seat--active{
-    background: #b11500;
-    color: #fff;
+    background: #b11500 !important;
+    color: #fff !important;
 }
 
 .table-seats-normal-container .seat--active {
@@ -259,3 +240,39 @@
 .form-booking input{
     display: none;
 }
+
+/* form validate  */
+
+  
+
+  
+  .form-label,
+  .form-message {
+    text-align: left;
+  }
+
+  .form-label {
+    font-weight: 700;
+    padding-bottom: 6px;
+    line-height: 1.8rem;
+    font-size: 1.4rem;
+  }
+
+    
+  .form-group.invalid .form-controler {
+    border-color: #df280a;
+  }
+  
+  .form-group.invalid .form-message {
+    color: #df280a;
+    margin-bottom: 10px;
+
+  }
+  
+  .form-message {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    font-weight: 600;
+    display: block;
+  }
+  

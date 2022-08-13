@@ -1,95 +1,107 @@
-<a href="/admin/cinemas">Back</a>
-<h1 class="">Add Room</h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/rooms?room_id={{room_id}}&cinema_id={{cinema_id}}">
- <label for="exampleInputPassword1" class="form-label">Rạp</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='cinema_id'>
-      <option selected disabled>--Chọn Rạp--</option>
-      {{#each cinemas}}
-      <option value={{_id}}>{{name}}</option>
-      {{/each}}
-    </select>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      <option selected disabled>--Chọn Status--</option>
-      <option value=1>Active</option>
-      <option value=0>Disable</option>
-    </select>
-  </div>
-
-<h2>Seats</h2>
-  <label for="exampleInputEmail1" class="form-label">Số Cột</label>
-  <input class="seats-create-column" type="number" min ="1" name ="column" value ="3" required>
-  <label for="exampleInputEmail1" class="form-label" >Số hàng</label>
-  <input class="seats-create-row" type="number" min ="1" name ="row" value ="3" required>
-  <div class ="btn btn-primary mt-2" onclick ="handleSetRoomSeats()">click</div><br>
-  
-  <label for="exampleInputEmail1" class="form-label">Giá ghế thường</label>
-  <input class="seats-create-column" type="number" min ="1" name ="brandNormalPrice" value ="100000" required><br>
-  <label for="exampleInputEmail1" class="form-label" >Giá ghế vip</label>
-  <input class="seats-create-row" type="number" min ="1" name ="brandVipPrice" value ="105000" required><br>
-  <label for="exampleInputEmail1" class="form-label" >Giá ghế sweetbox</label>
-  <input class="seats-create-row" type="number" min ="1" name ="brandSweetboxPrice" value ="125000" required><br>
-  <br>
-  <div class ="btn btn-primary  mt-2" onclick="handleAddColumn()">THêm cột</div>
-  <div class ="btn btn-primary mt-2" onclick="handleAddRow()">THêm hàng</div><br>
-
-  <div class="booking-content">
-    <div class ="d-flex">
-      <div class ="table-seats-head d-flex">
-        <div class ="table-seats-title table-seats-head--item"></div>
-        <div class ="table-seats-title table-seats-head--item">1</div>
-        <div class ="table-seats-title table-seats-head--item">2</div>
-        <div class ="table-seats-title table-seats-head--item">3</div>
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý rạp & phòng</a></li>
+      <li class="breadcrumb-item"><a href="javascript:history.back()">Danh sách phòng</a></li>
+      <li class="breadcrumb-item active"><span>Thêm phòng</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-sub-category-create" method="POST" action="/admin/rooms?&cinema_id={{cinema._id}}">
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Rạp</label>
+            <select class="form-select" aria-label=".form-select-lg example" >
+              {{#with cinema}}
+                <option class ="form-select-cinema_id"  value={{_id}} selected>{{name}}</option>
+              {{/with}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên phòng</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Trạng thái</option>
+              <option value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Số Cột</label>
+            <input type="number" class="form-control seats-create-column" id="exampleInputEmail1" aria-describedby="emailHelp" name ="column" min =1 value =3>
+          </div>
+          <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label" >Số hàng</label>
+          <input type="number" class="form-control seats-create-row" id="exampleInputEmail1" aria-describedby="emailHelp" name ="row" min =1 value =3>
+          </div>
+          <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Ghế</label>
+            <div class="booking-content d-flex flex-column align-items-center">
+              <div class ="d-flex">
+                <div class ="table-seats-head d-flex">
+                  <div class ="table-seats-title table-seats-head--item"></div>
+                  <div class ="table-seats-title table-seats-head--item">1</div>
+                  <div class ="table-seats-title table-seats-head--item">2</div>
+                  <div class ="table-seats-title table-seats-head--item">3</div>
+                </div>
+                <div class ="table-seats-title table-seats-title--big">Opt</div>
+              </div>
+              <div class ="table-seats-body">
+                  <div class ="table-seats-item  d-flex">
+                    <div class ="table-seats-row d-flex">
+                      <div class ="table-seats-title table-seats-row-brand" >A</div>
+                      <input type="checkbox" id="A1" name ="seats[]"></input>
+                      <label class ="seat" for ="A1" name ="A1" onclick = "handleCreateSeat(event)">+</label>
+                      <input type="checkbox" id="A2" name ="seats[]"  ></input>
+                      <label class ="seat" for ="A2" name ="A2" onclick = "handleCreateSeat(event)">+</label>
+                      <input type="checkbox" id="A3" name ="seats[]"  ></input>
+                      <label class ="seat" for ="A3" name ="A3" onclick = "handleCreateSeat(event)">+</label>
+                    </div>
+                    <div class ="table-seats-title table-seats-title--big btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
+                  </div>
+                  <div class="table-seats-item d-flex">
+                    <div  class ="table-seats-row d-flex">
+                      <div class ="table-seats-title table-seats-row-brand" >{{getNextChar 'A'}}</div>
+                      <input type="checkbox" id="B1" name ="seats[]"></input>
+                      <label for ="B1" class ="seat" name ="B1" onclick = "handleCreateSeat(event)">+</label>
+                      <input type="checkbox" id="B2" name ="seats[]"></input>
+                      <label for ="B2" class ="seat" name ="B2" onclick = "handleCreateSeat(event)">+</label>
+                      <input type="checkbox" id="B3" name ="seats[]"></input>
+                      <label for ="B3" class ="seat" name ="B3" onclick = "handleCreateSeat(event)">+</label>
+                    </div>
+                    <div class ="table-seats-title table-seats-title--big btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
+                  </div>
+                  <div class="table-seats-item d-flex">
+                    <div class ="table-seats-row d-flex">
+                      <div class ="table-seats-title table-seats-row-brand" >C</div>
+                      <input type="checkbox" id="C1" name ="seats[]"></input>
+                      <label for ="C1" class ="seat" name ="C1" onclick = "handleCreateSeat(event)" >+</label>
+                      <input type="checkbox" id="C2" name ="seats[]"></input>
+                      <label for ="C2" class ="seat" name ="C2" onclick = "handleCreateSeat(event)" >+</label>
+                      <input type="checkbox" id="C3" name ="seats[]"></input>
+                      <label for ="C3" class ="seat" name ="C3" onclick = "handleCreateSeat(event)" >+</label>
+                    </div>
+                    <div class ="table-seats-title table-seats-title--big btn btn-outline-primary  " data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
+                  </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end"> 
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class ="table-seats-title" >Opt</div>
-    </div>
-      <div class ="table-seats-body">
-        <div class ="table-seats-item  d-flex">
-          <div class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >A</div>
-            <input type="checkbox" id="A1"  name ="A1"></input>
-            <label class ="seat" for ="A1" name ="A1" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="A2" name ="A2"  ></input>
-            <label class ="seat" for ="A2" name ="A2" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="A3" name ="A3"  ></input>
-            <label class ="seat" for ="A3" name ="A3" onclick = "handleCreateSeat(event)">+</label>
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div>
-        <div class="table-seats-item d-flex">
-          <div  class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >{{getNextChar 'A'}}</div>
-            <input type="checkbox" id="B1" name ="B1"></input>
-            <label for ="B1" class ="seat" name ="B1" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="B2" name ="B2"></input>
-            <label for ="B2" class ="seat" name ="B2" onclick = "handleCreateSeat(event)">+</label>
-            <input type="checkbox" id="B3" name ="B3"></input>
-            <label for ="B3" class ="seat" name ="B3" onclick = "handleCreateSeat(event)">+</label>
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div>
-        <div class="table-seats-item d-flex">
-          <div class ="table-seats-row d-flex">
-            <div class ="table-seats-title table-seats-row-brand" >C</div>
-            <input type="checkbox" id="C1" name ="C1"></input>
-            <label for ="C1" class ="seat" name ="C1" onclick = "handleCreateSeat(event)" >+</label>
-            <input type="checkbox" id="C2" name ="C2"></input>
-            <label for ="C2" class ="seat" name ="C2" onclick = "handleCreateSeat(event)" >+</label>
-            <input type="checkbox" id="C3" name ="C3"></input>
-            <label for ="C3" class ="seat" name ="C3" onclick = "handleCreateSeat(event)" >+</label>
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div>
-        </div>
     </div>
   </div>
-  <button type ="submit" class ="btn btn-primary">Save</button>
-</form>
-
+</div>
 {{!-- modal  --}}
 <div class="modal fade" id="modalSetSeatsBrand" tabindex="-1"  aria-hidden="true">
   <div class="modal-dialog">
@@ -100,10 +112,11 @@
       </div>
       <div class="modal-body">
         <select class="modalSetSeatsBrand-Select form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected value ="">-- Select Brand --</option>
-          <option value="normal">Ghế thường</option>
-          <option value="vip">Ghế vip</option>
-          <option value="sweetbox">Ghế sweetbox</option>
+          <option disabled selected value ="">Hãng ghế</option>
+          {{#each seatTypes}}
+            <option value="{{name}},{{color}}">{{name}}</option>
+          {{/each}}
+
         </select>
       </div>
       <div class="modal-footer">
@@ -129,18 +142,21 @@ const modalSaveBtn = document.querySelector('.modalSetSeatsBrandLabelSave');
 const modalSetSeatsBrandSelect = document.querySelector('.modalSetSeatsBrand-Select');
 const columnInput = document.querySelector('.seats-create-column');
 const rowInput = document.querySelector('.seats-create-row');
+var colorTypeBrand ='';
+var nameTypeBrand ='';
+
 // Thêm cột
 function handleAddColumn(){
   tableSeatHead.innerHTML += `<div class ="table-seats-title table-seats-head--item">${parseInt(tableSeatsHeadLastItem.textContent) + 1}</div>`;
   Array.from(tableSeatRows).map(tableSeatRow =>{
     var brand = tableSeatRow.querySelector('.table-seats-row-brand').textContent;
     tableSeatRow.innerHTML += `
-    <label class ="seat" name ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}"
-    onclick = "handleCreateSeat(event)"
-    for ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}">
-      +
-    </label>
-    <input type="checkbox" id="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}" value="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}" name="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}">
+      <label class ="seat" name ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}"
+      onclick = "handleCreateSeat(event)"
+      for ="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}">
+        +
+      </label>
+      <input type="checkbox" id="${brand}${parseInt(tableSeatsHeadLastItem.textContent) + 1}"  name="seats[]">
     `
   })
   tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
@@ -160,17 +176,17 @@ function handleAddRow(){
       >
       +
       </label>
-      <input type="checkbox" id="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}" value="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}" name="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}">
+      <input type="checkbox" id="${getNextChar(tableSeatBrandLast.textContent)}${index + 1}" name="seats[]">
       `;
   })
   tableSeatBody.innerHTML += `
-        <div class="table-seats-item d-flex">
-          <div class ="table-seats-row d-flex">
-            ${brand}
-            ${html}
-          </div>
-          <div class ="table-seats-title btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div
-        </div>  
+          <div class="table-seats-item d-flex">
+            <div class ="table-seats-row d-flex">
+              ${brand}
+              ${html}
+            </div>
+            <div class ="table-seats-title table-seats-title--big btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSetSeatsBrand" data-index="1" onclick ="handleSetSeatsBrand(event) ">Sửa</div
+          </div>  
         `;
 
   tableSeatsHeadItems = document.querySelectorAll('.table-seats-head--item');
@@ -200,6 +216,7 @@ function handleDeleteRow(){
   tableSeatItems = document.querySelectorAll('.table-seats-item');
  
 }
+
 // Xử lý tăng chữ cái
 function getNextChar(char) {
   return String.fromCharCode(char.charCodeAt(0) + 1);
@@ -207,85 +224,85 @@ function getNextChar(char) {
 
 // Xử lý tạo ghế
 function handleCreateSeat(event) {
-  if(event.target.parentElement.parentElement.classList.contains('table-seats-normal-container')){
-      if(event.target.classList.contains('seat--normal-active')){
-        event.target.classList.remove('seat--normal-active');
+  var regex = /seat--[a-z]+-active/
+  if(event.target.parentElement.parentElement.classList.contains(`table-seats-${nameTypeBrand}-container`)){
+      if(regex.test(event.target.classList)){
+        Array.from(event.target.classList).map(curr => {
+          if(regex.test(curr)){
+            event.target.classList.remove(curr);
+          }
+        })
         event.target.textContent = '+';
+        event.target.style.cssText = `    
+          background-color: none !important;
+          border: 1px solid ${colorTypeBrand} ;
+          color: black;
+        `
       }
       else{
-        event.target.classList.add('seat--normal-active');
+        event.target.classList.add(`seat--${nameTypeBrand}-active`);
+        event.target.style.cssText = `    
+          background-color: ${colorTypeBrand} !important;
+          border:none !important;
+          color: white;
+        `
         event.target.textContent = event.target.getAttribute('name');
         Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
           if(event.target.getAttribute('for') == input.id){
-            input.setAttribute('value',input.getAttribute('name')+',normal');
+            input.setAttribute('value',input.getAttribute('id')+`,${nameTypeBrand}`);
           }
         })
       }
-  }
-  else if(event.target.parentElement.parentElement.classList.contains('table-seats-vip-container')){
-    if(event.target.classList.contains('seat--vip-active')){
-        event.target.classList.remove('seat--vip-active');
-        event.target.textContent = '+';
-      }
-    else{
-      event.target.textContent = event.target.getAttribute('name');
-      event.target.classList.add('seat--vip-active');
-      Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-            console.log(input)
-          if(event.target.getAttribute('for') == input.id){
-            console.log(input)
-            input.setAttribute('value',input.getAttribute('name')+',vip');
-          }
-        })
-    }
-  }
-  else if(event.target.parentElement.parentElement.classList.contains('table-seats-sweetbox-container')){
-    if(event.target.classList.contains('seat--sweetbox-active')){
-        event.target.classList.remove('seat--sweetbox-active');
-        event.target.textContent = '+';
-      }
-    else{
-      event.target.textContent = event.target.getAttribute('name');
-      event.target.classList.add('seat--sweetbox-active');
-      Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-          if(event.target.getAttribute('for') == input.id){
-            input.setAttribute('value',input.getAttribute('name')+',sweetbox');
-          }
-        })
-    }
   }
   else{
     alert("bạn phải chọn hãng ghế trước!");
-    Array.from(event.target.parentElement.querySelectorAll('input')).map(input=>{
-      if(event.target.getAttribute('for') == input.id){
-        input.checked = true;
-      }
-    })
   }
 }
 
-// modal
+// Xử lý chọn loại hàng
 function handleSetSeatsBrand(event){
   modalSaveBtn.onclick = function() {
-    switch (modalSetSeatsBrandSelect.value){
-      case 'normal':
-        (event.target.parentElement).classList.add('table-seats-normal-container');
-        break;
-      case 'vip':
-        (event.target.parentElement).classList.add('table-seats-vip-container');
-        break;
-      case 'sweetbox':
-        (event.target.parentElement).classList.add('table-seats-sweetbox-container');
-        break;
-    }
+        colorTypeBrand = modalSetSeatsBrandSelect.value.split(',')[1];
+        nameTypeBrand = modalSetSeatsBrandSelect.value.split(',')[0];
+        (event.target.parentElement).classList.add(`table-seats-${nameTypeBrand}-container`)
+        var seats = (event.target.parentElement).querySelectorAll('.seat');
+        console.log(nameTypeBrand)
+        var regex = /seat--[a-z]+-active/
+        Array.from(seats).map(curr => {
+          if(!regex.test(curr.classList)){
+            curr.style.cssText = `border: 1px solid ${colorTypeBrand}`;
+          }
+          else{
+          Array.from(curr.classList).map(item => {
+            if(regex.test(item)){
+              curr.classList.remove(item);
+            }
+          })
+            curr.classList.add(`seat--${nameTypeBrand}-active`);
+
+
+            curr.style.cssText = `
+              background-color: ${colorTypeBrand} !important;
+              border: none !important
+            `;
+          }
+        })   
   }
 }
 
 // Xử lý tạo cột và hàng ghế
+columnInput.onchange = function(){
+  handleSetRoomSeats();
+}
+
+rowInput.onchange = function(){
+  handleSetRoomSeats();
+}
+
 function handleSetRoomSeats(){
   var rowDefault = tableSeatRows.length ;
-  console.log(rowDefault);
   var columnDefault = tableSeatLastRow.querySelectorAll('.seat').length;
+  
   for(let i=0;i<columnInput.value - columnDefault;i++){
     handleAddColumn();
   }
@@ -298,7 +315,6 @@ function handleSetRoomSeats(){
       handleDeleteRow();
     }
   }
-  
   if(columnInput.value - columnDefault < 0){
     for(let i=0; i<columnDefault - columnInput.value;i++){
       handleDeleteColumn();
@@ -307,6 +323,5 @@ function handleSetRoomSeats(){
   
   tableSeatRows = document.querySelectorAll('.table-seats-row');
   tableSeatLastRow = tableSeatRows[tableSeatRows.length -1];
-
 }
 </script>

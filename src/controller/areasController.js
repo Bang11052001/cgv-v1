@@ -1,4 +1,3 @@
-const { populate } = require('../modules/category');
 const Area = require('../modules/area')
 
 var areaController={

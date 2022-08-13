@@ -3,6 +3,9 @@ const Slide = require('../modules/slides');
 const User = require('../modules/user');
 const Area = require('../modules/area');
 const Cinema = require('../modules/cinemas');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+const jwt = require('jsonwebtoken');
 
 var siteController={
     index(req,res,next) {
@@ -28,27 +31,37 @@ var siteController={
                 })
             })
     },
-    handleLogin(req,res,next){
-        User.find({email: req.body.email, password : req.body.password})
-            .then(user =>{
-                if(user.length > 0){
-                    res.redirect('/');
-                }
-                else{   
-                    res.render('pages/login',{
-                        alert: 'Thông tin đăng nhập không đúng!'
-                    })
-                }
-            })
+    handleLogin(req,res,next) {
+        passport.authenticate('local', function(err, user, info) {
+            if (err) { return next(err); }
+            if (!user) {  
+              res.json({})
+            }
+            if(user){
+                var token = jwt.sign(user.toObject(), 'mk',{ expiresIn: 15 * 60 });
+                res.json(
+                    {
+                        token : token,
+                        urlRedirect : '/login',
+                    });
+            }
+          })(req, res, next);
     },
     handlecreateUser(req,res,next){
-        const user = new User(req.body)
-        user.date = req.body.day +'/'+req.body.date+'/'+req.body.year
-        user.save()
-            .then(user => {
-                // res.redirect('back');
-                res.json(req.body)
+        Cinema.findById({_id : req.body.cinema_favourite})
+            .then((cinema) => {
+                cinema = cinema.toObject();
+                const user = new User(req.body)
+                user.date = req.body.day +'/'+req.body.date+'/'+req.body.year;
+                user.status =true;
+                user.cinema_favourite = cinema;
+                console.log(cinema)
+                user.save()
+                    .then(user => {
+                        res.redirect('/login');
+                    })
             })
+            .catch(err => res.status(400).send(err.message));
     },
     redgister(req,res,next) {
         Promise.all([Area.find({}),Cinema.find({})]) 
@@ -64,6 +77,7 @@ var siteController={
     myaccount(req,res,next) {
         res.render('pages/myaccount')
     },
+    
 }
 
 module.exports = siteController;

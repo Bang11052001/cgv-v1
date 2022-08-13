@@ -1,0 +1,132 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý phim</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        {{#with film}}
+        <form id ="form-film-update" method ="POST" action="/admin/films?_method=PATCH&id={{_id}}" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên phim</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required value='{{name}}' name ='name'>
+          </div>
+          <div class="mb-3">
+            <label for="form-film-update-file_name" class="form-label">Ảnh</label>
+            <div class =" d-flex ">
+            <img class ='form-film-update-img' src="data:image/{{image.contentType}};base64,
+                            {{image.data}}"></div>
+            <input type='file' class="form-control" id="form-film-update-file_name" aria-describedby="emailHelp"  title='dsafsd' name ='file_image' required>
+          </div>
+            <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Thể loại</label>
+            <div class="row">
+              {{#each @root.genres}}
+              <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                {{#if checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="genre_id" value={{_id}} checked>
+                {{/if}}
+                {{#unless checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="genre_id" value={{_id}}>
+                {{/unless}}
+                <label>{{name}}</label>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Quốc gia</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{country}}' name ='country'>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Phút</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" value='{{minute}}' name ='minute'>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Năm</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{year}}' name ='year'>
+          </div>
+            <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Diễn viên</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" value='{{actor}}' name ="actor">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Đạo diễn</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" value='{{director}}' name ='director'>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Đánh giá</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{rated}}' name ='rated'>
+          </div> 
+            <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Ngôn ngữ</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{language}}' name ="language">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Iframe Trailer</label>
+            <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value='{{link}}' name ='key_link'></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+            <textarea type="text" class="form-control" id="exampleInputPassword1" value='{{description}}' name ='description'></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Chất lượng</label>
+            <div class="row">
+              {{#each @root.qualities}}
+              <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                {{#if checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="quality_id" value={{_id}} checked>
+                {{/if}}
+                {{#unless checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="quality_id" value={{_id}}>
+                {{/unless}}
+                <label>{{name}}</label>
+                </div>
+              {{/each}}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              {{#if status}}
+              <option selected value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+              {{/if}}
+              {{#unless status}}
+              <option selected value=false>Ẩn</option>
+              <option value=true>Hiển thị</option>
+              {{/unless}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Danh mục</label>
+              {{#each @root.filmCategories}}
+              <div>
+                {{#if checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value={{_id}} checked>
+                {{/if}}
+                {{#unless checked}}
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value={{_id}}>
+                {{/unless}}
+
+                <label for="exampleInputPassword1" class="form-label">{{name}}</label>
+              </div>
+              {{/each}}
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+        {{/with}}
+      </div>
+    </div>
+  </div>
+</div>

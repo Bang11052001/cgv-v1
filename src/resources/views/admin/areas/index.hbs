@@ -1,22 +1,49 @@
-<h2>Danh sách Area</h2>
-<table class="table table-bordered text-center">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-     {{#each areas}}
-    <tr>
-      <td>{{_id}}</td>
-      <td>{{name}}</td>
-      <td>{{status}}</td>
-      <td><a href="/admin/areas/update?id={{_id}}">Sửa</a>/<a href="/admin/areas/delete?id={{_id}}">Xóa</a></td>
-    </tr>
-     {{/each}}
-  </tbody>
-</table>
-       
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/cinemas">Quản trị rạp & phòng</a></li>
+      <li class="breadcrumb-item active"><span>Danh sách khu vực</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body d-flex justify-content-between">
+        {{>adminFilter}}
+        <div class ="table-filter-right">
+          <a href = "/admin/areas/create" type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới </a>
+        </div>
+      </div>
+        <table class="table mt-2 text-center">
+          <thead class="table-dark ">
+            <tr>
+              <th><input type="checkbox" class = "table-checkbox form-check-input"></th>
+              <th scope="col">STT</th>
+              <th class ="table-col-left" scope="col">Tên</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Tùy chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each areas}}
+            <tr>
+              <td><input type="checkbox" class = "table-checkbox form-check-input"></td>
+              <td>{{_id}}</td>
+              <td class ="table-col-left">{{name}}</td>
+              <td>{{status}}</td>
+              <td>
+                <a href="/admin/areas/update?id={{_id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="/admin/areas/delete?id={{_id}}"><i class="fa-solid fa-xmark"></i></a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div> 
+    </div> 
+  </div> 
+</div> 
 

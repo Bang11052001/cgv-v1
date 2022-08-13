@@ -3,11 +3,10 @@ const {Schema} = mongoose;
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const seat = new Schema({
-    _id: Number,
-    room_id: Number,
     name: String,
+    color: String,
+    room_id: Number,
     brand: String,
-    price: Number,
     status: Number,
 })
 

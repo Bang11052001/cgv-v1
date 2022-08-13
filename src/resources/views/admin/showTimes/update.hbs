@@ -1,29 +1,108 @@
-{{#with room}}
-<h1 class="">Update show Times</h1>
-<form id ="form-sub-category-create" method="POST" action="/admin/rooms?_method=PATCH&id={{_id}}">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name ="name" value ='{{name}}'>
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản lý rạp & phòng</a></li>
+      <li class="breadcrumb-item"><a href="javascript:history.back()">Danh sách phòng</a></li>
+      <li class="breadcrumb-item active"><span>Thêm phòng</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-showTime-create" method="POST" action="/admin/showTimes?room_id={{room._id}}&cinema_id={{cinema._id}}">
+        <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Phim</label>
+            <select class="form-select select-showTime-create-film" aria-label=".form-select-lg example" name ='film_id' >
+              {{#each films}}
+                {{#if selected}}
+                  <option class ="select-showTime-create-film-option" value="{{_id}}" selected>{{name}}</option></a>
+                {{/if}}
+                {{#unless selected}}
+                  <option class ="select-showTime-create-film-option" value="{{_id}}">{{name}}</option></a>
+                {{/unless}}
+              {{/each}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Chất lượng</label>
+            <select class="form-select form-showTime-create-select-quality" aria-label=".form-select-lg example" name ='quality_id'>
+              {{#each qualities }}
+                {{#if selected}}
+                    <option value='{{_id}}' selected>{{name}}</option>
+                {{/if}}
+                {{#unless selected}}
+                    <option value='{{_id}}'>{{name}}</option>
+                {{/unless}}
+              {{/each}}
+            </select>
+          </div>
+          {{#with showTime}}
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Ngày tháng</label>
+            <input type="date" class="form-control" class="" id="exampleInputPassword1" name ="date" value ="{{date}}">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Giờ</label>
+            <input type="time" class="form-control form-showTime-create-time-picker" class="" id="exampleInputPassword1" name ="time" value="{{time}}">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              {{#if status}}
+              <option selected value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+              {{/if}}
+              {{#unless status}}
+              <option selected value=false>Ẩn</option>
+              <option value=true>Hiển thị</option>
+              {{/unless}}
+            </select>
+          </div>
+          {{/with}}
+          <div class="d-flex justify-content-end"> 
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form> 
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Seat</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name ="seat" value ='{{seat}}'>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Status</label>
-    <select class="form-select" aria-label=".form-select-lg example" name ='status'>
-      {{#if status}}
-      <option selected value="1">{{statusHandle status}}</option>
-      {{else}}
-      <option selected value="0">{{statusHandle status}}</option>
-      {{/if}}
-      {{#if status}}
-      <option value=0>Disable</option>
-      {{else}}
-      <option value=1>Active</option>
-      {{/if}}
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+{{#each films}}
+  <form class ="form-film" index ="{{_id}}"method="POST" action="/admin/showTimes/create/quality?id={{_id}}&room_id={{@root.room_id}}&cinema_id={{@root.cinema_id}}"></form>
+{{/each}}
+
 </form>
-{{/with}}
+<script>
+  const selectShowTime = document.querySelector('.select-showTime-create-film');
+  const selectQuality = document.querySelector('.form-showTime-create-select-quality');
+
+  selectShowTime.onchange = function(event) {
+      console.log(event.target.value)
+      const fomrFilm = document.querySelectorAll('.form-film');
+      $.ajax({
+        url: `/api/v1/films/${event.target.value}`,
+        type: 'GET',
+
+      })
+      .then(data => {
+        console.log(data)
+        var html ='';
+        data.quality.map(curr => {
+          html += `
+              <option value='${curr._id}'>${curr.name}</option>
+          `
+        })
+        selectQuality.innerHTML = html;
+
+      })
+      .catch(err => console.log(err))
+
+  }
+
+
+</script>
+ 

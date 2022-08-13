@@ -1,0 +1,58 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      {{!-- <li class="breadcrumb-item"><a href="/admin/news">Quản trị bài viết</a></li> --}}
+      <li class="breadcrumb-item"><a href="/admin/news">Danh sách bài viết</a></li>
+      <li class="breadcrumb-item active"><span>Thêm bài viết</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-film-update" method="POST" action="/admin/news" >
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tiêu đề</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name ="name">
+          </div>
+          <div>
+            <script src="/ckeditor/ckeditor.js"></script>
+            <textarea cols="80" id="editor1" name="content" rows="10">
+            </textarea>
+            <script>
+              CKEDITOR.replace( 'editor1',{
+                extraPlugins:'filebrowser',
+                filebrowserBrowseUrl:'/list',//upload location
+                filebrowserUploadMethod:'form',
+                filebrowserUploadUrl:'/upload'//route
+              });
+            </script>
+          </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Trạng thái</option>
+              <option value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Danh mục</label>
+              {{#each newCategories}}
+              <div>
+                <input class ="table-checkbox form-check-input" type="checkbox" id="form-film-quality-input" name ="category_id" value={{_id}}>
+                <label for="exampleInputPassword1" class="form-label">{{name}}</label>
+              </div>
+              {{/each}}
+          </div>
+           <div class="d-flex justify-content-end"> 
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

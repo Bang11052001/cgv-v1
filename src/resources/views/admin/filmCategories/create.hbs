@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-0 ms-2">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item"><a href="/admin/films">Quản trị phim</a></li>
+      <li class="breadcrumb-item"><a href="/admin/filmCategories">Danh sách danh mục phim</a></li>
+      <li class="breadcrumb-item active"><span>Thêm danh mục phim</span></li>
+    </ol>
+  </nav>
+</div>
+</header>
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id ="form-sub-category-create" method="POST" action="/admin/filmCategories/create">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name ="name">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Đường dẫn</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name ="slug">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Danh mục cha</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='parent_id'>
+              <option value ="0" selected>Trống </option>
+                {{#each filmCategories}}
+                  <option value={{_id}}>{{name}}</option>
+                {{/each}}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Status</label>
+            <select class="form-select" aria-label=".form-select-lg example" name ='status'>
+              <option selected disabled>Chọn Trạng thái</option>
+              <option value=true>Hiển thị</option>
+              <option value=false>Ẩn</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

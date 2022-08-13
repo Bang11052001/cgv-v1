@@ -321,7 +321,10 @@ a:hover{
     color: var(--primary-color);
 }
 
-.form-content input[type="text"]{
+.form-content input[type="text"],
+.form-content input[type="password"],
+.form-content input[type="email"]
+{
     width: 100%;
     margin: 5px 0;
     height: 30px;
@@ -329,7 +332,19 @@ a:hover{
     border: 1px solid #ccc;
     border-radius: 2px;
     font-size: 1.3rem;
+    outline: none;
     font-weight: 600;
+}
+
+.form-content select {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin: 5px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    outline: none;
 }
 
 .form-content-date-gender-wrap{
@@ -365,6 +380,10 @@ a:hover{
     display: flex;
     align-items: center;
     margin-bottom: -10px;
+}
+
+.form-content-accept-wrap input{
+    cursor: pointer;
 }
 
 #form-content-accept{
@@ -412,17 +431,7 @@ a:hover{
     cursor: pointer;
 } 
 
-.table-seats-normal-container .seat{
-    border: 1px solid #01c73c !important;
-}
 
-.table-seats-vip-container .seat{
-    border: 1px solid #f71708 !important;
-}
-
-.table-seats-sweetbox-container .seat{
-    border: 1px solid #FF62B0 !important;
-}
 
 .table-seats-body input{
     display: none;
@@ -441,20 +450,4 @@ a:hover{
     border: none !important;
 }
 
-/* .seat--normal-active{
-    background-color: #01c73c !important;
-    border:none !important;
-    color: white;
-}
 
-.seat--vip-active{
-    background-color: #f71708 !important;
-    border:none !important;
-    color: white;
-}
-
-.seat--sweetbox-active{
-    background-color: #FF62B0 !important;
-    border:none !important;
-    color: white;
-} */
